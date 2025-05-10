@@ -11,6 +11,7 @@ class _SignupViewState extends State<SignupView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -41,6 +42,10 @@ class _SignupViewState extends State<SignupView> {
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
+                  labelStyle: TextStyle(color: Colors.black),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                   prefixIcon: Align(
                     heightFactor: 1,
                     widthFactor: 1,
@@ -54,6 +59,10 @@ class _SignupViewState extends State<SignupView> {
                   labelText: "Phone",
                   hintText: "Phone",
                   border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  labelStyle: TextStyle(color: Colors.black),
+                  focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
                   prefixIcon: Align(
@@ -71,6 +80,10 @@ class _SignupViewState extends State<SignupView> {
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
+                  labelStyle: TextStyle(color: Colors.black),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                   prefixIcon: Align(
                     widthFactor: 1.0,
                     heightFactor: 1.0,
@@ -86,6 +99,10 @@ class _SignupViewState extends State<SignupView> {
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
+                  labelStyle: TextStyle(color: Colors.black),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                   prefixIcon: Align(
                     widthFactor: 1.0,
                     heightFactor: 1.0,
@@ -94,11 +111,15 @@ class _SignupViewState extends State<SignupView> {
                 ),
               ),
               SizedBox(height: 20),
-              TextFormField(
+              TextField(
                 decoration: InputDecoration(
                   labelText: "Confirm Password",
                   hintText: "Confirm Password",
                   border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  labelStyle: TextStyle(color: Colors.black),
+                  focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
                   prefixIcon: Align(

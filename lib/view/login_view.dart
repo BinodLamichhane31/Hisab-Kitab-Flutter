@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hisab_kitab/view/forgot_password_view.dart';
 import 'package:hisab_kitab/view/signup_view.dart';
 
 class LoginView extends StatefulWidget {
@@ -12,6 +13,7 @@ class _LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -19,6 +21,8 @@ class _LoginViewState extends State<LoginView> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                Image.asset('lib/assets/image.png', height: 80),
+                SizedBox(height: 40),
                 RichText(
                   text: TextSpan(
                     style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
@@ -41,8 +45,11 @@ class _LoginViewState extends State<LoginView> {
                   decoration: InputDecoration(
                     hintText: 'Email',
                     labelText: 'Email',
-
+                    labelStyle: TextStyle(color: Colors.black),
                     border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
                     prefixIcon: Align(
@@ -60,7 +67,11 @@ class _LoginViewState extends State<LoginView> {
                   decoration: InputDecoration(
                     hintText: 'Password',
                     labelText: 'Password',
+                    labelStyle: TextStyle(color: Colors.black),
                     border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
                     prefixIcon: Align(
@@ -70,8 +81,25 @@ class _LoginViewState extends State<LoginView> {
                     ),
                   ),
                 ),
-                SizedBox(height: 30),
-
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ForgotPasswordView(),
+                          ),
+                        );
+                      },
+                      child: Text(
+                        "Forgot Password?",
+                        style: TextStyle(color: Colors.orange),
+                      ),
+                    ),
+                  ],
+                ),
                 // Login Button
                 SizedBox(
                   width: double.infinity,
