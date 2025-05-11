@@ -8,6 +8,13 @@ class SignupView extends StatefulWidget {
 }
 
 class _SignupViewState extends State<SignupView> {
+  bool passwordVisible = false;
+  @override
+  void initState() {
+    super.initState();
+    passwordVisible = true;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -93,6 +100,7 @@ class _SignupViewState extends State<SignupView> {
               ),
               SizedBox(height: 20),
               TextField(
+                obscureText: passwordVisible,
                 decoration: InputDecoration(
                   labelText: "Password",
                   hintText: "Password",
@@ -108,10 +116,21 @@ class _SignupViewState extends State<SignupView> {
                     heightFactor: 1.0,
                     child: Icon(Icons.key_outlined),
                   ),
+                  suffixIcon: IconButton(
+                    onPressed: () {
+                      setState(() {
+                        passwordVisible = !passwordVisible;
+                      });
+                    },
+                    icon: Icon(
+                      passwordVisible ? Icons.visibility : Icons.visibility_off,
+                    ),
+                  ),
                 ),
               ),
               SizedBox(height: 20),
               TextField(
+                obscureText: passwordVisible,
                 decoration: InputDecoration(
                   labelText: "Confirm Password",
                   hintText: "Confirm Password",
@@ -126,6 +145,16 @@ class _SignupViewState extends State<SignupView> {
                     widthFactor: 1.0,
                     heightFactor: 1.0,
                     child: Icon(Icons.key_outlined),
+                  ),
+                  suffixIcon: IconButton(
+                    onPressed: () {
+                      setState(() {
+                        passwordVisible = !passwordVisible;
+                      });
+                    },
+                    icon: Icon(
+                      passwordVisible ? Icons.visibility : Icons.visibility_off,
+                    ),
                   ),
                 ),
               ),

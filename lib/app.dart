@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hisab_kitab/view/login_view.dart';
 import 'package:hisab_kitab/view/splash_screen.dart';
 
 class App extends StatelessWidget {

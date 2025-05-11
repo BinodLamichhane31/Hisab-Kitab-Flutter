@@ -10,6 +10,13 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
+  bool passwordVisible = false;
+  @override
+  void initState() {
+    super.initState();
+    passwordVisible = true;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,10 +67,9 @@ class _LoginViewState extends State<LoginView> {
                   ),
                 ),
                 SizedBox(height: 20),
-
                 // Password Field
                 TextField(
-                  obscureText: true,
+                  obscureText: passwordVisible,
                   decoration: InputDecoration(
                     hintText: 'Password',
                     labelText: 'Password',
@@ -78,6 +84,18 @@ class _LoginViewState extends State<LoginView> {
                       widthFactor: 1.0,
                       heightFactor: 1.0,
                       child: Icon(Icons.key),
+                    ),
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          passwordVisible = !passwordVisible;
+                        });
+                      },
+                      icon: Icon(
+                        passwordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                      ),
                     ),
                   ),
                 ),
