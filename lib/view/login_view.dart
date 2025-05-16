@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hisab_kitab/view/dashboard_view.dart';
 import 'package:hisab_kitab/view/forgot_password_view.dart';
 import 'package:hisab_kitab/view/signup_view.dart';
 
@@ -37,24 +38,12 @@ class _LoginViewState extends State<LoginView> {
                 children: [
                   Image.asset('assets/logo/app_logo.png', height: 80),
                   const SizedBox(height: 40),
-                  RichText(
-                    text: const TextSpan(
-                      style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      children: [
-                        TextSpan(
-                          text: 'Login into Hisab',
-                          style: TextStyle(color: Colors.black),
-                        ),
-                        TextSpan(
-                          text: 'Kitab',
-                          style: TextStyle(color: Colors.orange),
-                        ),
-                      ],
-                    ),
+                  Text(
+                    "Welcome Back!",
+                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                   ),
+                  Text("Login to your account"),
+
                   const SizedBox(height: 30),
 
                   // Email Field
@@ -143,9 +132,33 @@ class _LoginViewState extends State<LoginView> {
                     child: ElevatedButton(
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                          // Proceed with login
-                          print("Email: ${_emailController.text}");
-                          print("Password: ${_passwordController.text}");
+                          String email = _emailController.text.trim();
+                          String password = _passwordController.text.trim();
+                          if (email == "admin@gmail.com" &&
+                              password == "admin123") {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text("Login Successful"),
+                                behavior: SnackBarBehavior.floating,
+                                backgroundColor: Colors.green,
+                              ),
+                            );
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => DashboardView(),
+                              ),
+                            );
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text("Invalid credentials"),
+                                behavior: SnackBarBehavior.floating,
+                                backgroundColor: Colors.red,
+                                showCloseIcon: true,
+                              ),
+                            );
+                          }
                         }
                       },
                       style: ElevatedButton.styleFrom(

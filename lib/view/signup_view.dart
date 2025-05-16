@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class SignupView extends StatefulWidget {
   const SignupView({super.key});
@@ -56,7 +57,6 @@ class _SignupViewState extends State<SignupView> {
                 TextFormField(
                   controller: _nameController,
                   decoration: InputDecoration(
-                    hintText: "Full Name",
                     labelText: "Full Name",
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -83,7 +83,6 @@ class _SignupViewState extends State<SignupView> {
                   controller: _phoneController,
                   decoration: InputDecoration(
                     labelText: "Phone",
-                    hintText: "Phone",
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -111,7 +110,6 @@ class _SignupViewState extends State<SignupView> {
                   controller: _emailController,
                   decoration: InputDecoration(
                     labelText: "Email",
-                    hintText: "Email",
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -140,7 +138,6 @@ class _SignupViewState extends State<SignupView> {
                   obscureText: passwordVisible,
                   decoration: InputDecoration(
                     labelText: "Password",
-                    hintText: "Password",
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -181,7 +178,6 @@ class _SignupViewState extends State<SignupView> {
                   obscureText: confirmPasswordVisible,
                   decoration: InputDecoration(
                     labelText: "Confirm Password",
-                    hintText: "Confirm Password",
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -229,7 +225,7 @@ class _SignupViewState extends State<SignupView> {
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.orange,
-                      elevation: 0,
+                      elevation: 4,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30),
                       ),
@@ -254,6 +250,91 @@ class _SignupViewState extends State<SignupView> {
                         style: TextStyle(
                           color: Colors.orange,
                           fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+
+                Center(
+                  child: const Text(
+                    'OR CONTINUE WITH',
+
+                    style: TextStyle(color: Colors.grey, fontSize: 18),
+                  ),
+                ),
+                const SizedBox(height: 10),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    SizedBox(
+                      height: 45,
+                      child: ElevatedButton(
+                        onPressed: () {},
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color.fromARGB(
+                            255,
+                            252,
+                            229,
+                            190,
+                          ),
+                          elevation: 4,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                        child: FaIcon(
+                          FontAwesomeIcons.google,
+                          size: 28,
+                          color: Colors.orange,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 45,
+                      child: ElevatedButton(
+                        onPressed: () {},
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color.fromARGB(
+                            255,
+                            252,
+                            229,
+                            190,
+                          ),
+                          elevation: 4,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                        child: FaIcon(
+                          FontAwesomeIcons.facebook,
+                          size: 30,
+                          color: Colors.orange,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 45,
+                      child: ElevatedButton(
+                        onPressed: () {},
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color.fromARGB(
+                            255,
+                            252,
+                            229,
+                            190,
+                          ),
+                          elevation: 4,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                        child: FaIcon(
+                          FontAwesomeIcons.apple,
+                          size: 32,
+                          color: Colors.orange,
                         ),
                       ),
                     ),
