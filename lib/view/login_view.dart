@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hisab_kitab/view/forgot_password_view.dart';
 import 'package:hisab_kitab/view/signup_view.dart';
 
@@ -34,7 +35,7 @@ class _LoginViewState extends State<LoginView> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image.asset('lib/assets/image.png', height: 80),
+                  Image.asset('assets/logo/app_logo.png', height: 80),
                   const SizedBox(height: 40),
                   RichText(
                     text: const TextSpan(
@@ -60,7 +61,6 @@ class _LoginViewState extends State<LoginView> {
                   TextFormField(
                     controller: _emailController,
                     decoration: InputDecoration(
-                      hintText: 'Email',
                       labelText: 'Email',
                       labelStyle: const TextStyle(color: Colors.black),
                       border: OutlineInputBorder(
@@ -85,7 +85,6 @@ class _LoginViewState extends State<LoginView> {
                     controller: _passwordController,
                     obscureText: passwordVisible,
                     decoration: InputDecoration(
-                      hintText: 'Password',
                       labelText: 'Password',
                       labelStyle: const TextStyle(color: Colors.black),
                       border: OutlineInputBorder(
@@ -151,7 +150,7 @@ class _LoginViewState extends State<LoginView> {
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.orange,
-                        elevation: 0,
+                        elevation: 4,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30),
                         ),
@@ -193,29 +192,84 @@ class _LoginViewState extends State<LoginView> {
                   const SizedBox(height: 20),
 
                   const Text(
-                    'OR',
+                    'OR LOGIN WITH',
                     style: TextStyle(color: Colors.grey, fontSize: 18),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 10),
 
-                  // Google Button
-                  SizedBox(
-                    width: double.infinity,
-                    height: 55,
-                    child: ElevatedButton.icon(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      SizedBox(
+                        height: 45,
+                        child: ElevatedButton(
+                          onPressed: () {},
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color.fromARGB(
+                              255,
+                              252,
+                              229,
+                              190,
+                            ),
+                            elevation: 4,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                          ),
+                          child: FaIcon(
+                            FontAwesomeIcons.google,
+                            size: 28,
+                            color: Colors.orange,
+                          ),
                         ),
                       ),
-                      icon: Image.asset('lib/assets/google.png', height: 24),
-                      label: const Text(
-                        'Continue With Google',
-                        style: TextStyle(color: Colors.black, fontSize: 16),
+                      SizedBox(
+                        height: 45,
+                        child: ElevatedButton(
+                          onPressed: () {},
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color.fromARGB(
+                              255,
+                              252,
+                              229,
+                              190,
+                            ),
+                            elevation: 4,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                          ),
+                          child: FaIcon(
+                            FontAwesomeIcons.facebook,
+                            size: 30,
+                            color: Colors.orange,
+                          ),
+                        ),
                       ),
-                    ),
+                      SizedBox(
+                        height: 45,
+                        child: ElevatedButton(
+                          onPressed: () {},
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color.fromARGB(
+                              255,
+                              252,
+                              229,
+                              190,
+                            ),
+                            elevation: 4,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                          ),
+                          child: FaIcon(
+                            FontAwesomeIcons.apple,
+                            size: 32,
+                            color: Colors.orange,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
