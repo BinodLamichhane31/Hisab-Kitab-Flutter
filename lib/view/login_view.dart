@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hisab_kitab/common/social_icons_button.dart';
+import 'package:hisab_kitab/utils/loading_dialog.dart';
 import 'package:hisab_kitab/view/dashboard_view.dart';
 import 'package:hisab_kitab/view/forgot_password_view.dart';
 import 'package:hisab_kitab/view/signup_view.dart';
@@ -137,25 +140,33 @@ class _LoginViewState extends State<LoginView> {
                           String password = _passwordController.text.trim();
                           if (email == "admin@gmail.com" &&
                               password == "admin123") {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text("Login Successful"),
-                                behavior: SnackBarBehavior.floating,
-                                backgroundColor: Colors.green,
-                              ),
-                            );
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => DashboardView(),
-                              ),
-                            );
+                            showLoadingDialog(context);
+
+                            Future.delayed(const Duration(seconds: 2), () {
+                              Navigator.of(
+                                context,
+                              ).pop(); // close loading dialog
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text("Login Successful"),
+                                  backgroundColor: Colors.green,
+                                  behavior: SnackBarBehavior.floating,
+                                  showCloseIcon: true,
+                                ),
+                              );
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => const DashboardView(),
+                                ),
+                              );
+                            });
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 content: Text("Invalid credentials"),
-                                behavior: SnackBarBehavior.floating,
                                 backgroundColor: Colors.red,
+                                behavior: SnackBarBehavior.floating,
                                 showCloseIcon: true,
                               ),
                             );

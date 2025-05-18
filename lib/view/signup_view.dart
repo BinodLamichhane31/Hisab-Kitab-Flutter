@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hisab_kitab/common/social_icons_button.dart';
 
 class SignupView extends StatefulWidget {
   const SignupView({super.key});
@@ -269,74 +270,17 @@ class _SignupViewState extends State<SignupView> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    SizedBox(
-                      height: 45,
-                      child: ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color.fromARGB(
-                            255,
-                            252,
-                            229,
-                            190,
-                          ),
-                          elevation: 4,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                        ),
-                        child: FaIcon(
-                          FontAwesomeIcons.google,
-                          size: 28,
-                          color: Colors.orange,
-                        ),
-                      ),
+                    SocialIconsButton(
+                      icon: FontAwesomeIcons.google,
+                      onPressed: () {},
                     ),
-                    SizedBox(
-                      height: 45,
-                      child: ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color.fromARGB(
-                            255,
-                            252,
-                            229,
-                            190,
-                          ),
-                          elevation: 4,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                        ),
-                        child: FaIcon(
-                          FontAwesomeIcons.facebook,
-                          size: 30,
-                          color: Colors.orange,
-                        ),
-                      ),
+                    SocialIconsButton(
+                      icon: FontAwesomeIcons.facebookF,
+                      onPressed: () {},
                     ),
-                    SizedBox(
-                      height: 45,
-                      child: ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color.fromARGB(
-                            255,
-                            252,
-                            229,
-                            190,
-                          ),
-                          elevation: 4,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                        ),
-                        child: FaIcon(
-                          FontAwesomeIcons.apple,
-                          size: 32,
-                          color: Colors.orange,
-                        ),
-                      ),
+                    SocialIconsButton(
+                      icon: FontAwesomeIcons.apple,
+                      onPressed: () {},
                     ),
                   ],
                 ),
