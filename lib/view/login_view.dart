@@ -1,8 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:hisab_kitab/common/social_icons_button.dart';
 import 'package:hisab_kitab/utils/loading_dialog.dart';
 import 'package:hisab_kitab/view/dashboard_view.dart';
 import 'package:hisab_kitab/view/forgot_password_view.dart';
@@ -173,16 +171,10 @@ class _LoginViewState extends State<LoginView> {
                           }
                         }
                       },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.orange,
-                        elevation: 4,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                      ),
+
                       child: const Text(
                         'Login',
-                        style: TextStyle(fontSize: 18, color: Colors.white),
+                        style: TextStyle(color: Colors.white),
                       ),
                     ),
                   ),

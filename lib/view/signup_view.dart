@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:hisab_kitab/common/social_icons_button.dart';
 
 class SignupView extends StatefulWidget {
   const SignupView({super.key});
@@ -224,16 +222,10 @@ class _SignupViewState extends State<SignupView> {
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {}
                     },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.orange,
-                      elevation: 4,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                    ),
+
                     child: Text(
                       'Create',
-                      style: TextStyle(fontSize: 18, color: Colors.white),
+                      style: TextStyle(color: Colors.white),
                     ),
                   ),
                 ),
