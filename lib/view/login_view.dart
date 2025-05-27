@@ -223,18 +223,21 @@ class _LoginViewState extends State<LoginView> {
                   const SizedBox(height: 10),
 
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      SocialIconsButton(
-                        icon: FontAwesomeIcons.google,
+                      IconButton(
+                        icon: Image.asset('assets/logo/google.png', height: 32),
                         onPressed: () {},
                       ),
-                      SocialIconsButton(
-                        icon: FontAwesomeIcons.facebookF,
+                      IconButton(
+                        icon: Image.asset(
+                          'assets/logo/facebook.png',
+                          height: 32,
+                        ),
                         onPressed: () {},
                       ),
-                      SocialIconsButton(
-                        icon: FontAwesomeIcons.apple,
+                      IconButton(
+                        icon: Image.asset('assets/logo/apple.png', height: 32),
                         onPressed: () {},
                       ),
                     ],

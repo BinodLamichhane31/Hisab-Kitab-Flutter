@@ -257,33 +257,6 @@ class _SignupViewState extends State<SignupView> {
                   ],
                 ),
                 const SizedBox(height: 20),
-
-                Center(
-                  child: const Text(
-                    'OR CONTINUE WITH',
-
-                    style: TextStyle(color: Colors.grey, fontSize: 18),
-                  ),
-                ),
-                const SizedBox(height: 10),
-
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    SocialIconsButton(
-                      icon: FontAwesomeIcons.google,
-                      onPressed: () {},
-                    ),
-                    SocialIconsButton(
-                      icon: FontAwesomeIcons.facebookF,
-                      onPressed: () {},
-                    ),
-                    SocialIconsButton(
-                      icon: FontAwesomeIcons.apple,
-                      onPressed: () {},
-                    ),
-                  ],
-                ),
               ],
             ),
           ),
