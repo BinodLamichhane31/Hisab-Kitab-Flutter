@@ -26,8 +26,8 @@ class _SignupViewState extends State<SignupView> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -38,7 +38,7 @@ class _SignupViewState extends State<SignupView> {
               children: [
                 Container(
                   decoration: BoxDecoration(
-                    color: Color(0xFFF4F4F4),
+                    color: isDark ? Colors.black38 : Color(0xFFF4F4F4),
                     shape: BoxShape.circle,
                   ),
                   child: IconButton(
@@ -57,10 +57,13 @@ class _SignupViewState extends State<SignupView> {
                   controller: _nameController,
                   decoration: InputDecoration(
                     labelText: "Full Name",
+
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    labelStyle: TextStyle(color: Colors.black),
+                    labelStyle: TextStyle(
+                      color: Theme.of(context).textTheme.bodyMedium?.color,
+                    ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -85,7 +88,9 @@ class _SignupViewState extends State<SignupView> {
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    labelStyle: TextStyle(color: Colors.black),
+                    labelStyle: TextStyle(
+                      color: Theme.of(context).textTheme.bodyMedium?.color,
+                    ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -112,7 +117,9 @@ class _SignupViewState extends State<SignupView> {
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    labelStyle: TextStyle(color: Colors.black),
+                    labelStyle: TextStyle(
+                      color: Theme.of(context).textTheme.bodyMedium?.color,
+                    ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -140,7 +147,9 @@ class _SignupViewState extends State<SignupView> {
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    labelStyle: TextStyle(color: Colors.black),
+                    labelStyle: TextStyle(
+                      color: Theme.of(context).textTheme.bodyMedium?.color,
+                    ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -180,7 +189,9 @@ class _SignupViewState extends State<SignupView> {
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    labelStyle: TextStyle(color: Colors.black),
+                    labelStyle: TextStyle(
+                      color: Theme.of(context).textTheme.bodyMedium?.color,
+                    ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
