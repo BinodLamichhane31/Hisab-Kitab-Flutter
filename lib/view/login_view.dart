@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:hisab_kitab/utils/loading_dialog.dart';
 import 'package:hisab_kitab/view/dashboard_view.dart';
@@ -27,8 +26,9 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
-      backgroundColor: Colors.white,
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -38,13 +38,25 @@ class _LoginViewState extends State<LoginView> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image.asset('assets/logo/app_logo.png', height: 80),
+                  // Logo with dark/light version
+                  Image.asset(
+                    isDark
+                        ? 'assets/logo/app_logo_white.png'
+                        : 'assets/logo/app_logo_black.png',
+                    height: 80,
+                  ),
                   const SizedBox(height: 40),
+
                   Text(
                     "Welcome Back!",
-                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                  Text("Login to your account"),
+                  Text(
+                    "Login to your account",
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
 
                   const SizedBox(height: 30),
 
@@ -53,7 +65,9 @@ class _LoginViewState extends State<LoginView> {
                     controller: _emailController,
                     decoration: InputDecoration(
                       labelText: 'Email',
-                      labelStyle: const TextStyle(color: Colors.black),
+                      labelStyle: TextStyle(
+                        color: Theme.of(context).textTheme.bodyMedium?.color,
+                      ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -77,7 +91,9 @@ class _LoginViewState extends State<LoginView> {
                     obscureText: passwordVisible,
                     decoration: InputDecoration(
                       labelText: 'Password',
-                      labelStyle: const TextStyle(color: Colors.black),
+                      labelStyle: TextStyle(
+                        color: Theme.of(context).textTheme.bodyMedium?.color,
+                      ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -141,9 +157,7 @@ class _LoginViewState extends State<LoginView> {
                             showLoadingDialog(context);
 
                             Future.delayed(const Duration(seconds: 2), () {
-                              Navigator.of(
-                                context,
-                              ).pop(); // close loading dialog
+                              Navigator.of(context).pop(); // close dialog
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                   content: Text("Login Successful"),
@@ -171,7 +185,6 @@ class _LoginViewState extends State<LoginView> {
                           }
                         }
                       },
-
                       child: const Text(
                         'Login',
                         style: TextStyle(color: Colors.white),
@@ -208,10 +221,14 @@ class _LoginViewState extends State<LoginView> {
 
                   const SizedBox(height: 20),
 
-                  const Text(
+                  Text(
                     'OR LOGIN WITH',
-                    style: TextStyle(color: Colors.grey, fontSize: 18),
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: Colors.grey,
+                      fontSize: 18,
+                    ),
                   ),
+
                   const SizedBox(height: 10),
 
                   Row(
@@ -229,7 +246,12 @@ class _LoginViewState extends State<LoginView> {
                         onPressed: () {},
                       ),
                       IconButton(
-                        icon: Image.asset('assets/logo/apple.png', height: 32),
+                        icon: Image.asset(
+                          isDark
+                              ? 'assets/logo/apple_icon_white.png'
+                              : 'assets/logo/apple_icon_black.png',
+                          height: 32,
+                        ),
                         onPressed: () {},
                       ),
                     ],
