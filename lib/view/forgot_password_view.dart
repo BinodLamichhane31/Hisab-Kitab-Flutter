@@ -11,7 +11,6 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -19,10 +18,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                decoration: BoxDecoration(
-                  color: Color(0xFFF4F4F4),
-                  shape: BoxShape.circle,
-                ),
+                decoration: BoxDecoration(shape: BoxShape.circle),
                 child: IconButton(
                   onPressed: () {
                     Navigator.pop(context);
@@ -35,18 +31,22 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                 style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 30),
-              TextField(
+              TextFormField(
                 decoration: InputDecoration(
                   labelText: 'Enter Email Address',
-                  labelStyle: TextStyle(color: Colors.black),
+                  labelStyle: TextStyle(
+                    color: Theme.of(context).textTheme.bodyMedium?.color,
+                  ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Colors.orange),
                   ),
                 ),
               ),
+
               SizedBox(height: 30),
               SizedBox(
                 height: 55,

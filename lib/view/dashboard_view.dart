@@ -13,7 +13,6 @@ class _DashboardViewState extends State<DashboardView> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.white,
         elevation: 0,
         toolbarHeight: 70,
         title: Row(

@@ -13,7 +13,7 @@ ThemeData getLightTheme() {
         textStyle: const TextStyle(
           fontSize: 20,
           fontFamily: 'Poppins SemiBold',
-          color: Colors.blue,
+          color: Colors.white,
         ),
       ),
     ),
