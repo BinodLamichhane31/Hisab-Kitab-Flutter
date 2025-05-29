@@ -66,6 +66,7 @@ class _SignupViewState extends State<SignupView> {
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Colors.orange),
                     ),
                     prefixIcon: Align(
                       heightFactor: 1,
@@ -93,7 +94,9 @@ class _SignupViewState extends State<SignupView> {
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Colors.orange),
                     ),
+
                     prefixIcon: Align(
                       widthFactor: 1.0,
                       heightFactor: 1.0,
@@ -122,6 +125,7 @@ class _SignupViewState extends State<SignupView> {
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Colors.orange),
                     ),
                     prefixIcon: Align(
                       widthFactor: 1.0,
@@ -152,6 +156,7 @@ class _SignupViewState extends State<SignupView> {
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Colors.orange),
                     ),
                     prefixIcon: Align(
                       widthFactor: 1.0,
@@ -194,6 +199,7 @@ class _SignupViewState extends State<SignupView> {
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Colors.orange),
                     ),
                     prefixIcon: Align(
                       widthFactor: 1.0,

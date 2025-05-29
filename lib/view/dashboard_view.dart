@@ -19,26 +19,22 @@ class _DashboardViewState extends State<DashboardView> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             // Hamburger Icon
-            Icon(Icons.menu, color: Colors.black),
+            Icon(Icons.menu),
 
             // Business Name Dropdown
             Container(
               padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               decoration: BoxDecoration(
-                color: Color(0xFFF5F5F5),
                 borderRadius: BorderRadius.circular(24),
               ),
               child: Row(
                 children: [
                   Text(
                     "Business Name",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.w500,
-                    ),
+                    style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   SizedBox(width: 4),
-                  Icon(Icons.keyboard_arrow_down, color: Colors.black),
+                  Icon(Icons.keyboard_arrow_down),
                 ],
               ),
             ),
@@ -50,11 +46,7 @@ class _DashboardViewState extends State<DashboardView> {
                 color: Colors.orange,
               ),
               padding: EdgeInsets.all(10),
-              child: Icon(
-                Icons.notifications_none,
-                color: Colors.white,
-                size: 18,
-              ),
+              child: Icon(Icons.notifications_none, size: 18),
             ),
           ],
         ),

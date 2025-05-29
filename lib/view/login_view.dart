@@ -71,6 +71,10 @@ class _LoginViewState extends State<LoginView> {
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide(color: Colors.orange),
+                      ),
                       prefixIcon: const Icon(Icons.person),
                     ),
                     validator: (value) {
@@ -96,6 +100,10 @@ class _LoginViewState extends State<LoginView> {
                       ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide(color: Colors.orange),
                       ),
                       prefixIcon: const Icon(Icons.key),
                       suffixIcon: IconButton(
