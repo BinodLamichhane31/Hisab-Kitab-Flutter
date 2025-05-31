@@ -5,12 +5,17 @@ import 'package:hisab_kitab/view/dashboard_screens/products_page_view.dart';
 import 'package:hisab_kitab/view/dashboard_screens/profile_page_view.dart';
 import 'package:hisab_kitab/view/dashboard_screens/suppliers_page_view.dart';
 
-class DashboardView extends StatelessWidget {
-  DashboardView({super.key});
+class DashboardView extends StatefulWidget {
+  const DashboardView({super.key});
 
-  final ValueNotifier<int> _selectedIndex = ValueNotifier<int>(0);
+  @override
+  State<DashboardView> createState() => _DashboardViewState();
+}
 
-  final List<StatelessWidget> _pages = const [
+class _DashboardViewState extends State<DashboardView> {
+  int _selectedIndex = 0;
+
+  final List<Widget> _pages = const [
     HomePageView(),
     CustomersPageView(),
     SuppliersPageView(),
@@ -18,80 +23,178 @@ class DashboardView extends StatelessWidget {
     ProfilePageView(),
   ];
 
+  final List<Widget> _drawerPages = const [
+    HomePageView(),
+    CustomersPageView(),
+    SuppliersPageView(),
+    ProductsPageView(),
+    ProfilePageView(),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<int>(
-      valueListenable: _selectedIndex,
-      builder: (context, index, _) {
-        return Scaffold(
-          appBar: AppBar(
-            automaticallyImplyLeading: false,
-            elevation: 0,
-            toolbarHeight: 70,
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Icon(Icons.menu),
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 8,
-                  ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(24),
-                  ),
-                  child: Row(
-                    children: [
-                      Text(
-                        "Business Name",
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      ),
-                      const SizedBox(width: 4),
-                      const Icon(Icons.keyboard_arrow_down),
-                    ],
-                  ),
-                ),
-                Container(
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.orange,
-                  ),
-                  padding: const EdgeInsets.all(10),
-                  child: const Icon(Icons.notifications_none, size: 18),
-                ),
-              ],
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return Scaffold(
+      appBar: AppBar(
+        leading: Builder(
+          builder: (context) {
+            return IconButton(
+              icon: const Icon(Icons.menu),
+              onPressed: () => Scaffold.of(context).openDrawer(),
+            );
+          },
+        ),
+        title: Text("Home"),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 10),
+            child: IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.notifications_none, size: 16),
+              style: IconButton.styleFrom(backgroundColor: Colors.orange),
             ),
           ),
-          body: _pages[index],
-          bottomNavigationBar: BottomNavigationBar(
-            type: BottomNavigationBarType.fixed,
-            currentIndex: index,
-            selectedItemColor: Colors.orange,
-            unselectedItemColor: Colors.grey,
-            showUnselectedLabels: true,
-            onTap: (newIndex) => _selectedIndex.value = newIndex,
-            items: const [
-              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.people),
-                label: 'Customers',
+        ],
+      ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.only(top: 20),
+          children: [
+            DrawerHeader(
+              child: Column(
+                children: [
+                  Image.asset(
+                    isDark
+                        ? 'assets/logo/app_logo_white.png'
+                        : 'assets/logo/app_logo_black.png',
+                    height: 30,
+                  ),
+                  SizedBox(height: 20),
+                  ListTile(
+                    leading: CircleAvatar(
+                      backgroundImage: AssetImage(
+                        'assets/images/profile_image.png',
+                      ),
+                    ),
+                    title: Text(
+                      "Binod Lamichhane",
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    subtitle: Text(
+                      "lamichhanebinod@gmail.com",
+                      style: TextStyle(fontSize: 10),
+                    ),
+                  ),
+                ],
               ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.fire_truck),
-                label: 'Suppliers',
+            ),
+            ListTile(
+              title: const Text('Manage Shops', style: TextStyle(fontSize: 14)),
+              selected: _selectedIndex == 0,
+              onTap: () {
+                // Update the state of the app
+                _onItemTapped(0);
+                // Then close the drawer
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text('Sales', style: TextStyle(fontSize: 14)),
+              selected: _selectedIndex == 1,
+              onTap: () {
+                // Update the state of the app
+                _onItemTapped(0);
+                // Then close the drawer
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text('Purchase', style: TextStyle(fontSize: 14)),
+              selected: _selectedIndex == 2,
+              onTap: () {
+                // Update the state of the app
+                _onItemTapped(0);
+                // Then close the drawer
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text('Reports', style: TextStyle(fontSize: 14)),
+              selected: _selectedIndex == 3,
+              onTap: () {
+                // Update the state of the app
+                _onItemTapped(0);
+                // Then close the drawer
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text('Settings', style: TextStyle(fontSize: 14)),
+              selected: _selectedIndex == 4,
+              onTap: () {
+                // Update the state of the app
+                _onItemTapped(0);
+                // Then close the drawer
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text(
+                'Help and Support',
+                style: TextStyle(fontSize: 14),
               ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.inventory),
-                label: 'Products',
+              selected: _selectedIndex == 5,
+              onTap: () {
+                // Update the state of the app
+                _onItemTapped(0);
+                // Then close the drawer
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text(
+                'Privacy Policy',
+                style: TextStyle(fontSize: 14),
               ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.person),
-                label: 'Profile',
-              ),
-            ],
+              selected: _selectedIndex == 6,
+              onTap: () {
+                // Update the state of the app
+                _onItemTapped(0);
+                // Then close the drawer
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
+      ),
+      body: _pages[_selectedIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.orange,
+        unselectedItemColor: Colors.grey,
+        showUnselectedLabels: true,
+        type: BottomNavigationBarType.fixed,
+        onTap: (newIndex) => setState(() => _selectedIndex = newIndex),
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.people), label: 'Customers'),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.fire_truck),
+            label: 'Suppliers',
           ),
-        );
-      },
+          BottomNavigationBarItem(
+            icon: Icon(Icons.inventory),
+            label: 'Products',
+          ),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+        ],
+      ),
     );
   }
 }
