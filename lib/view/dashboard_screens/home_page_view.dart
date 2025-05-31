@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hisab_kitab/common/shortcut_buttons.dart';
+import 'package:hisab_kitab/utils/trend_chart.dart';
 
 class HomePageView extends StatelessWidget {
   const HomePageView({super.key});
@@ -111,20 +112,19 @@ class HomePageView extends StatelessWidget {
                 ],
               ),
             ),
-
-            SizedBox(height: 20),
             Text(
               "Trend Chart",
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 180, child: Placeholder()),
+            SizedBox(height: 10),
+            SizedBox(height: 250, child: SalesPurchaseChart()),
 
             SizedBox(height: 20),
             Text(
               "Shortcuts",
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-
+            SizedBox(height: 10),
             GridView.count(
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
