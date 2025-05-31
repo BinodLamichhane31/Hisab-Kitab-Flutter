@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hisab_kitab/view/dashboard_screens/customers_page_view.dart';
 import 'package:hisab_kitab/view/dashboard_screens/home_page_view.dart';
 import 'package:hisab_kitab/view/dashboard_screens/products_page_view.dart';
@@ -95,80 +96,50 @@ class _DashboardViewState extends State<DashboardView> {
               ),
             ),
             ListTile(
+              leading: Icon(Icons.shop_2),
               title: const Text('Manage Shops', style: TextStyle(fontSize: 14)),
-              selected: _selectedIndex == 0,
-              onTap: () {
-                // Update the state of the app
-                _onItemTapped(0);
-                // Then close the drawer
-                Navigator.pop(context);
-              },
+              onTap: () {},
             ),
             ListTile(
+              leading: FaIcon(FontAwesomeIcons.sackDollar),
               title: const Text('Sales', style: TextStyle(fontSize: 14)),
-              selected: _selectedIndex == 1,
-              onTap: () {
-                // Update the state of the app
-                _onItemTapped(0);
-                // Then close the drawer
-                Navigator.pop(context);
-              },
+              onTap: () {},
             ),
             ListTile(
+              leading: Icon(Icons.money_off),
               title: const Text('Purchase', style: TextStyle(fontSize: 14)),
-              selected: _selectedIndex == 2,
-              onTap: () {
-                // Update the state of the app
-                _onItemTapped(0);
-                // Then close the drawer
-                Navigator.pop(context);
-              },
+              onTap: () {},
             ),
             ListTile(
+              leading: Icon(Icons.report_sharp),
               title: const Text('Reports', style: TextStyle(fontSize: 14)),
-              selected: _selectedIndex == 3,
-              onTap: () {
-                // Update the state of the app
-                _onItemTapped(0);
-                // Then close the drawer
-                Navigator.pop(context);
-              },
+              onTap: () {},
             ),
             ListTile(
+              leading: Icon(Icons.settings),
               title: const Text('Settings', style: TextStyle(fontSize: 14)),
-              selected: _selectedIndex == 4,
-              onTap: () {
-                // Update the state of the app
-                _onItemTapped(0);
-                // Then close the drawer
-                Navigator.pop(context);
-              },
+              onTap: () {},
             ),
             ListTile(
+              leading: Icon(Icons.help),
               title: const Text(
                 'Help and Support',
                 style: TextStyle(fontSize: 14),
               ),
-              selected: _selectedIndex == 5,
-              onTap: () {
-                // Update the state of the app
-                _onItemTapped(0);
-                // Then close the drawer
-                Navigator.pop(context);
-              },
+              onTap: () {},
             ),
             ListTile(
+              leading: Icon(Icons.privacy_tip),
               title: const Text(
                 'Privacy Policy',
                 style: TextStyle(fontSize: 14),
               ),
-              selected: _selectedIndex == 6,
-              onTap: () {
-                // Update the state of the app
-                _onItemTapped(0);
-                // Then close the drawer
-                Navigator.pop(context);
-              },
+              onTap: () {},
+            ),
+            ListTile(
+              leading: Icon(Icons.logout),
+              title: const Text('Logout', style: TextStyle(fontSize: 14)),
+              onTap: () {},
             ),
           ],
         ),
