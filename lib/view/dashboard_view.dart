@@ -24,20 +24,6 @@ class _DashboardViewState extends State<DashboardView> {
     ProfilePageView(),
   ];
 
-  final List<Widget> _drawerPages = const [
-    HomePageView(),
-    CustomersPageView(),
-    SuppliersPageView(),
-    ProductsPageView(),
-    ProfilePageView(),
-  ];
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
