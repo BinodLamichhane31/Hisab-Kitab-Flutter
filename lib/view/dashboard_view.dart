@@ -24,6 +24,14 @@ class _DashboardViewState extends State<DashboardView> {
     ProfilePageView(),
   ];
 
+  final appBarTitleList = [
+    "Home",
+    "Customers",
+    "Suppliers",
+    "Products",
+    "Profile",
+  ];
+
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
@@ -37,7 +45,7 @@ class _DashboardViewState extends State<DashboardView> {
             );
           },
         ),
-        title: Text("Home"),
+        title: Text(appBarTitleList[_selectedIndex]),
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 10),

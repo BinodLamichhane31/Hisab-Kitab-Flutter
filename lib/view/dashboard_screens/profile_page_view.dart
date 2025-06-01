@@ -7,6 +7,7 @@ class ProfilePageView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return SingleChildScrollView(
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
@@ -26,7 +27,7 @@ class ProfilePageView extends StatelessWidget {
                 ),
                 CircleAvatar(
                   radius: 15,
-                  backgroundColor: theme.primaryColor,
+                  backgroundColor: Colors.orange,
                   child: Icon(Icons.edit, size: 15, color: Colors.white),
                 ),
               ],
