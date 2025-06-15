@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:hisab_kitab/common/shortcut_buttons.dart';
+import 'package:hisab_kitab/core/common/shortcut_buttons.dart';
 import 'package:hisab_kitab/utils/trend_chart.dart';
 
 class HomePageView extends StatelessWidget {
