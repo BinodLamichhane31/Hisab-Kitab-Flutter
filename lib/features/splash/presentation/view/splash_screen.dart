@@ -1,28 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:hisab_kitab/view/login_view.dart';
-import 'dart:async';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hisab_kitab/features/splash/presentation/view_model/splash_view_model.dart';
 
-class SplashScreen extends StatefulWidget {
+class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
-
-  @override
-  State<SplashScreen> createState() => _SplashScreenState();
-}
-
-class _SplashScreenState extends State<SplashScreen> {
-  @override
-  void initState() {
-    super.initState();
-    Timer(
-      Duration(seconds: 3),
-      () => Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (BuildContext context) => LoginView()),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<SplashViewModel>().init(context);
+    });
     return Scaffold(
       backgroundColor: const Color(0xffffe5d3),
       body: Center(

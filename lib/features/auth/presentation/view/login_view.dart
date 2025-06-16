@@ -2,8 +2,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:hisab_kitab/utils/loading_dialog.dart';
 import 'package:hisab_kitab/view/dashboard_view.dart';
-import 'package:hisab_kitab/view/forgot_password_view.dart';
-import 'package:hisab_kitab/view/signup_view.dart';
+import 'package:hisab_kitab/features/auth/presentation/view/forgot_password_view.dart';
+import 'package:hisab_kitab/features/auth/presentation/view/signup_view.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
