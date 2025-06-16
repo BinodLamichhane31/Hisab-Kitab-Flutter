@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hisab_kitab/features/auth/presentation/view/forgot_password_view.dart';
@@ -11,6 +13,7 @@ class LoginViewModel extends Bloc<LoginEvent, LoginState> {
     on<NavigateToSignupView>(_onNavigateToSignupView);
     on<NavigateToForgotPasswordView>(_onNavigateToForgotPasswordView);
     on<NavigateToHomeView>(_onNavigateToHomeView);
+    on<ShowHidePassword>(_onShowHidePassword);
   }
 
   void _onNavigateToSignupView(
@@ -47,5 +50,9 @@ class LoginViewModel extends Bloc<LoginEvent, LoginState> {
         MaterialPageRoute(builder: (_) => DashboardView()),
       );
     }
+  }
+
+  void _onShowHidePassword(ShowHidePassword event, Emitter<LoginState> emit) {
+    emit(state.copyWith(isPasswordVisible: event.isVisible));
   }
 }

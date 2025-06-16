@@ -17,7 +17,6 @@ class LoginView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool passwordVisible = false;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       body: SafeArea(
@@ -83,7 +82,11 @@ class LoginView extends StatelessWidget {
                   // Password Field
                   TextFormField(
                     controller: _passwordController,
-                    obscureText: passwordVisible,
+                    obscureText:
+                        !context
+                            .watch<LoginViewModel>()
+                            .state
+                            .isPasswordVisible,
                     decoration: InputDecoration(
                       labelText: 'Password',
                       labelStyle: TextStyle(
@@ -99,12 +102,23 @@ class LoginView extends StatelessWidget {
                       prefixIcon: const Icon(Icons.key),
                       suffixIcon: IconButton(
                         onPressed: () {
-                          // setState(() {
-                          //   passwordVisible = !passwordVisible;
-                          // });
+                          final isVisible =
+                              context
+                                  .read<LoginViewModel>()
+                                  .state
+                                  .isPasswordVisible;
+                          context.read<LoginViewModel>().add(
+                            ShowHidePassword(
+                              context: context,
+                              isVisible: !isVisible,
+                            ),
+                          );
                         },
                         icon: Icon(
-                          passwordVisible
+                          context
+                                  .watch<LoginViewModel>()
+                                  .state
+                                  .isPasswordVisible
                               ? Icons.visibility
                               : Icons.visibility_off,
                         ),

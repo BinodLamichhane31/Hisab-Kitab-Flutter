@@ -38,3 +38,10 @@ class LoginIntoSystem extends LoginEvent {
     required this.password,
   });
 }
+
+class ShowHidePassword extends LoginEvent {
+  final BuildContext context;
+  final bool isVisible;
+
+  ShowHidePassword({required this.context, required this.isVisible});
+}
