@@ -1,33 +1,24 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hisab_kitab/features/auth/presentation/view_model/login_view_model/login_event.dart';
+import 'package:hisab_kitab/features/auth/presentation/view_model/login_view_model/login_view_model.dart';
 import 'package:hisab_kitab/utils/loading_dialog.dart';
 import 'package:hisab_kitab/view/dashboard_view.dart';
 import 'package:hisab_kitab/features/auth/presentation/view/forgot_password_view.dart';
 import 'package:hisab_kitab/features/auth/presentation/view/signup_view.dart';
 
-class LoginView extends StatefulWidget {
-  const LoginView({super.key});
+class LoginView extends StatelessWidget {
+  LoginView({super.key});
 
-  @override
-  State<LoginView> createState() => _LoginViewState();
-}
-
-class _LoginViewState extends State<LoginView> {
-  bool passwordVisible = false;
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
   @override
-  void initState() {
-    super.initState();
-    passwordVisible = true;
-  }
-
-  @override
   Widget build(BuildContext context) {
+    bool passwordVisible = false;
     final isDark = Theme.of(context).brightness == Brightness.dark;
-
     return Scaffold(
       body: SafeArea(
         child: Center(
@@ -108,9 +99,9 @@ class _LoginViewState extends State<LoginView> {
                       prefixIcon: const Icon(Icons.key),
                       suffixIcon: IconButton(
                         onPressed: () {
-                          setState(() {
-                            passwordVisible = !passwordVisible;
-                          });
+                          // setState(() {
+                          //   passwordVisible = !passwordVisible;
+                          // });
                         },
                         icon: Icon(
                           passwordVisible
@@ -134,10 +125,10 @@ class _LoginViewState extends State<LoginView> {
                     children: [
                       TextButton(
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ForgotPasswordView(),
+                          context.read<LoginViewModel>().add(
+                            NavigateToForgotPasswordView(
+                              context: context,
+                              destination: ForgotPasswordView(),
                             ),
                           );
                         },
@@ -164,23 +155,23 @@ class _LoginViewState extends State<LoginView> {
                               password == "admin123") {
                             showLoadingDialog(context);
 
-                            Future.delayed(const Duration(seconds: 2), () {
-                              Navigator.of(context).pop(); // close dialog
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text("Login Successful"),
-                                  backgroundColor: Colors.green,
-                                  behavior: SnackBarBehavior.floating,
-                                  showCloseIcon: true,
-                                ),
-                              );
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) => DashboardView(),
-                                ),
-                              );
-                            });
+                            // Future.delayed(const Duration(seconds: 2), () {
+                            //   Navigator.of(context).pop(); // close dialog
+                            //   ScaffoldMessenger.of(context).showSnackBar(
+                            //     const SnackBar(
+                            //       content: Text("Login Successful"),
+                            //       backgroundColor: Colors.green,
+                            //       behavior: SnackBarBehavior.floating,
+                            //       showCloseIcon: true,
+                            //     ),
+                            //   );
+                            context.read<LoginViewModel>().add(
+                              NavigateToHomeView(
+                                context: context,
+                                destination: DashboardView(),
+                              ),
+                            );
+                            // });
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
@@ -209,10 +200,10 @@ class _LoginViewState extends State<LoginView> {
                       const Text("Don't have an Account? "),
                       GestureDetector(
                         onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const SignupView(),
+                          context.read<LoginViewModel>().add(
+                            NavigateToSignupView(
+                              context: context,
+                              destination: SignupView(),
                             ),
                           );
                         },

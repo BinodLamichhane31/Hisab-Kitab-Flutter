@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hisab_kitab/app/service_locator/service_locator.dart';
 import 'package:hisab_kitab/features/auth/presentation/view/login_view.dart';
+import 'package:hisab_kitab/features/auth/presentation/view_model/login_view_model/login_view_model.dart';
 
 class SplashViewModel extends Cubit<void> {
   SplashViewModel() : super(null);
@@ -11,7 +13,13 @@ class SplashViewModel extends Cubit<void> {
     if (context.mounted) {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (_) => const LoginView()),
+        MaterialPageRoute(
+          builder:
+              (context) => BlocProvider.value(
+                value: serviceLocator<LoginViewModel>(),
+                child: LoginView(),
+              ),
+        ),
       );
     }
   }
