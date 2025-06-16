@@ -1,28 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hisab_kitab/features/auth/presentation/view_model/signup_view_model/signup_event.dart';
+import 'package:hisab_kitab/features/auth/presentation/view_model/signup_view_model/signup_view_model.dart';
 
-class SignupView extends StatefulWidget {
-  const SignupView({super.key});
-
-  @override
-  State<SignupView> createState() => _SignupViewState();
-}
-
-class _SignupViewState extends State<SignupView> {
-  bool passwordVisible = false;
-  bool confirmPasswordVisible = false;
+class SignupView extends StatelessWidget {
+  SignupView({super.key});
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _phoneController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    passwordVisible = true;
-    confirmPasswordVisible = true;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -145,7 +133,8 @@ class _SignupViewState extends State<SignupView> {
                 SizedBox(height: 20),
                 TextFormField(
                   controller: _passwordController,
-                  obscureText: passwordVisible,
+                  obscureText:
+                      !context.watch<SignupViewModel>().state.isPasswordVisible,
                   decoration: InputDecoration(
                     labelText: "Password",
                     border: OutlineInputBorder(
@@ -165,12 +154,20 @@ class _SignupViewState extends State<SignupView> {
                     ),
                     suffixIcon: IconButton(
                       onPressed: () {
-                        setState(() {
-                          passwordVisible = !passwordVisible;
-                        });
+                        final isVisible =
+                            context
+                                .read<SignupViewModel>()
+                                .state
+                                .isPasswordVisible;
+                        context.read<SignupViewModel>().add(
+                          ShowHidePassword(
+                            context: context,
+                            isVisible: !isVisible,
+                          ),
+                        );
                       },
                       icon: Icon(
-                        passwordVisible
+                        context.watch<SignupViewModel>().state.isPasswordVisible
                             ? Icons.visibility
                             : Icons.visibility_off,
                       ),
@@ -188,7 +185,11 @@ class _SignupViewState extends State<SignupView> {
                 SizedBox(height: 20),
                 TextFormField(
                   controller: _confirmPasswordController,
-                  obscureText: confirmPasswordVisible,
+                  obscureText:
+                      !context
+                          .watch<SignupViewModel>()
+                          .state
+                          .isConfirmPasswordVisible,
                   decoration: InputDecoration(
                     labelText: "Confirm Password",
                     border: OutlineInputBorder(
@@ -208,12 +209,23 @@ class _SignupViewState extends State<SignupView> {
                     ),
                     suffixIcon: IconButton(
                       onPressed: () {
-                        setState(() {
-                          confirmPasswordVisible = !confirmPasswordVisible;
-                        });
+                        final isVisible =
+                            context
+                                .read<SignupViewModel>()
+                                .state
+                                .isConfirmPasswordVisible;
+                        context.read<SignupViewModel>().add(
+                          ShowHideConfirmPassword(
+                            context: context,
+                            isVisible: !isVisible,
+                          ),
+                        );
                       },
                       icon: Icon(
-                        confirmPasswordVisible
+                        context
+                                .watch<SignupViewModel>()
+                                .state
+                                .isConfirmPasswordVisible
                             ? Icons.visibility
                             : Icons.visibility_off,
                       ),

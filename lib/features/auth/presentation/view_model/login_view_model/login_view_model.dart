@@ -2,10 +2,12 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hisab_kitab/app/service_locator/service_locator.dart';
 import 'package:hisab_kitab/features/auth/presentation/view/forgot_password_view.dart';
 import 'package:hisab_kitab/features/auth/presentation/view/signup_view.dart';
 import 'package:hisab_kitab/features/auth/presentation/view_model/login_view_model/login_event.dart';
 import 'package:hisab_kitab/features/auth/presentation/view_model/login_view_model/login_state.dart';
+import 'package:hisab_kitab/features/auth/presentation/view_model/signup_view_model/signup_view_model.dart';
 import 'package:hisab_kitab/view/dashboard_view.dart';
 
 class LoginViewModel extends Bloc<LoginEvent, LoginState> {
@@ -23,7 +25,13 @@ class LoginViewModel extends Bloc<LoginEvent, LoginState> {
     if (event.context.mounted) {
       Navigator.push(
         event.context,
-        MaterialPageRoute(builder: (_) => SignupView()),
+        MaterialPageRoute(
+          builder:
+              (context) => BlocProvider.value(
+                value: serviceLocator<SignupViewModel>(),
+                child: SignupView(),
+              ),
+        ),
       );
     }
   }
