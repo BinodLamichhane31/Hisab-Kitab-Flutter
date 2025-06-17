@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hisab_kitab/app/service_locator/service_locator.dart';
 import 'package:hisab_kitab/features/splash/presentation/view_model/splash_view_model.dart';
-import 'package:hisab_kitab/theme/dark_theme.dart';
-import 'package:hisab_kitab/theme/light_theme.dart';
+import 'package:hisab_kitab/app/theme/dark_theme.dart';
+import 'package:hisab_kitab/app/theme/light_theme.dart';
 import 'package:hisab_kitab/features/splash/presentation/view/splash_screen.dart';
 
 class App extends StatelessWidget {

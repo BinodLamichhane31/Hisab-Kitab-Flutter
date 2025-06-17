@@ -1,36 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:hisab_kitab/view/dashboard_screens/customers_page_view.dart';
-import 'package:hisab_kitab/view/dashboard_screens/home_page_view.dart';
-import 'package:hisab_kitab/view/dashboard_screens/products_page_view.dart';
-import 'package:hisab_kitab/view/dashboard_screens/profile_page_view.dart';
-import 'package:hisab_kitab/view/dashboard_screens/suppliers_page_view.dart';
+import 'package:hisab_kitab/features/home/presentation/view_model/home_state.dart';
+import 'package:hisab_kitab/features/home/presentation/view_model/home_view_model.dart';
 
-class DashboardView extends StatefulWidget {
-  const DashboardView({super.key});
-
-  @override
-  State<DashboardView> createState() => _DashboardViewState();
-}
-
-class _DashboardViewState extends State<DashboardView> {
-  int _selectedIndex = 0;
-
-  final List<Widget> _pages = const [
-    HomePageView(),
-    CustomersPageView(),
-    SuppliersPageView(),
-    ProductsPageView(),
-    ProfilePageView(),
-  ];
-
-  final appBarTitleList = [
-    "Home",
-    "Customers",
-    "Suppliers",
-    "Products",
-    "Profile",
-  ];
+class HomeView extends StatelessWidget {
+  const HomeView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +20,11 @@ class _DashboardViewState extends State<DashboardView> {
             );
           },
         ),
-        title: Text(appBarTitleList[_selectedIndex]),
+        title: BlocBuilder<HomeViewModel, HomeState>(
+          builder: (context, state) {
+            return Text(state.titleList.elementAt(state.selectedIndex));
+          },
+        ),
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 10),
@@ -138,27 +117,43 @@ class _DashboardViewState extends State<DashboardView> {
           ],
         ),
       ),
-      body: _pages[_selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.orange,
-        unselectedItemColor: Colors.grey,
-        showUnselectedLabels: true,
-        type: BottomNavigationBarType.fixed,
-        onTap: (newIndex) => setState(() => _selectedIndex = newIndex),
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.people), label: 'Customers'),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.fire_truck),
-            label: 'Suppliers',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.inventory),
-            label: 'Products',
-          ),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
-        ],
+      body: BlocBuilder<HomeViewModel, HomeState>(
+        builder: (context, state) {
+          return state.viewsList.elementAt(state.selectedIndex);
+        },
+      ),
+      bottomNavigationBar: BlocBuilder<HomeViewModel, HomeState>(
+        builder: (context, state) {
+          return BottomNavigationBar(
+            currentIndex: state.selectedIndex,
+            selectedItemColor: Colors.orange,
+            unselectedItemColor: Colors.grey,
+            showUnselectedLabels: true,
+            type: BottomNavigationBarType.fixed,
+            onTap: (newIndex) {
+              context.read<HomeViewModel>().onTabTapped(newIndex);
+            },
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.people),
+                label: 'Customers',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.fire_truck),
+                label: 'Suppliers',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.inventory),
+                label: 'Products',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.person),
+                label: 'Profile',
+              ),
+            ],
+          );
+        },
       ),
     );
   }

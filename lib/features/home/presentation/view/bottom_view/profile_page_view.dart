@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hisab_kitab/utils/profile_fields.dart';
+import 'package:hisab_kitab/core/utils/profile_fields.dart';
 
 class ProfilePageView extends StatelessWidget {
   const ProfilePageView({super.key});
