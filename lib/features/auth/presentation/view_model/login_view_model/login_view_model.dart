@@ -6,7 +6,6 @@ import 'package:hisab_kitab/features/auth/presentation/view/signup_view.dart';
 import 'package:hisab_kitab/features/auth/presentation/view_model/login_view_model/login_event.dart';
 import 'package:hisab_kitab/features/auth/presentation/view_model/login_view_model/login_state.dart';
 import 'package:hisab_kitab/features/auth/presentation/view_model/signup_view_model/signup_view_model.dart';
-import 'package:hisab_kitab/features/home/presentation/view/bottom_view/dashboard_view.dart';
 import 'package:hisab_kitab/features/home/presentation/view/home_view.dart';
 import 'package:hisab_kitab/features/home/presentation/view_model/home_view_model.dart';
 

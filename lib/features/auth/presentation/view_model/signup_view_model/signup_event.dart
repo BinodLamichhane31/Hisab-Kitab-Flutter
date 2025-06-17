@@ -10,7 +10,7 @@ class NavigateToLoginView extends SignupEvent {
   NavigateToLoginView({required this.context, required this.destination});
 }
 
-class RegisterEvent extends SignupEvent {
+class RegisterUserEvent extends SignupEvent {
   final BuildContext context;
   final String fname;
   final String lname;
@@ -19,7 +19,7 @@ class RegisterEvent extends SignupEvent {
   final String password;
   final String confirmPassword;
 
-  RegisterEvent({
+  RegisterUserEvent({
     required this.context,
     required this.fname,
     required this.lname,

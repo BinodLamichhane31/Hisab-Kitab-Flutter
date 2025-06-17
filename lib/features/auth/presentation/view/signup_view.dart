@@ -6,7 +6,8 @@ import 'package:hisab_kitab/features/auth/presentation/view_model/signup_view_mo
 class SignupView extends StatelessWidget {
   SignupView({super.key});
   final _formKey = GlobalKey<FormState>();
-  final _nameController = TextEditingController();
+  final _fnameController = TextEditingController();
+  final _lnameController = TextEditingController();
   final _phoneController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -42,9 +43,38 @@ class SignupView extends StatelessWidget {
                 ),
                 SizedBox(height: 30),
                 TextFormField(
-                  controller: _nameController,
+                  controller: _fnameController,
                   decoration: InputDecoration(
-                    labelText: "Full Name",
+                    labelText: "First Name",
+
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    labelStyle: TextStyle(
+                      color: Theme.of(context).textTheme.bodyMedium?.color,
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Colors.orange),
+                    ),
+                    prefixIcon: Align(
+                      heightFactor: 1,
+                      widthFactor: 1,
+                      child: Icon(Icons.person_outlined),
+                    ),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Name is required';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: 20),
+                TextFormField(
+                  controller: _lnameController,
+                  decoration: InputDecoration(
+                    labelText: "Last Name",
 
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -249,7 +279,19 @@ class SignupView extends StatelessWidget {
                   height: 55,
                   child: ElevatedButton(
                     onPressed: () {
-                      if (_formKey.currentState!.validate()) {}
+                      if (_formKey.currentState!.validate()) {
+                        context.read<SignupViewModel>().add(
+                          RegisterUserEvent(
+                            context: context,
+                            fname: _fnameController.text,
+                            lname: _lnameController.text,
+                            phone: _phoneController.text,
+                            email: _emailController.text,
+                            password: _passwordController.text,
+                            confirmPassword: _confirmPasswordController.text,
+                          ),
+                        );
+                      }
                     },
 
                     child: Text(
