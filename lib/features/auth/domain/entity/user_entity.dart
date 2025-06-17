@@ -9,7 +9,7 @@ class UserEntity extends Equatable {
   final String password;
 
   const UserEntity({
-    required this.userId,
+    this.userId,
     required this.fname,
     required this.lname,
     required this.email,
