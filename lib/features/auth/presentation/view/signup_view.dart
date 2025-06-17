@@ -289,6 +289,15 @@ class SignupView extends StatelessWidget {
                             email: _emailController.text,
                             password: _passwordController.text,
                             confirmPassword: _confirmPasswordController.text,
+                            onSuccess: () {
+                              // _formKey.currentState?.reset(); // optional
+                              _fnameController.clear();
+                              _lnameController.clear();
+                              _phoneController.clear();
+                              _emailController.clear();
+                              _passwordController.clear();
+                              _confirmPasswordController.clear();
+                            },
                           ),
                         );
                       }

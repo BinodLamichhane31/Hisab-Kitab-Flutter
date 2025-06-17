@@ -70,6 +70,7 @@ class SignupViewModel extends Bloc<SignupEvent, SignupState> {
           context: event.context,
           message: "Registration Successful",
         );
+        event.onSuccess();
       },
     );
   }

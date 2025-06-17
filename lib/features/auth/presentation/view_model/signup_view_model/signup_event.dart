@@ -18,6 +18,7 @@ class RegisterUserEvent extends SignupEvent {
   final String email;
   final String password;
   final String confirmPassword;
+  final VoidCallback onSuccess;
 
   RegisterUserEvent({
     required this.context,
@@ -27,6 +28,7 @@ class RegisterUserEvent extends SignupEvent {
     required this.email,
     required this.password,
     required this.confirmPassword,
+    required this.onSuccess,
   });
 }
 
