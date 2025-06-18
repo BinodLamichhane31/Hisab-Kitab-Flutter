@@ -27,12 +27,12 @@ class NavigateToHomeView extends LoginEvent {
   NavigateToHomeView({required this.context, required this.destination});
 }
 
-class LoginIntoSystem extends LoginEvent {
+class LoginIntoSystemEvent extends LoginEvent {
   final BuildContext context;
   final String email;
   final String password;
 
-  LoginIntoSystem({
+  LoginIntoSystemEvent({
     required this.context,
     required this.email,
     required this.password,

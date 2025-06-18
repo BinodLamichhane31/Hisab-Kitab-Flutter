@@ -112,7 +112,9 @@ class HomeView extends StatelessWidget {
             ListTile(
               leading: Icon(Icons.logout),
               title: const Text('Logout', style: TextStyle(fontSize: 14)),
-              onTap: () {},
+              onTap: () {
+                Navigator.pop(context);
+              },
             ),
           ],
         ),

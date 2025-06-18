@@ -162,39 +162,13 @@ class LoginView extends StatelessWidget {
                     child: ElevatedButton(
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                          String email = _emailController.text.trim();
-                          String password = _passwordController.text.trim();
-                          if (email == "admin@gmail.com" &&
-                              password == "admin123") {
-                            showLoadingDialog(context);
-
-                            // Future.delayed(const Duration(seconds: 2), () {
-                            //   Navigator.of(context).pop(); // close dialog
-                            //   ScaffoldMessenger.of(context).showSnackBar(
-                            //     const SnackBar(
-                            //       content: Text("Login Successful"),
-                            //       backgroundColor: Colors.green,
-                            //       behavior: SnackBarBehavior.floating,
-                            //       showCloseIcon: true,
-                            //     ),
-                            //   );
-                            context.read<LoginViewModel>().add(
-                              NavigateToHomeView(
-                                context: context,
-                                destination: HomeView(),
-                              ),
-                            );
-                            // });
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text("Invalid credentials"),
-                                backgroundColor: Colors.red,
-                                behavior: SnackBarBehavior.floating,
-                                showCloseIcon: true,
-                              ),
-                            );
-                          }
+                          context.read<LoginViewModel>().add(
+                            LoginIntoSystemEvent(
+                              context: context,
+                              email: _emailController.text,
+                              password: _passwordController.text,
+                            ),
+                          );
                         }
                       },
                       child: const Text(

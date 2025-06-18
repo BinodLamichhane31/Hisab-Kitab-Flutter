@@ -9,10 +9,10 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initDependencies();
   await HiveService().init();
-  final box = await Hive.openBox<UserHiveModel>('authBox');
-  for (var user in box.values) {
-    debugPrint(user.toString());
-  }
+  // final box = await Hive.openBox<UserHiveModel>('authBox');
+  // for (var user in box.values) {
+  //   debugPrint(user.toString());
+  // }
 
   runApp(App());
 }

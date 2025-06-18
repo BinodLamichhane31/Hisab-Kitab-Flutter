@@ -2,6 +2,7 @@ import 'package:get_it/get_it.dart';
 import 'package:hisab_kitab/core/network/hive_service.dart';
 import 'package:hisab_kitab/features/auth/data/data_source/local_data_source/user_local_data_source.dart';
 import 'package:hisab_kitab/features/auth/data/repository/local_repository/user_local_repository.dart';
+import 'package:hisab_kitab/features/auth/domain/use_case/user_login_usecase.dart';
 import 'package:hisab_kitab/features/auth/domain/use_case/user_register_usecase.dart';
 import 'package:hisab_kitab/features/auth/presentation/view_model/login_view_model/login_view_model.dart';
 import 'package:hisab_kitab/features/auth/presentation/view_model/signup_view_model/signup_view_model.dart';
@@ -27,7 +28,13 @@ Future _initSplashModule() async {
 }
 
 Future _initLoginModule() async {
-  serviceLocator.registerFactory(() => LoginViewModel());
+  serviceLocator.registerFactory(
+    () => UserLoginUsecase(repository: serviceLocator<UserLocalRepository>()),
+  );
+
+  serviceLocator.registerFactory(
+    () => LoginViewModel(serviceLocator<UserLoginUsecase>()),
+  );
 }
 
 Future _initSignupModule() async {
