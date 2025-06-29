@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hisab_kitab/features/auth/presentation/view_model/login_view_model/login_event.dart';
 import 'package:hisab_kitab/features/auth/presentation/view_model/login_view_model/login_view_model.dart';
-import 'package:hisab_kitab/core/utils/loading_dialog.dart';
-import 'package:hisab_kitab/features/home/presentation/view/home_view.dart';
 import 'package:hisab_kitab/features/auth/presentation/view/forgot_password_view.dart';
 import 'package:hisab_kitab/features/auth/presentation/view/signup_view.dart';
 

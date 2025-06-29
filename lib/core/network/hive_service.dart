@@ -18,6 +18,7 @@ class HiveService {
   Future<void> registerUser(UserHiveModel user) async {
     var box = await Hive.openBox<UserHiveModel>(HiveTableConstant.userBox);
     var newUser = box.put(user.userId, user);
+    box.close();
     return newUser;
   }
 
@@ -30,5 +31,19 @@ class HiveService {
     );
     box.close();
     return user;
+  }
+
+  Future<void> clearAllBoxes() async {
+    // List all your box names here that you want to clear
+    List<String> boxNames = [
+      HiveTableConstant.userBox,
+      // add other box names here if you have more
+    ];
+
+    for (var boxName in boxNames) {
+      var box = await Hive.openBox(boxName);
+      await box.clear(); // clears all data in this box
+      await box.close();
+    }
   }
 }
