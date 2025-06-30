@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
+import 'package:hisab_kitab/app/shared_preferences/token_shared_prefs.dart';
 import 'package:hisab_kitab/app/use_case/usecase.dart';
 import 'package:hisab_kitab/core/error/failure.dart';
 import 'package:hisab_kitab/features/auth/domain/repository/user_repository.dart';
@@ -17,12 +18,21 @@ class LoginUserParams extends Equatable {
 }
 
 class UserLoginUsecase implements UseCaseWithParams<String, LoginUserParams> {
-  final IUserRepository repository;
+  final IUserRepository _repository;
+  final TokenSharedPrefs _tokenSharedPrefs;
 
-  UserLoginUsecase({required this.repository});
+  UserLoginUsecase({
+    required IUserRepository repository,
+    required TokenSharedPrefs tokenSharedPrefs,
+  }) : _repository = repository,
+       _tokenSharedPrefs = tokenSharedPrefs;
 
   @override
   Future<Either<Failure, String>> call(LoginUserParams params) async {
-    return await repository.loginUser(params.email, params.password);
+    final result = await _repository.loginUser(params.email, params.password);
+    return result.fold((failure) => Left(failure), (token) async {
+      await _tokenSharedPrefs.saveToken(token);
+      return Right(token);
+    });
   }
 }

@@ -94,6 +94,7 @@ class LoginViewModel extends Bloc<LoginEvent, LoginState> {
       },
       (token) {
         emit(state.copyWith(isLoading: false, isSuccess: true));
+        showMySnackBar(context: event.context, message: "Login Success");
         add(
           NavigateToHomeView(context: event.context, destination: HomeView()),
         );

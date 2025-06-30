@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get_it/get_it.dart';
+import 'package:hisab_kitab/app/shared_preferences/token_shared_prefs.dart';
 import 'package:hisab_kitab/core/network/api_service.dart';
 import 'package:hisab_kitab/core/network/hive_service.dart';
 import 'package:hisab_kitab/features/auth/data/data_source/local_data_source/user_local_data_source.dart';
@@ -12,6 +14,7 @@ import 'package:hisab_kitab/features/auth/presentation/view_model/login_view_mod
 import 'package:hisab_kitab/features/auth/presentation/view_model/signup_view_model/signup_view_model.dart';
 import 'package:hisab_kitab/features/home/presentation/view_model/home_view_model.dart';
 import 'package:hisab_kitab/features/splash/presentation/view_model/splash_view_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 final serviceLocator = GetIt.instance;
 
@@ -22,6 +25,7 @@ Future initDependencies() async {
   _initLoginModule();
   _initSignupModule();
   _initHomeModule();
+  _initSharedPreference();
 }
 
 Future<void> _initHiveService() async {
@@ -32,13 +36,26 @@ Future<void> _initApiService() async {
   serviceLocator.registerLazySingleton(() => ApiService(Dio()));
 }
 
+Future _initSharedPreference() async {
+  final sharedPrefs = await SharedPreferences.getInstance();
+  serviceLocator.registerLazySingleton(() => sharedPrefs);
+  serviceLocator.registerLazySingleton(
+    () => TokenSharedPrefs(
+      sharedPreferences: serviceLocator<SharedPreferences>(),
+    ),
+  );
+}
+
 Future _initSplashModule() async {
   serviceLocator.registerFactory(() => SplashViewModel());
 }
 
 Future _initLoginModule() async {
   serviceLocator.registerFactory(
-    () => UserLoginUsecase(repository: serviceLocator<UserRemoteRepository>()),
+    () => UserLoginUsecase(
+      repository: serviceLocator<UserRemoteRepository>(),
+      tokenSharedPrefs: serviceLocator<TokenSharedPrefs>(),
+    ),
   );
 
   serviceLocator.registerFactory(
