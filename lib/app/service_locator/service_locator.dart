@@ -1,7 +1,11 @@
+import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+import 'package:hisab_kitab/core/network/api_service.dart';
 import 'package:hisab_kitab/core/network/hive_service.dart';
 import 'package:hisab_kitab/features/auth/data/data_source/local_data_source/user_local_data_source.dart';
+import 'package:hisab_kitab/features/auth/data/data_source/remote_data_source/user_remote_data_source.dart';
 import 'package:hisab_kitab/features/auth/data/repository/local_repository/user_local_repository.dart';
+import 'package:hisab_kitab/features/auth/data/repository/remote_repository/user_remote_repository.dart';
 import 'package:hisab_kitab/features/auth/domain/use_case/user_login_usecase.dart';
 import 'package:hisab_kitab/features/auth/domain/use_case/user_register_usecase.dart';
 import 'package:hisab_kitab/features/auth/presentation/view_model/login_view_model/login_view_model.dart';
@@ -13,6 +17,7 @@ final serviceLocator = GetIt.instance;
 
 Future initDependencies() async {
   _initHiveService();
+  _initApiService();
   _initSplashModule();
   _initLoginModule();
   _initSignupModule();
@@ -23,13 +28,17 @@ Future<void> _initHiveService() async {
   serviceLocator.registerLazySingleton(() => HiveService());
 }
 
+Future<void> _initApiService() async {
+  serviceLocator.registerLazySingleton(() => ApiService(Dio()));
+}
+
 Future _initSplashModule() async {
   serviceLocator.registerFactory(() => SplashViewModel());
 }
 
 Future _initLoginModule() async {
   serviceLocator.registerFactory(
-    () => UserLoginUsecase(repository: serviceLocator<UserLocalRepository>()),
+    () => UserLoginUsecase(repository: serviceLocator<UserRemoteRepository>()),
   );
 
   serviceLocator.registerFactory(
@@ -39,19 +48,31 @@ Future _initLoginModule() async {
 
 Future _initSignupModule() async {
   serviceLocator.registerFactory(
-    () => UserLocalDataSource(hiveService: serviceLocator<HiveService>()),
+    () => UserRemoteDataSource(apiService: serviceLocator<ApiService>()),
   );
+  // serviceLocator.registerFactory(
+  //   () => UserLocalDataSource(hiveService: serviceLocator<HiveService>()),
+  // );
 
   serviceLocator.registerFactory(
-    () => UserLocalRepository(
-      userLocalDataSource: serviceLocator<UserLocalDataSource>(),
+    () => UserRemoteRepository(
+      userRemoteDataSource: serviceLocator<UserRemoteDataSource>(),
     ),
   );
+  // serviceLocator.registerFactory(
+  //   () => UserLocalRepository(
+  //     userLocalDataSource: serviceLocator<UserLocalDataSource>(),
+  //   ),
+  // );
 
   serviceLocator.registerFactory(
     () =>
-        UserRegisterUsecase(repository: serviceLocator<UserLocalRepository>()),
+        UserRegisterUsecase(repository: serviceLocator<UserRemoteRepository>()),
   );
+  // serviceLocator.registerFactory(
+  //   () =>
+  //       UserRegisterUsecase(repository: serviceLocator<UserLocalRepository>()),
+  // );
 
   serviceLocator.registerFactory(
     () => SignupViewModel(serviceLocator<UserRegisterUsecase>()),
