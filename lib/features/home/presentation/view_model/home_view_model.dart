@@ -9,12 +9,11 @@ import 'package:hisab_kitab/features/home/presentation/view_model/home_state.dar
 import 'package:hisab_kitab/features/products/presentation/view/login_view.dart';
 
 class HomeViewModel extends Cubit<HomeState> {
-  HomeViewModel() : super(HomeState.initial());
+  HomeViewModel() : super(HomeState.initial()) {
+    fetchProfile();
+  }
 
   void onTabTapped(int index) {
-    if (index == 4 && state.user == null) {
-      fetchProfile();
-    }
     emit(state.copyWith(selectedIndex: index));
   }
 
