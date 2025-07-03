@@ -19,13 +19,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 final serviceLocator = GetIt.instance;
 
 Future initDependencies() async {
-  _initHiveService();
-  _initApiService();
-  _initSplashModule();
-  _initLoginModule();
-  _initSignupModule();
-  _initHomeModule();
-  _initSharedPreference();
+  await _initSharedPreference();
+  await _initHiveService();
+  await _initApiService();
+  await _initSplashModule();
+  await _initLoginModule();
+  await _initSignupModule();
+  await _initHomeModule();
 }
 
 Future<void> _initHiveService() async {
@@ -47,7 +47,9 @@ Future _initSharedPreference() async {
 }
 
 Future _initSplashModule() async {
-  serviceLocator.registerFactory(() => SplashViewModel());
+  serviceLocator.registerFactory(
+    () => SplashViewModel(serviceLocator<TokenSharedPrefs>()),
+  );
 }
 
 Future _initLoginModule() async {
