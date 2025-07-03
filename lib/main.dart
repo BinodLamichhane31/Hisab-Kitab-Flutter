@@ -12,6 +12,10 @@ void main() async {
   await initDependencies();
   await HiveService().init();
 
+  final tokenSharedPref = serviceLocator<TokenSharedPrefs>();
+  final token = await tokenSharedPref.getToken();
+  debugPrint("Shared Pref Token: $token");
+
   // await HiveService().clearAllBoxes();
 
   // final box = await Hive.openBox<UserHiveModel>('authBox');

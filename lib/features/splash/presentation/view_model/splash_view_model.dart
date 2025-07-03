@@ -13,10 +13,18 @@ class SplashViewModel extends Cubit<void> {
 
   Future<void> init(BuildContext context) async {
     await Future.delayed(const Duration(seconds: 2));
-    final token = await _tokenSharedPrefs.getToken();
-    token.fold(
-      (failure) => {_navigateTo(context, LoginView())},
-      (token) => {_navigateTo(context, HomeView())},
+    final tokenResult = await _tokenSharedPrefs.getToken();
+    tokenResult.fold(
+      (failure) {
+        _navigateTo(context, LoginView());
+      },
+      (token) {
+        if (token != null && token.isNotEmpty) {
+          _navigateTo(context, HomeView());
+        } else {
+          _navigateTo(context, LoginView());
+        }
+      },
     );
   }
 

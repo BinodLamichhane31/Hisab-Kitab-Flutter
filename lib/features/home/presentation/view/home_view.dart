@@ -109,11 +109,37 @@ class HomeView extends StatelessWidget {
               ),
               onTap: () {},
             ),
+
+            // in lib/features/home/presentation/view/home_view.dart
             ListTile(
-              leading: Icon(Icons.logout),
+              leading: const Icon(Icons.logout),
               title: const Text('Logout', style: TextStyle(fontSize: 14)),
               onTap: () {
-                Navigator.pop(context);
+                // Show a confirmation dialog before logging out
+                showDialog(
+                  context: context,
+                  builder: (BuildContext dialogContext) {
+                    return AlertDialog(
+                      title: const Text('Confirm Logout'),
+                      content: const Text('Are you sure you want to log out?'),
+                      actions: <Widget>[
+                        TextButton(
+                          child: const Text('Cancel'),
+                          onPressed: () {
+                            Navigator.of(dialogContext).pop();
+                          },
+                        ),
+                        TextButton(
+                          child: const Text('Logout'),
+                          onPressed: () {
+                            Navigator.of(dialogContext).pop();
+                            context.read<HomeViewModel>().logout(context);
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
               },
             ),
           ],

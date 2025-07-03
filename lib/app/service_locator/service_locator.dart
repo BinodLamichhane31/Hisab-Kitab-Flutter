@@ -9,6 +9,7 @@ import 'package:hisab_kitab/features/auth/data/data_source/remote_data_source/us
 import 'package:hisab_kitab/features/auth/data/repository/local_repository/user_local_repository.dart';
 import 'package:hisab_kitab/features/auth/data/repository/remote_repository/user_remote_repository.dart';
 import 'package:hisab_kitab/features/auth/domain/use_case/user_login_usecase.dart';
+import 'package:hisab_kitab/features/auth/domain/use_case/user_logout_usecase.dart';
 import 'package:hisab_kitab/features/auth/domain/use_case/user_register_usecase.dart';
 import 'package:hisab_kitab/features/auth/presentation/view_model/login_view_model/login_view_model.dart';
 import 'package:hisab_kitab/features/auth/presentation/view_model/signup_view_model/signup_view_model.dart';
@@ -53,6 +54,10 @@ Future _initSplashModule() async {
 }
 
 Future _initLoginModule() async {
+  serviceLocator.registerFactory(
+    () => UserLogoutUsecase(serviceLocator<TokenSharedPrefs>()),
+  );
+
   serviceLocator.registerFactory(
     () => UserLoginUsecase(
       repository: serviceLocator<UserRemoteRepository>(),
