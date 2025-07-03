@@ -50,4 +50,19 @@ class UserRemoteDataSource implements IUserDataSource {
       throw Exception('Failed to register: $e');
     }
   }
+
+  @override
+  Future<UserApiModel> getProfile() async {
+    try {
+      final response = await _apiService.dio.get(ApiEndpoints.profile);
+
+      if (response.statusCode == 200) {
+        return UserApiModel.fromJson(response.data['data']);
+      } else {
+        throw Exception('Failed to get profile data.');
+      }
+    } on DioException catch (e) {
+      throw Exception('Failed to get profile data: ${e.message}');
+    }
+  }
 }

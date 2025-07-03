@@ -41,31 +41,35 @@ class HomeView extends StatelessWidget {
           padding: EdgeInsets.only(top: 20),
           children: [
             DrawerHeader(
-              child: Column(
-                children: [
-                  Image.asset(
-                    isDark
-                        ? 'assets/logo/app_logo_white.png'
-                        : 'assets/logo/app_logo_black.png',
-                    height: 30,
-                  ),
-                  SizedBox(height: 20),
-                  ListTile(
-                    leading: CircleAvatar(
-                      backgroundImage: AssetImage(
-                        'assets/images/profile_image.png',
+              child: BlocBuilder<HomeViewModel, HomeState>(
+                builder: (context, state) {
+                  return Column(
+                    children: [
+                      Image.asset(
+                        isDark
+                            ? 'assets/logo/app_logo_white.png'
+                            : 'assets/logo/app_logo_black.png',
+                        height: 30,
                       ),
-                    ),
-                    title: Text(
-                      "Binod Lamichhane",
-                      style: TextStyle(fontSize: 16),
-                    ),
-                    subtitle: Text(
-                      "lamichhanebinod@gmail.com",
-                      style: TextStyle(fontSize: 10),
-                    ),
-                  ),
-                ],
+                      SizedBox(height: 20),
+                      ListTile(
+                        leading: CircleAvatar(
+                          backgroundImage: AssetImage(
+                            'assets/images/profile_image.png',
+                          ),
+                        ),
+                        title: Text(
+                          "${state.user!.fname} ${state.user!.lname}",
+                          style: TextStyle(fontSize: 16),
+                        ),
+                        subtitle: Text(
+                          state.user!.email,
+                          style: TextStyle(fontSize: 10),
+                        ),
+                      ),
+                    ],
+                  );
+                },
               ),
             ),
             ListTile(
@@ -110,12 +114,10 @@ class HomeView extends StatelessWidget {
               onTap: () {},
             ),
 
-            // in lib/features/home/presentation/view/home_view.dart
             ListTile(
               leading: const Icon(Icons.logout),
               title: const Text('Logout', style: TextStyle(fontSize: 14)),
               onTap: () {
-                // Show a confirmation dialog before logging out
                 showDialog(
                   context: context,
                   builder: (BuildContext dialogContext) {
@@ -132,7 +134,6 @@ class HomeView extends StatelessWidget {
                         TextButton(
                           child: const Text('Logout'),
                           onPressed: () {
-                            Navigator.of(dialogContext).pop();
                             context.read<HomeViewModel>().logout(context);
                           },
                         ),

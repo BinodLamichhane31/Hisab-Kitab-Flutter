@@ -12,7 +12,7 @@ class UserApiModel extends Equatable {
   final String lname;
   final String phone;
   final String email;
-  final String password;
+  final String? password;
 
   const UserApiModel({
     this.userId,
@@ -20,7 +20,7 @@ class UserApiModel extends Equatable {
     required this.lname,
     required this.phone,
     required this.email,
-    required this.password,
+    this.password,
   });
 
   factory UserApiModel.fromJson(Map<String, dynamic> json) =>
@@ -34,7 +34,7 @@ class UserApiModel extends Equatable {
       lname: lname,
       email: email,
       phone: phone,
-      password: password,
+      password: password ?? "",
     );
   }
 

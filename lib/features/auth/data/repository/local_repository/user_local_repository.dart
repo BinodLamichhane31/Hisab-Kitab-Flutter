@@ -31,4 +31,10 @@ class UserLocalRepository implements IUserRepository {
       return Left(LocalDatabaseFailure(message: "Registration Failed: $e"));
     }
   }
+
+  @override
+  Future<Either<Failure, UserEntity>> getProfile() {
+    // TODO: implement getProfile
+    throw UnimplementedError();
+  }
 }

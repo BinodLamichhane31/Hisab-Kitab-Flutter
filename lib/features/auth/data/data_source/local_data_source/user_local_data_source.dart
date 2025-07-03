@@ -1,5 +1,6 @@
 import 'package:hisab_kitab/core/network/hive_service.dart';
 import 'package:hisab_kitab/features/auth/data/data_source/user_data_source.dart';
+import 'package:hisab_kitab/features/auth/data/model/user_api_model.dart';
 import 'package:hisab_kitab/features/auth/data/model/user_hive_model.dart';
 import 'package:hisab_kitab/features/auth/domain/entity/user_entity.dart';
 
@@ -31,5 +32,11 @@ class UserLocalDataSource implements IUserDataSource {
     } catch (e) {
       throw Exception("Registration Failed: $e");
     }
+  }
+
+  @override
+  Future<UserApiModel> getProfile() {
+    // TODO: implement getProfile
+    throw UnimplementedError();
   }
 }

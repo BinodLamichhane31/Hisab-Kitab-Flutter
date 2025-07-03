@@ -8,6 +8,8 @@ import 'package:hisab_kitab/features/auth/data/data_source/local_data_source/use
 import 'package:hisab_kitab/features/auth/data/data_source/remote_data_source/user_remote_data_source.dart';
 import 'package:hisab_kitab/features/auth/data/repository/local_repository/user_local_repository.dart';
 import 'package:hisab_kitab/features/auth/data/repository/remote_repository/user_remote_repository.dart';
+import 'package:hisab_kitab/features/auth/domain/repository/user_repository.dart';
+import 'package:hisab_kitab/features/auth/domain/use_case/get_profile_usecase.dart';
 import 'package:hisab_kitab/features/auth/domain/use_case/user_login_usecase.dart';
 import 'package:hisab_kitab/features/auth/domain/use_case/user_logout_usecase.dart';
 import 'package:hisab_kitab/features/auth/domain/use_case/user_register_usecase.dart';
@@ -34,7 +36,9 @@ Future<void> _initHiveService() async {
 }
 
 Future<void> _initApiService() async {
-  serviceLocator.registerLazySingleton(() => ApiService(Dio()));
+  serviceLocator.registerLazySingleton(
+    () => ApiService(Dio(), serviceLocator<TokenSharedPrefs>()),
+  );
 }
 
 Future _initSharedPreference() async {
@@ -56,6 +60,10 @@ Future _initSplashModule() async {
 Future _initLoginModule() async {
   serviceLocator.registerFactory(
     () => UserLogoutUsecase(serviceLocator<TokenSharedPrefs>()),
+  );
+
+  serviceLocator.registerFactory(
+    () => GetProfileUsecase(serviceLocator<UserRemoteRepository>()),
   );
 
   serviceLocator.registerFactory(
