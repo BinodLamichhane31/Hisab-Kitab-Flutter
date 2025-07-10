@@ -12,7 +12,7 @@ import 'package:hisab_kitab/features/auth/presentation/view_model/signup_view_mo
 import 'package:hisab_kitab/features/home/presentation/view/home_view.dart';
 import 'package:hisab_kitab/features/home/presentation/view_model/home_view_model.dart';
 import 'package:hisab_kitab/features/shops/domain/entity/shop_entity.dart';
-import 'package:hisab_kitab/features/shops/presentation/view/widgets/create_shop_view.dart';
+import 'package:hisab_kitab/features/shops/presentation/view/create_shop_view.dart';
 import 'package:hisab_kitab/features/shops/presentation/view_model/shop_view_model.dart'; // <-- 2. IMPORT ShopEntity
 
 class LoginViewModel extends Bloc<LoginEvent, LoginState> {
