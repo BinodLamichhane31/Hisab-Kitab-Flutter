@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hisab_kitab/core/session/session_cubit.dart'; // IMPORT THIS
+import 'package:hisab_kitab/core/session/session_state.dart';
+import 'package:hisab_kitab/features/home/presentation/view/widget/shop_switcher.dart';
 import 'package:hisab_kitab/features/home/presentation/view_model/home_state.dart';
 import 'package:hisab_kitab/features/home/presentation/view_model/home_view_model.dart';
 
@@ -20,30 +23,36 @@ class HomeView extends StatelessWidget {
             );
           },
         ),
-        title: BlocBuilder<HomeViewModel, HomeState>(
-          builder: (context, state) {
-            return Text(state.titleList.elementAt(state.selectedIndex));
-          },
-        ),
+        // CHANGE: The AppBar title now shows the active shop name from SessionCubit
+        title: ShopSwitcherWidget(),
         actions: [
+          // ADDED: The new shop switcher widget
           Padding(
             padding: const EdgeInsets.only(right: 10),
             child: IconButton(
               onPressed: () {},
-              icon: const Icon(Icons.notifications_none, size: 16),
-              style: IconButton.styleFrom(backgroundColor: Colors.orange),
+              icon: const Icon(
+                Icons.notifications_none,
+                size: 24,
+              ), // Increased size slightly for better visibility
+              style: IconButton.styleFrom(
+                backgroundColor: Colors.orange,
+                foregroundColor: Colors.white,
+              ),
             ),
           ),
         ],
       ),
       drawer: Drawer(
         child: ListView(
-          padding: EdgeInsets.only(top: 20),
+          padding: const EdgeInsets.only(top: 20),
           children: [
-            DrawerHeader(
-              child: BlocBuilder<HomeViewModel, HomeState>(
-                builder: (context, state) {
-                  return Column(
+            // CHANGE: The DrawerHeader now gets user info from SessionCubit
+            BlocBuilder<SessionCubit, SessionState>(
+              builder: (context, sessionState) {
+                return DrawerHeader(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Image.asset(
                         isDark
@@ -51,54 +60,60 @@ class HomeView extends StatelessWidget {
                             : 'assets/logo/app_logo_black.png',
                         height: 30,
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       ListTile(
-                        leading: CircleAvatar(
+                        contentPadding: EdgeInsets.zero,
+                        leading: const CircleAvatar(
                           backgroundImage: AssetImage(
                             'assets/images/profile_image.png',
                           ),
                         ),
                         title: Text(
-                          "${state.user!.fname} ${state.user!.lname}",
-                          style: TextStyle(fontSize: 16),
+                          // Get user name from the global session
+                          "${sessionState.user?.fname ?? ''} ${sessionState.user?.lname ?? ''}",
+                          style: const TextStyle(fontSize: 16),
                         ),
                         subtitle: Text(
-                          state.user!.email,
-                          style: TextStyle(fontSize: 10),
+                          // Get user email from the global session
+                          sessionState.user?.email ?? 'No email',
+                          style: const TextStyle(fontSize: 10),
                         ),
                       ),
                     ],
-                  );
-                },
-              ),
+                  ),
+                );
+              },
             ),
             ListTile(
-              leading: Icon(Icons.shop_2),
+              leading: const Icon(Icons.shop_2),
               title: const Text('Manage Shops', style: TextStyle(fontSize: 14)),
-              onTap: () {},
+              onTap: () {
+                // TODO: Navigate to a screen to manage all shops (add, edit, delete)
+              },
             ),
             ListTile(
-              leading: FaIcon(FontAwesomeIcons.sackDollar),
+              leading: const FaIcon(FontAwesomeIcons.sackDollar),
               title: const Text('Sales', style: TextStyle(fontSize: 14)),
               onTap: () {},
             ),
             ListTile(
-              leading: Icon(Icons.money_off),
+              leading: const Icon(Icons.money_off),
               title: const Text('Purchase', style: TextStyle(fontSize: 14)),
               onTap: () {},
             ),
             ListTile(
-              leading: Icon(Icons.report_sharp),
+              leading: const Icon(Icons.report_sharp),
               title: const Text('Reports', style: TextStyle(fontSize: 14)),
               onTap: () {},
             ),
+            const Divider(),
             ListTile(
-              leading: Icon(Icons.settings),
+              leading: const Icon(Icons.settings),
               title: const Text('Settings', style: TextStyle(fontSize: 14)),
               onTap: () {},
             ),
             ListTile(
-              leading: Icon(Icons.help),
+              leading: const Icon(Icons.help),
               title: const Text(
                 'Help and Support',
                 style: TextStyle(fontSize: 14),
@@ -106,17 +121,19 @@ class HomeView extends StatelessWidget {
               onTap: () {},
             ),
             ListTile(
-              leading: Icon(Icons.privacy_tip),
+              leading: const Icon(Icons.privacy_tip),
               title: const Text(
                 'Privacy Policy',
                 style: TextStyle(fontSize: 14),
               ),
               onTap: () {},
             ),
-
             ListTile(
-              leading: const Icon(Icons.logout),
-              title: const Text('Logout', style: TextStyle(fontSize: 14)),
+              leading: const Icon(Icons.logout, color: Colors.redAccent),
+              title: const Text(
+                'Logout',
+                style: TextStyle(fontSize: 14, color: Colors.redAccent),
+              ),
               onTap: () {
                 showDialog(
                   context: context,
@@ -134,7 +151,11 @@ class HomeView extends StatelessWidget {
                         TextButton(
                           child: const Text('Logout'),
                           onPressed: () {
+                            // TODO: This should call a method on SessionCubit to logout
+                            // and then navigate to the login screen.
+                            // For now, keeping the old logic but this should be refactored.
                             context.read<HomeViewModel>().logout(context);
+                            context.read<SessionCubit>().onLogout();
                           },
                         ),
                       ],
@@ -146,6 +167,7 @@ class HomeView extends StatelessWidget {
           ],
         ),
       ),
+      // The body and bottom navigation bar remain unchanged as they are controlled by HomeViewModel
       body: BlocBuilder<HomeViewModel, HomeState>(
         builder: (context, state) {
           return state.viewsList.elementAt(state.selectedIndex);
