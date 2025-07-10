@@ -13,6 +13,12 @@ import 'package:hisab_kitab/features/auth/domain/use_case/user_register_usecase.
 import 'package:hisab_kitab/features/auth/presentation/view_model/login_view_model/login_view_model.dart';
 import 'package:hisab_kitab/features/auth/presentation/view_model/signup_view_model/signup_view_model.dart';
 import 'package:hisab_kitab/features/home/presentation/view_model/home_view_model.dart';
+import 'package:hisab_kitab/features/shops/data/data_source/remote_data_source/shop_remote_data_source.dart';
+import 'package:hisab_kitab/features/shops/data/repository/shop_remote_repository.dart';
+import 'package:hisab_kitab/features/shops/domain/repository/shop_repository.dart';
+import 'package:hisab_kitab/features/shops/domain/use_case/create_shop_usecase.dart';
+import 'package:hisab_kitab/features/shops/domain/use_case/get_all_shops_usecase.dart';
+import 'package:hisab_kitab/features/shops/presentation/view_model/shop_view_model.dart';
 import 'package:hisab_kitab/features/splash/presentation/view_model/splash_view_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -25,6 +31,7 @@ Future initDependencies() async {
   await _initSplashModule();
   await _initLoginModule();
   await _initSignupModule();
+  _initShopModule();
   await _initHomeModule();
   await _initSessionModule();
 }
@@ -115,4 +122,34 @@ Future _initHomeModule() async {
 
 Future _initSessionModule() async {
   serviceLocator.registerLazySingleton(() => SessionCubit());
+}
+
+void _initShopModule() {
+  // Data sources
+  serviceLocator.registerFactory(
+    () => ShopRemoteDataSource(apiService: serviceLocator<ApiService>()),
+  );
+
+  // Repositories
+  serviceLocator.registerFactory<IShopRepository>(
+    () => ShopRemoteRepository(
+      shopRemoteDataSource: serviceLocator<ShopRemoteDataSource>(),
+    ),
+  );
+
+  // Use cases
+  serviceLocator.registerFactory(
+    () => CreateShopUsecase(shopRepository: serviceLocator<IShopRepository>()),
+  );
+  serviceLocator.registerFactory(
+    () => GetAllShopsUsecase(shopRepository: serviceLocator<IShopRepository>()),
+  );
+
+  // ViewModel
+  serviceLocator.registerFactory(
+    () => ShopViewModel(
+      createShopUsecase: serviceLocator<CreateShopUsecase>(),
+      getAllShopsUsecase: serviceLocator<GetAllShopsUsecase>(),
+    ),
+  );
 }

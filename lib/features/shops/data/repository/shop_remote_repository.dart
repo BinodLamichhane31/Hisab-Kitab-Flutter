@@ -10,9 +10,13 @@ class ShopRemoteRepository implements IShopRepository {
   ShopRemoteRepository({required ShopRemoteDataSource shopRemoteDataSource})
     : _shopRemoteDataSource = shopRemoteDataSource;
   @override
-  Future<Either<Failure, void>> createShop(ShopEntity shop) async {
+  Future<Either<Failure, void>> createShop(
+    String name,
+    String? address,
+    String? contactNumber,
+  ) async {
     try {
-      await _shopRemoteDataSource.createShop(shop);
+      await _shopRemoteDataSource.createShop(name, address, contactNumber);
       return Right(null);
     } catch (e) {
       return Left(ApiFailure(message: e.toString()));
@@ -26,9 +30,14 @@ class ShopRemoteRepository implements IShopRepository {
   }
 
   @override
-  Future<Either<Failure, List<ShopEntity>>> getShops() {
-    // TODO: implement getShops
-    throw UnimplementedError();
+  Future<Either<Failure, List<ShopEntity>>> getShops() async {
+    try {
+      final shops = await _shopRemoteDataSource.getShops();
+      final shopEntities = shops.map((model) => model.toEntity()).toList();
+      return Right(shopEntities);
+    } catch (e) {
+      return Left(ApiFailure(message: e.toString()));
+    }
   }
 
   @override

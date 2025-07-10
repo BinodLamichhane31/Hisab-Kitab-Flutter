@@ -9,23 +9,20 @@ class CreateShopParams extends Equatable {
   final String shopName;
   final String? address;
   final String? contactNumber;
-  final String ownerId;
 
   const CreateShopParams({
     required this.shopName,
     this.address,
     this.contactNumber,
-    required this.ownerId,
   });
 
   const CreateShopParams.initial()
     : shopName = '_empty.string',
       address = null,
-      contactNumber = null,
-      ownerId = '_empty.string';
+      contactNumber = null;
 
   @override
-  List<Object?> get props => [shopName, address, contactNumber, ownerId];
+  List<Object?> get props => [shopName, address, contactNumber];
 }
 
 class CreateShopUsecase implements UseCaseWithParams<void, CreateShopParams> {
@@ -35,12 +32,9 @@ class CreateShopUsecase implements UseCaseWithParams<void, CreateShopParams> {
   @override
   Future<Either<Failure, void>> call(CreateShopParams params) async {
     return await shopRepository.createShop(
-      ShopEntity(
-        shopName: params.shopName,
-        address: params.address,
-        contactNumber: params.contactNumber,
-        ownerId: params.ownerId,
-      ),
+      params.shopName,
+      params.address,
+      params.contactNumber,
     );
   }
 }

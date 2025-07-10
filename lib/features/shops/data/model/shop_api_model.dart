@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
-
 import 'package:hisab_kitab/features/shops/domain/entity/shop_entity.dart';
 
 part 'shop_api_model.g.dart';
@@ -37,21 +36,6 @@ class ShopApiModel extends Equatable {
       address: address,
       contactNumber: contactNumber,
       ownerId: owner.ownerId,
-    );
-  }
-
-  factory ShopApiModel.fromEntity(ShopEntity entity) {
-    return ShopApiModel(
-      shopId: entity.shopId,
-      shopName: entity.shopName,
-      address: entity.address,
-      contactNumber: entity.contactNumber,
-      owner: ShopOwnerApiModel(
-        ownerId: entity.ownerId ?? '',
-        fname: '',
-        lname: '',
-        email: '',
-      ),
     );
   }
 

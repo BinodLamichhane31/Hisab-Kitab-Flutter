@@ -15,7 +15,7 @@ class ApiEndpoints {
   static const String profile = "/auth/profile";
 
   //SHOP
-  static const String shop = "/shops";
+  static const String shops = "/shops";
   static const String shopById = "/shops/";
   static const String selectShop = "/shops/select-shop";
 }

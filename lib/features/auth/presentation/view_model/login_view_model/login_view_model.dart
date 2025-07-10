@@ -11,7 +11,9 @@ import 'package:hisab_kitab/features/auth/presentation/view_model/login_view_mod
 import 'package:hisab_kitab/features/auth/presentation/view_model/signup_view_model/signup_view_model.dart';
 import 'package:hisab_kitab/features/home/presentation/view/home_view.dart';
 import 'package:hisab_kitab/features/home/presentation/view_model/home_view_model.dart';
-import 'package:hisab_kitab/features/shops/domain/entity/shop_entity.dart'; // <-- 2. IMPORT ShopEntity
+import 'package:hisab_kitab/features/shops/domain/entity/shop_entity.dart';
+import 'package:hisab_kitab/features/shops/presentation/view/widgets/create_shop_view.dart';
+import 'package:hisab_kitab/features/shops/presentation/view_model/shop_view_model.dart'; // <-- 2. IMPORT ShopEntity
 
 class LoginViewModel extends Bloc<LoginEvent, LoginState> {
   final UserLoginUsecase _loginUsecase;
@@ -83,7 +85,6 @@ class LoginViewModel extends Bloc<LoginEvent, LoginState> {
         );
       },
       (loginResponse) {
-        debugPrint(loginResponse.token);
         // <-- 4. The success value is now `loginResponse`
         // Get the global session cubit from the context
         final sessionCubit = event.context.read<SessionCubit>();
@@ -115,7 +116,16 @@ class LoginViewModel extends Bloc<LoginEvent, LoginState> {
         if (shops.isEmpty) {
           // If the user has no shops, show the dialog to create one
           // showCreateShopDialog(event.context);
-          debugPrint("NO SHOP: add a shop");
+          Navigator.of(event.context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder:
+                  (_) => BlocProvider(
+                    create: (_) => serviceLocator<ShopViewModel>(),
+                    child: const CreateShopView(),
+                  ),
+            ),
+            (route) => false,
+          );
         } else {
           // If they have shops, navigate to the home screen and clear the back stack
           Navigator.of(event.context).pushAndRemoveUntil(
