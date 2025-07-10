@@ -17,5 +17,5 @@ class ApiEndpoints {
   //SHOP
   static const String shops = "/shops";
   static const String shopById = "/shops/";
-  static const String selectShop = "/shops/select-shop";
+  static const String switchShop = "/shops/select-shop";
 }

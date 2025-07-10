@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:hisab_kitab/app/constant/api_endpoints.dart';
 import 'package:hisab_kitab/core/network/api_service.dart';
 import 'package:hisab_kitab/features/shops/data/data_source/shop_data_source.dart';
@@ -65,5 +66,20 @@ class ShopRemoteDataSource implements IShopDataSource {
   Future<void> updateShop(String id) {
     // TODO: implement updateShop
     throw UnimplementedError();
+  }
+
+  @override
+  Future<bool> switchShop(String id) async {
+    try {
+      final response = await _apiService.dio.post(
+        ApiEndpoints.switchShop,
+        data: {'shopID': id},
+      );
+      return response.statusCode == 200;
+    } on DioException catch (e) {
+      throw Exception('Failed to register: ${e.message}');
+    } catch (e) {
+      throw Exception('Unexpected error occured: ${e.toString()}');
+    }
   }
 }

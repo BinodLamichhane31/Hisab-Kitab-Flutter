@@ -6,4 +6,5 @@ abstract interface class IShopDataSource {
   Future<void> createShop(String name, String? address, String? contactNumber);
   Future<void> updateShop(String id);
   Future<void> deleteShop(String id);
+  Future<bool> switchShop(String id);
 }

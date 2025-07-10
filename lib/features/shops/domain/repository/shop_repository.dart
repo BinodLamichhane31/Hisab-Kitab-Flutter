@@ -11,4 +11,5 @@ abstract interface class IShopRepository {
   );
   Future<Either<Failure, void>> updateShop(String id);
   Future<Either<Failure, void>> deleteShop(String id);
+  Future<Either<Failure, bool>> switchShop(String id);
 }

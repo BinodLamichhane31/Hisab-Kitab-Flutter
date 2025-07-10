@@ -45,4 +45,14 @@ class ShopRemoteRepository implements IShopRepository {
     // TODO: implement updateShop
     throw UnimplementedError();
   }
+
+  @override
+  Future<Either<Failure, bool>> switchShop(String id) async {
+    try {
+      final success = await _shopRemoteDataSource.switchShop(id);
+      return Right(success);
+    } catch (e) {
+      return Left(ApiFailure(message: e.toString()));
+    }
+  }
 }
