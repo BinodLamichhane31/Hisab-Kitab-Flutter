@@ -18,6 +18,7 @@ import 'package:hisab_kitab/features/shops/data/repository/shop_remote_repositor
 import 'package:hisab_kitab/features/shops/domain/repository/shop_repository.dart';
 import 'package:hisab_kitab/features/shops/domain/use_case/create_shop_usecase.dart';
 import 'package:hisab_kitab/features/shops/domain/use_case/get_all_shops_usecase.dart';
+import 'package:hisab_kitab/features/shops/domain/use_case/switch_shop_usecase.dart';
 import 'package:hisab_kitab/features/shops/presentation/view_model/shop_view_model.dart';
 import 'package:hisab_kitab/features/splash/presentation/view_model/splash_view_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -121,10 +122,12 @@ Future _initHomeModule() async {
 }
 
 Future _initSessionModule() async {
-  serviceLocator.registerLazySingleton(() => SessionCubit());
+  serviceLocator.registerLazySingleton(
+    () => SessionCubit(switchShopUsecase: serviceLocator<SwitchShopUsecase>()),
+  );
 }
 
-void _initShopModule() {
+Future _initShopModule() async {
   // Data sources
   serviceLocator.registerFactory(
     () => ShopRemoteDataSource(apiService: serviceLocator<ApiService>()),
@@ -143,6 +146,9 @@ void _initShopModule() {
   );
   serviceLocator.registerFactory(
     () => GetAllShopsUsecase(shopRepository: serviceLocator<IShopRepository>()),
+  );
+  serviceLocator.registerFactory(
+    () => SwitchShopUsecase(shopRepository: serviceLocator<IShopRepository>()),
   );
 
   // ViewModel
