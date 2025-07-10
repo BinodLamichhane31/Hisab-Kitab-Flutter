@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:hisab_kitab/app/shared_preferences/token_shared_prefs.dart';
 import 'package:hisab_kitab/core/network/api_service.dart';
 import 'package:hisab_kitab/core/network/hive_service.dart';
+import 'package:hisab_kitab/core/session/session_cubit.dart';
 import 'package:hisab_kitab/features/auth/data/data_source/remote_data_source/user_remote_data_source.dart';
 import 'package:hisab_kitab/features/auth/data/repository/remote_repository/user_remote_repository.dart';
 import 'package:hisab_kitab/features/auth/domain/use_case/get_profile_usecase.dart';
@@ -25,6 +26,7 @@ Future initDependencies() async {
   await _initLoginModule();
   await _initSignupModule();
   await _initHomeModule();
+  await _initSessionModule();
 }
 
 Future<void> _initHiveService() async {
@@ -109,4 +111,8 @@ Future _initSignupModule() async {
 
 Future _initHomeModule() async {
   serviceLocator.registerLazySingleton(() => HomeViewModel());
+}
+
+Future _initSessionModule() async {
+  serviceLocator.registerLazySingleton(() => SessionCubit());
 }

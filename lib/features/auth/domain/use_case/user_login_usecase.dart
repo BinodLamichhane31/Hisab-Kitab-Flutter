@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:hisab_kitab/app/shared_preferences/token_shared_prefs.dart';
 import 'package:hisab_kitab/app/use_case/usecase.dart';
 import 'package:hisab_kitab/core/error/failure.dart';
+import 'package:hisab_kitab/features/auth/domain/entity/login_response_entity.dart';
 import 'package:hisab_kitab/features/auth/domain/repository/user_repository.dart';
 
 class LoginUserParams extends Equatable {
@@ -17,7 +18,8 @@ class LoginUserParams extends Equatable {
   List<Object?> get props => [email, password];
 }
 
-class UserLoginUsecase implements UseCaseWithParams<String, LoginUserParams> {
+class UserLoginUsecase
+    implements UseCaseWithParams<LoginResponseEntity, LoginUserParams> {
   final IUserRepository _repository;
   final TokenSharedPrefs _tokenSharedPrefs;
 
@@ -28,11 +30,15 @@ class UserLoginUsecase implements UseCaseWithParams<String, LoginUserParams> {
        _tokenSharedPrefs = tokenSharedPrefs;
 
   @override
-  Future<Either<Failure, String>> call(LoginUserParams params) async {
+  Future<Either<Failure, LoginResponseEntity>> call(
+    LoginUserParams params,
+  ) async {
+    // Return LoginResponseEntity
     final result = await _repository.loginUser(params.email, params.password);
-    return result.fold((failure) => Left(failure), (token) async {
-      await _tokenSharedPrefs.saveToken(token);
-      return Right(token);
+    return result.fold((failure) => Left(failure), (loginResponseEntity) async {
+      // Save token and return the full entity
+      await _tokenSharedPrefs.saveToken(loginResponseEntity.token);
+      return Right(loginResponseEntity);
     });
   }
 }

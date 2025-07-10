@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:hisab_kitab/app/constant/api_endpoints.dart';
 import 'package:hisab_kitab/core/network/api_service.dart';
 import 'package:hisab_kitab/features/auth/data/data_source/user_data_source.dart';
+import 'package:hisab_kitab/features/auth/data/model/login_response_model.dart';
 import 'package:hisab_kitab/features/auth/data/model/user_api_model.dart';
 import 'package:hisab_kitab/features/auth/domain/entity/user_entity.dart';
 
@@ -12,24 +14,44 @@ class UserRemoteDataSource implements IUserDataSource {
     : _apiService = apiService;
 
   @override
-  Future<String> loginUser(String email, String password) async {
+  Future<LoginResponseModel> loginUser(String email, String password) async {
     try {
       final response = await _apiService.dio.post(
         ApiEndpoints.login,
         data: {'email': email, 'password': password},
       );
+      debugPrint("Response Data: ${response.data}");
+
       if (response.statusCode == 200) {
-        final str = response.data['token'];
-        return str;
+        // Parse the full response
+        return LoginResponseModel.fromJson(response.data);
       } else {
-        throw Exception(response.statusMessage);
+        throw Exception('Failed to login: ${response.data['message']}');
       }
-    } on DioException catch (e) {
-      throw Exception('Failed to login: ${e.message}');
     } catch (e) {
-      throw Exception('Failed to login: $e');
+      rethrow;
     }
   }
+
+  // @override
+  // Future<String> loginUser(String email, String password) async {
+  //   try {
+  //     final response = await _apiService.dio.post(
+  //       ApiEndpoints.login,
+  //       data: {'email': email, 'password': password},
+  //     );
+  //     if (response.statusCode == 200) {
+  //       final str = response.data['token'];
+  //       return str;
+  //     } else {
+  //       throw Exception(response.statusMessage);
+  //     }
+  //   } on DioException catch (e) {
+  //     throw Exception('Failed to login: ${e.message}');
+  //   } catch (e) {
+  //     throw Exception('Failed to login: $e');
+  //   }
+  // }
 
   @override
   Future<void> registerUser(UserEntity userData) async {

@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:hisab_kitab/core/error/failure.dart';
 import 'package:hisab_kitab/features/auth/data/data_source/remote_data_source/user_remote_data_source.dart';
+import 'package:hisab_kitab/features/auth/domain/entity/login_response_entity.dart';
 import 'package:hisab_kitab/features/auth/domain/entity/user_entity.dart';
 import 'package:hisab_kitab/features/auth/domain/repository/user_repository.dart';
 
@@ -9,14 +10,18 @@ class UserRemoteRepository implements IUserRepository {
 
   UserRemoteRepository({required UserRemoteDataSource userRemoteDataSource})
     : _userRemoteDataSource = userRemoteDataSource;
+
   @override
-  Future<Either<Failure, String>> loginUser(
+  Future<Either<Failure, LoginResponseEntity>> loginUser(
     String email,
     String password,
   ) async {
     try {
-      final token = await _userRemoteDataSource.loginUser(email, password);
-      return Right(token);
+      final loginResponseModel = await _userRemoteDataSource.loginUser(
+        email,
+        password,
+      );
+      return Right(loginResponseModel.toEntity());
     } catch (e) {
       return Left(ApiFailure(message: e.toString()));
     }
