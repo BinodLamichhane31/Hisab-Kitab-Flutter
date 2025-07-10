@@ -13,4 +13,9 @@ class ApiEndpoints {
   static const String register = "/auth/register";
   static const String login = "/auth/login";
   static const String profile = "/auth/profile";
+
+  //SHOP
+  static const String shop = "/shops";
+  static const String shopById = "/shops/";
+  static const String selectShop = "/shops/select-shop";
 }
