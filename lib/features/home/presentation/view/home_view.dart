@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:hisab_kitab/core/session/session_cubit.dart'; // IMPORT THIS
+import 'package:hisab_kitab/core/session/session_cubit.dart';
 import 'package:hisab_kitab/core/session/session_state.dart';
+import 'package:hisab_kitab/features/customers/presentation/view/customers_page_view.dart';
+import 'package:hisab_kitab/features/home/presentation/view/bottom_view/dashboard_view.dart';
+import 'package:hisab_kitab/features/home/presentation/view/bottom_view/profile_page_view.dart';
 import 'package:hisab_kitab/features/home/presentation/view/widget/shop_switcher.dart';
 import 'package:hisab_kitab/features/home/presentation/view_model/home_state.dart';
 import 'package:hisab_kitab/features/home/presentation/view_model/home_view_model.dart';
+import 'package:hisab_kitab/features/products/presentation/view/products_page_view.dart';
+import 'package:hisab_kitab/features/suppliers/presentation/view/suppliers_page_view.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -13,6 +18,13 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final List<Widget> viewsList = [
+      const DashboardView(),
+      const CustomersPageView(),
+      const SuppliersPageView(),
+      const ProductsPageView(),
+      const ProfilePageView(),
+    ];
     return Scaffold(
       appBar: AppBar(
         leading: Builder(
@@ -32,7 +44,6 @@ class HomeView extends StatelessWidget {
               onPressed: () {},
               icon: const Icon(
                 Icons.notifications_none,
-                size: 24,
               ), // Increased size slightly for better visibility
               style: IconButton.styleFrom(
                 backgroundColor: Colors.orange,
@@ -142,7 +153,7 @@ class HomeView extends StatelessWidget {
       ),
       body: BlocBuilder<HomeViewModel, HomeState>(
         builder: (context, state) {
-          return state.viewsList.elementAt(state.selectedIndex);
+          return viewsList.elementAt(state.selectedIndex);
         },
       ),
       bottomNavigationBar: BlocBuilder<HomeViewModel, HomeState>(
@@ -157,21 +168,24 @@ class HomeView extends StatelessWidget {
               context.read<HomeViewModel>().onTabTapped(newIndex);
             },
             items: const <BottomNavigationBarItem>[
-              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
               BottomNavigationBarItem(
-                icon: Icon(Icons.people),
+                icon: Icon(Icons.home_outlined),
+                label: 'Home',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.people_alt_outlined),
                 label: 'Customers',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.fire_truck),
+                icon: Icon(Icons.fire_truck_outlined),
                 label: 'Suppliers',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.inventory),
+                icon: Icon(Icons.inventory_outlined),
                 label: 'Products',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.person),
+                icon: Icon(Icons.person_outlined),
                 label: 'Profile',
               ),
             ],

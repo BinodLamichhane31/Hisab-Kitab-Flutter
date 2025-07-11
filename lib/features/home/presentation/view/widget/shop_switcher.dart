@@ -25,46 +25,138 @@ class ShopSwitcherWidget extends StatelessWidget {
           );
         }
 
-        if (state.shops.length <= 1) {
-          return const SizedBox.shrink();
+        // Show the widget if there's at least one shop
+        if (state.shops.isEmpty) {
+          return const SizedBox.shrink(); // Hide if no shops exist
         }
 
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0),
-            decoration: BoxDecoration(
-              color: Theme.of(context).cardColor, // Matches theme
-              borderRadius: BorderRadius.circular(20.0),
-              border: Border.all(color: Colors.orange),
-            ),
-            child: DropdownButtonHideUnderline(
-              child: DropdownButton<ShopEntity>(
-                value: state.activeShop,
-                icon: const Icon(
-                  Icons.arrow_drop_down_outlined,
-                  color: Colors.white,
-                ),
-                dropdownColor: Theme.of(context).appBarTheme.backgroundColor,
-                style: const TextStyle(color: Colors.white, fontSize: 16),
-                onChanged: (ShopEntity? newShop) {
-                  if (newShop != null) {
-                    context.read<SessionCubit>().switchShop(
-                      newShop,
-                      context,
-                      newShop.shopName,
-                    );
-                  }
-                },
-                items:
-                    state.shops.map<DropdownMenuItem<ShopEntity>>((shop) {
-                      return DropdownMenuItem<ShopEntity>(
-                        value: shop,
-                        child: Text(shop.shopName),
-                      );
-                    }).toList(),
+          child: GestureDetector(
+            onTap: () {
+              _showShopSwitcherBottomSheet(
+                context,
+                state.shops,
+                state.activeShop,
+              );
+            },
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12.0),
+              height: 35,
+              decoration: BoxDecoration(
+                color: Theme.of(context).cardColor, // Matches theme
+                borderRadius: BorderRadius.circular(20.0),
+                border: Border.all(color: Colors.orange),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    state.activeShop?.shopName ??
+                        'Select Shop', // Display active shop name
+                    style: const TextStyle(color: Colors.white, fontSize: 14),
+                  ),
+                  const Icon(
+                    Icons.arrow_drop_down_outlined,
+                    color: Colors.white,
+                  ),
+                ],
               ),
             ),
+          ),
+        );
+      },
+    );
+  }
+
+  void _showShopSwitcherBottomSheet(
+    BuildContext context,
+    List<ShopEntity> shops,
+    ShopEntity? activeShop,
+  ) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext bc) {
+        return Container(
+          decoration: BoxDecoration(
+            color:
+                Theme.of(
+                  context,
+                ).appBarTheme.backgroundColor, // Background color for the sheet
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(20.0),
+              topRight: Radius.circular(20.0),
+            ),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text(
+                  'Switch Shop',
+                  style: Theme.of(
+                    context,
+                  ).textTheme.titleLarge?.copyWith(color: Colors.white),
+                ),
+              ),
+              // List existing shops
+              ...shops.map(
+                (shop) => ListTile(
+                  leading: Icon(
+                    shop == activeShop
+                        ? Icons.check_circle
+                        : Icons.circle_outlined,
+                    color: shop == activeShop ? Colors.orange : Colors.white70,
+                  ),
+                  title: Text(
+                    shop.shopName,
+                    style: TextStyle(
+                      color: shop == activeShop ? Colors.orange : Colors.white,
+                      fontWeight:
+                          shop == activeShop
+                              ? FontWeight.bold
+                              : FontWeight.normal,
+                    ),
+                  ),
+                  onTap: () {
+                    if (shop != activeShop) {
+                      context.read<SessionCubit>().switchShop(
+                        shop,
+                        context,
+                        shop.shopName,
+                      );
+                    }
+                    Navigator.pop(bc); // Close bottom sheet
+                  },
+                ),
+              ),
+              // Add New Shop option
+              ListTile(
+                leading: const Icon(
+                  Icons.add_circle_outline,
+                  color: Colors.greenAccent,
+                ),
+                title: const Text(
+                  'Add New Shop',
+                  style: TextStyle(
+                    color: Colors.greenAccent,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                onTap: () {
+                  Navigator.pop(bc); // Close bottom sheet
+                  // TODO: Navigate to the "Add New Shop" screen
+                  // Example: Navigator.push(context, MaterialPageRoute(builder: (context) => AddNewShopScreen()));
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Navigate to Add New Shop screen'),
+                    ),
+                  );
+                },
+              ),
+              const SizedBox(height: 16.0),
+            ],
           ),
         );
       },

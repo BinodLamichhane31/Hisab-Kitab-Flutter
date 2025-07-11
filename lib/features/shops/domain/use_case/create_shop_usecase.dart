@@ -2,7 +2,6 @@ import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:hisab_kitab/app/use_case/usecase.dart';
 import 'package:hisab_kitab/core/error/failure.dart';
-import 'package:hisab_kitab/features/shops/domain/entity/shop_entity.dart';
 import 'package:hisab_kitab/features/shops/domain/repository/shop_repository.dart';
 
 class CreateShopParams extends Equatable {

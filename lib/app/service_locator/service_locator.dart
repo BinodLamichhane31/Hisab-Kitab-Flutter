@@ -12,6 +12,11 @@ import 'package:hisab_kitab/features/auth/domain/use_case/user_logout_usecase.da
 import 'package:hisab_kitab/features/auth/domain/use_case/user_register_usecase.dart';
 import 'package:hisab_kitab/features/auth/presentation/view_model/login_view_model/login_view_model.dart';
 import 'package:hisab_kitab/features/auth/presentation/view_model/signup_view_model/signup_view_model.dart';
+import 'package:hisab_kitab/features/customers/data/data_source/remote_data_source/customer_remote_data_source.dart';
+import 'package:hisab_kitab/features/customers/data/repository/customer_remote_repository.dart';
+import 'package:hisab_kitab/features/customers/domain/repository/customer_repository.dart';
+import 'package:hisab_kitab/features/customers/domain/use_case/add_customer_usecase.dart';
+import 'package:hisab_kitab/features/customers/domain/use_case/get_customers_by_shop_usecase.dart';
 import 'package:hisab_kitab/features/home/presentation/view_model/home_view_model.dart';
 import 'package:hisab_kitab/features/shops/data/data_source/remote_data_source/shop_remote_data_source.dart';
 import 'package:hisab_kitab/features/shops/data/repository/shop_remote_repository.dart';
@@ -33,6 +38,7 @@ Future initDependencies() async {
   await _initLoginModule();
   await _initSignupModule();
   _initShopModule();
+  await _initCustomerModule();
   await _initHomeModule();
   await _initSessionModule();
 }
@@ -164,4 +170,35 @@ Future _initShopModule() async {
       getAllShopsUsecase: serviceLocator<GetAllShopsUsecase>(),
     ),
   );
+}
+
+Future _initCustomerModule() async {
+  // Data sources
+  serviceLocator.registerFactory(
+    () => CustomerRemoteDataSource(apiService: serviceLocator<ApiService>()),
+  );
+
+  // Repositories
+  serviceLocator.registerFactory<ICustomerRepository>(
+    () => CustomerRemoteRepository(
+      customerRemoteDataSource: serviceLocator<CustomerRemoteDataSource>(),
+    ),
+  );
+
+  // Use cases
+  serviceLocator.registerFactory(
+    () => AddCustomerUsecase(
+      customerRepository: serviceLocator<ICustomerRepository>(),
+    ),
+  );
+  serviceLocator.registerFactory(
+    () => GetCustomersByShopUsecase(
+      customerRepository: serviceLocator<ICustomerRepository>(),
+    ),
+  );
+
+  // ViewModel
+  // serviceLocator.registerFactory(
+  //   () => CustomerViewModel(getCustomersByShopUsecase: serviceLocator<GetCustomersByShopUsecase>(), addCustomerUsecase: serviceLocator<AddCustomerUsecase>(), shopId: shopId);
+  // );
 }

@@ -1,21 +1,17 @@
-// lib/features/home/presentation/view/bottom_view/profile_page_view.dart
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hisab_kitab/core/session/session_cubit.dart';
 import 'package:hisab_kitab/core/session/session_state.dart';
 import 'package:hisab_kitab/core/utils/profile_fields.dart';
-import 'package:hisab_kitab/features/home/presentation/view_model/home_state.dart';
-import 'package:hisab_kitab/features/home/presentation/view_model/home_view_model.dart';
 
 class ProfilePageView extends StatelessWidget {
   const ProfilePageView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeViewModel, HomeState>(
+    return BlocBuilder<SessionCubit, SessionState>(
       builder: (context, state) {
-        if (state.isProfileLoading && state.user == null) {
+        if (state.isLoading && state.user == null) {
           return const Center(child: CircularProgressIndicator());
         }
         if (state.user == null) {
@@ -66,7 +62,7 @@ class ProfilePageView extends StatelessWidget {
               ElevatedButton.icon(
                 style: theme.elevatedButtonTheme.style,
                 onPressed: () {
-                  // TODO: Navigate to an "Edit Profile" page
+                  //Navigate to an "Edit Profile" page
                 },
                 icon: const Icon(Icons.edit, color: Colors.white),
                 label: const Text(

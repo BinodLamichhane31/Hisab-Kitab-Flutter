@@ -1,5 +1,4 @@
 import 'package:hisab_kitab/features/shops/data/model/shop_api_model.dart';
-import 'package:hisab_kitab/features/shops/domain/entity/shop_entity.dart';
 
 abstract interface class IShopDataSource {
   Future<List<ShopApiModel>> getShops();

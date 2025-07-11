@@ -48,6 +48,7 @@ dependencies:
   pretty_dio_logger: ^1.4.0
   json_annotation: ^4.9.0
   shared_preferences: ^2.5.3
+  google_nav_bar: ^5.0.7
   
 
 dev_dependencies:
