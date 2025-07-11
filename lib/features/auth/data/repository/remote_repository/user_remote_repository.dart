@@ -43,8 +43,16 @@ class UserRemoteRepository implements IUserRepository {
       final userApiModel = await _userRemoteDataSource.getProfile();
       return Right(userApiModel.toEntity());
     } catch (e) {
-      print("❌ REPOSITORY ERROR: $e");
+      return Left(ApiFailure(message: e.toString()));
+    }
+  }
 
+  @override
+  Future<Either<Failure, void>> logoutUser() async {
+    try {
+      await _userRemoteDataSource.logoutUser();
+      return const Right(null);
+    } catch (e) {
       return Left(ApiFailure(message: e.toString()));
     }
   }

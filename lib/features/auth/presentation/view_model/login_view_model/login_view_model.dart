@@ -20,7 +20,6 @@ class LoginViewModel extends Bloc<LoginEvent, LoginState> {
   LoginViewModel(this._loginUsecase) : super(LoginState.initial()) {
     on<NavigateToSignupView>(_onNavigateToSignupView);
     on<NavigateToForgotPasswordView>(_onNavigateToForgotPasswordView);
-    // Note: NavigateToHomeView event is no longer needed here, but we'll leave it for now.
     on<ShowHidePassword>(_onShowHidePassword);
     on<LoginIntoSystemEvent>(_onLoginWithEmailAndPassword);
   }
@@ -59,7 +58,6 @@ class LoginViewModel extends Bloc<LoginEvent, LoginState> {
     emit(state.copyWith(isPasswordVisible: event.isVisible));
   }
 
-  // ------------------- THE UPDATED METHOD -------------------
   void _onLoginWithEmailAndPassword(
     LoginIntoSystemEvent event,
     Emitter<LoginState> emit,
@@ -68,15 +66,13 @@ class LoginViewModel extends Bloc<LoginEvent, LoginState> {
     final result = await _loginUsecase(
       LoginUserParams(email: event.email, password: event.password),
     );
-    // It's better to set isLoading to false once, after the async call.
     emit(state.copyWith(isLoading: false));
 
-    // It's crucial to check if the widget is still in the tree after an async gap.
     if (!event.context.mounted) return;
 
     result.fold(
       (failure) {
-        // The failure case remains the same
+        debugPrint(failure.message);
         debugPrint(failure.message);
         showMySnackBar(
           context: event.context,

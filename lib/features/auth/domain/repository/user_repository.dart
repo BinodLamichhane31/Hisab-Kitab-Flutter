@@ -10,4 +10,5 @@ abstract interface class IUserRepository {
     String password,
   );
   Future<Either<Failure, UserEntity>> getProfile();
+  Future<Either<Failure, void>> logoutUser();
 }

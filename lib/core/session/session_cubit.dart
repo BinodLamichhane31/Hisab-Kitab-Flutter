@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hisab_kitab/core/common/snackbar/my_snackbar.dart';
 import 'package:hisab_kitab/core/session/session_state.dart';
@@ -42,7 +43,11 @@ class SessionCubit extends Cubit<SessionState> {
     emit(SessionState.initial());
   }
 
-  Future<void> switchShop(ShopEntity newActiveShop) async {
+  Future<void> switchShop(
+    ShopEntity newActiveShop,
+    BuildContext context,
+    String shopName,
+  ) async {
     if (state.activeShop?.shopId == newActiveShop.shopId) return;
 
     emit(state.copyWith(isLoading: true));
@@ -53,9 +58,14 @@ class SessionCubit extends Cubit<SessionState> {
 
     result.fold(
       (failure) {
+        showMySnackBar(context: context, message: failure.message);
         emit(state.copyWith(isLoading: false));
       },
       (success) {
+        showMySnackBar(
+          context: context,
+          message: "Active shop set to $shopName.",
+        );
         emit(state.copyWith(activeShop: () => newActiveShop, isLoading: false));
       },
     );

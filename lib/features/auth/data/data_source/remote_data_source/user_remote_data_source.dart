@@ -87,4 +87,13 @@ class UserRemoteDataSource implements IUserDataSource {
       throw Exception('Failed to get profile data: ${e.message}');
     }
   }
+
+  @override
+  Future<void> logoutUser() async {
+    try {
+      await _apiService.dio.post(ApiEndpoints.logout);
+    } catch (e) {
+      print("Server logout failed, but proceeding with local logout: $e");
+    }
+  }
 }

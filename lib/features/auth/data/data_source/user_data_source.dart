@@ -6,4 +6,5 @@ abstract class IUserDataSource {
   Future<void> registerUser(UserEntity entity);
   Future<LoginResponseModel> loginUser(String email, String password);
   Future<UserApiModel> getProfile();
+  Future<void> logoutUser();
 }

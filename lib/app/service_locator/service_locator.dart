@@ -59,13 +59,19 @@ Future _initSharedPreference() async {
 
 Future _initSplashModule() async {
   serviceLocator.registerFactory(
-    () => SplashViewModel(serviceLocator<TokenSharedPrefs>()),
+    () => SplashViewModel(
+      serviceLocator<TokenSharedPrefs>(),
+      serviceLocator<GetProfileUsecase>(),
+    ),
   );
 }
 
 Future _initLoginModule() async {
   serviceLocator.registerFactory(
-    () => UserLogoutUsecase(serviceLocator<TokenSharedPrefs>()),
+    () => UserLogoutUsecase(
+      serviceLocator<TokenSharedPrefs>(),
+      serviceLocator<UserRemoteRepository>(),
+    ),
   );
 
   serviceLocator.registerFactory(

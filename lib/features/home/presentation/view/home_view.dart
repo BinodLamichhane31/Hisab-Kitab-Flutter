@@ -26,7 +26,6 @@ class HomeView extends StatelessWidget {
         // CHANGE: The AppBar title now shows the active shop name from SessionCubit
         title: ShopSwitcherWidget(),
         actions: [
-          // ADDED: The new shop switcher widget
           Padding(
             padding: const EdgeInsets.only(right: 10),
             child: IconButton(
@@ -135,33 +134,7 @@ class HomeView extends StatelessWidget {
                 style: TextStyle(fontSize: 14, color: Colors.redAccent),
               ),
               onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext dialogContext) {
-                    return AlertDialog(
-                      title: const Text('Confirm Logout'),
-                      content: const Text('Are you sure you want to log out?'),
-                      actions: <Widget>[
-                        TextButton(
-                          child: const Text('Cancel'),
-                          onPressed: () {
-                            Navigator.of(dialogContext).pop();
-                          },
-                        ),
-                        TextButton(
-                          child: const Text('Logout'),
-                          onPressed: () {
-                            // TODO: This should call a method on SessionCubit to logout
-                            // and then navigate to the login screen.
-                            // For now, keeping the old logic but this should be refactored.
-                            context.read<HomeViewModel>().logout(context);
-                            context.read<SessionCubit>().onLogout();
-                          },
-                        ),
-                      ],
-                    );
-                  },
-                );
+                context.read<HomeViewModel>().logout(context);
               },
             ),
           ],

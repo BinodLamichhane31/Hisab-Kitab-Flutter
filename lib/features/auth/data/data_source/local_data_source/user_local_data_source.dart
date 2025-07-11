@@ -66,4 +66,10 @@ class UserLocalDataSource implements IUserDataSource {
     // TODO: implement getProfile
     throw UnimplementedError();
   }
+
+  @override
+  Future<void> logoutUser() {
+    // TODO: implement logoutUser
+    throw UnimplementedError();
+  }
 }

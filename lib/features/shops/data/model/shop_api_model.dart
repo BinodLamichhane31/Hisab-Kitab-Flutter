@@ -39,6 +39,22 @@ class ShopApiModel extends Equatable {
     );
   }
 
+  factory ShopApiModel.fromEntity(ShopEntity entity) {
+    return ShopApiModel(
+      shopId: entity.shopId,
+      shopName: entity.shopName,
+      address: entity.address,
+      contactNumber: entity.contactNumber,
+      owner: ShopOwnerApiModel(
+        ownerId: entity.ownerId,
+        fname: '',
+        lname: '',
+        email: '',
+      ),
+    );
+  }
+  // =============================================================
+
   @override
   List<Object?> get props => [shopId, shopName, address, contactNumber, owner];
 }
