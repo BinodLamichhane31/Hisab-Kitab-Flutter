@@ -76,30 +76,24 @@ class LoginViewModel extends Bloc<LoginEvent, LoginState> {
         debugPrint(failure.message);
         showMySnackBar(
           context: event.context,
-          message: failure.message, // Use the actual failure message
+          message: failure.message,
           color: Colors.red,
         );
       },
       (loginResponse) {
-        // <-- 4. The success value is now `loginResponse`
-        // Get the global session cubit from the context
         final sessionCubit = event.context.read<SessionCubit>();
         final shops = loginResponse.shops;
 
-        // Determine which shop is active
         ShopEntity? activeShop;
         if (loginResponse.currentShopId != null && shops.isNotEmpty) {
-          // Find the shop with the matching ID, or default to the first shop if not found
           activeShop = shops.firstWhere(
             (s) => s.shopId == loginResponse.currentShopId,
             orElse: () => shops.first,
           );
         } else if (shops.isNotEmpty) {
-          // If no currentShopId is specified, just use the first one
           activeShop = shops.first;
         }
 
-        // Update the global session state with all the user and shop info
         sessionCubit.onLoginSuccess(
           user: loginResponse.user,
           shops: shops,
@@ -108,10 +102,7 @@ class LoginViewModel extends Bloc<LoginEvent, LoginState> {
 
         showMySnackBar(context: event.context, message: "Login Success");
 
-        // Now, decide where to navigate based on whether the user has shops
         if (shops.isEmpty) {
-          // If the user has no shops, show the dialog to create one
-          // showCreateShopDialog(event.context);
           Navigator.of(event.context).pushAndRemoveUntil(
             MaterialPageRoute(
               builder:
@@ -123,7 +114,6 @@ class LoginViewModel extends Bloc<LoginEvent, LoginState> {
             (route) => false,
           );
         } else {
-          // If they have shops, navigate to the home screen and clear the back stack
           Navigator.of(event.context).pushAndRemoveUntil(
             MaterialPageRoute(
               builder:

@@ -140,7 +140,6 @@ class HomeView extends StatelessWidget {
           ],
         ),
       ),
-      // The body and bottom navigation bar remain unchanged as they are controlled by HomeViewModel
       body: BlocBuilder<HomeViewModel, HomeState>(
         builder: (context, state) {
           return state.viewsList.elementAt(state.selectedIndex);
