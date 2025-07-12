@@ -65,7 +65,7 @@ class SignupView extends StatelessWidget {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Name is required';
+                      return 'First name is required';
                     }
                     return null;
                   },
@@ -94,7 +94,7 @@ class SignupView extends StatelessWidget {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Name is required';
+                      return 'Last name is required';
                     }
                     return null;
                   },
@@ -313,7 +313,7 @@ class SignupView extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("Have an accoount? "),
+                    Text("Have an account? "),
                     GestureDetector(
                       onTap: () {
                         Navigator.pop(context);

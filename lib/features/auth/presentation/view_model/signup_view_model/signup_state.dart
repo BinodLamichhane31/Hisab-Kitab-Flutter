@@ -1,16 +1,18 @@
-class SignupState {
+import 'package:equatable/equatable.dart';
+
+class SignupState extends Equatable {
   final bool isLoading;
   final bool isSuccess;
   final bool isPasswordVisible;
   final bool isConfirmPasswordVisible;
 
-  SignupState({
+  const SignupState({
     required this.isLoading,
     required this.isSuccess,
     required this.isPasswordVisible,
     required this.isConfirmPasswordVisible,
   });
-  SignupState.initial()
+  const SignupState.initial()
     : isLoading = false,
       isSuccess = false,
       isPasswordVisible = false,
@@ -30,4 +32,12 @@ class SignupState {
           isConfirmPasswordVisible ?? this.isConfirmPasswordVisible,
     );
   }
+
+  @override
+  List<Object?> get props => [
+    isLoading,
+    isSuccess,
+    isPasswordVisible,
+    isConfirmPasswordVisible,
+  ];
 }

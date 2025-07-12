@@ -1,4 +1,6 @@
-class LoginState {
+import 'package:equatable/equatable.dart';
+
+class LoginState extends Equatable {
   final bool isLoading;
   final bool isSuccess;
   final bool isPasswordVisible;
@@ -24,4 +26,8 @@ class LoginState {
       isPasswordVisible: isPasswordVisible ?? this.isPasswordVisible,
     );
   }
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [isLoading, isSuccess, isPasswordVisible];
 }
