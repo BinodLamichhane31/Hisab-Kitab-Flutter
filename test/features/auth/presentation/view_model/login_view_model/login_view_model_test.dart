@@ -3,7 +3,6 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hisab_kitab/core/error/failure.dart';
-import 'package:hisab_kitab/features/auth/domain/entity/login_response_entity.dart';
 import 'package:hisab_kitab/features/auth/domain/use_case/user_login_usecase.dart';
 import 'package:hisab_kitab/features/auth/presentation/view_model/login_view_model/login_event.dart';
 import 'package:hisab_kitab/features/auth/presentation/view_model/login_view_model/login_state.dart';

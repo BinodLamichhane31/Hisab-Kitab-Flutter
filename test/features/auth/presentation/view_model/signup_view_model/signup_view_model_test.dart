@@ -1,8 +1,6 @@
 import 'package:bloc_test/bloc_test.dart';
-import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:hisab_kitab/core/error/failure.dart';
 import 'package:hisab_kitab/features/auth/domain/use_case/user_register_usecase.dart';
 import 'package:hisab_kitab/features/auth/presentation/view_model/signup_view_model/signup_event.dart';
 import 'package:hisab_kitab/features/auth/presentation/view_model/signup_view_model/signup_state.dart';
@@ -11,7 +9,6 @@ import 'package:mocktail/mocktail.dart';
 
 void mockSnackBar() {
   TestWidgetsFlutterBinding.ensureInitialized();
-  // override or ignore snackbar to avoid context errors
 }
 
 class MockUserRegisterUsecase extends Mock implements UserRegisterUsecase {}
