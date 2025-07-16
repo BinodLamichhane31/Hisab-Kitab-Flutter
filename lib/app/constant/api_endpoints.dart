@@ -23,4 +23,8 @@ class ApiEndpoints {
   //Customers
   static const String customers = '/customers';
   static const String customerById = '/customers/';
+
+  //Suppliers
+  static const String suppliers = '/suppliers';
+  static const String supplierById = '/suppliers/';
 }
