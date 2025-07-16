@@ -37,7 +37,7 @@ Future initDependencies() async {
   await _initSplashModule();
   await _initLoginModule();
   await _initSignupModule();
-  _initShopModule();
+  await _initShopModule();
   await _initCustomerModule();
   await _initHomeModule();
   await _initSessionModule();

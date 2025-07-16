@@ -70,4 +70,6 @@ class SessionCubit extends Cubit<SessionState> {
       },
     );
   }
+
+  void reloadSession() {}
 }

@@ -6,7 +6,7 @@ import 'package:hisab_kitab/core/session/session_state.dart';
 import 'package:hisab_kitab/features/customers/presentation/view/customers_page_view.dart';
 import 'package:hisab_kitab/features/home/presentation/view/bottom_view/dashboard_view.dart';
 import 'package:hisab_kitab/features/home/presentation/view/bottom_view/profile_page_view.dart';
-import 'package:hisab_kitab/features/home/presentation/view/widget/shop_switcher.dart';
+import 'package:hisab_kitab/features/shops/presentation/view/widget/shop_switcher.dart';
 import 'package:hisab_kitab/features/home/presentation/view_model/home_state.dart';
 import 'package:hisab_kitab/features/home/presentation/view_model/home_view_model.dart';
 import 'package:hisab_kitab/features/products/presentation/view/products_page_view.dart';

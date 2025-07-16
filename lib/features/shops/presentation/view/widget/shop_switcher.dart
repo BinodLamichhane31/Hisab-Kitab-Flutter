@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hisab_kitab/core/common/snackbar/my_snackbar.dart';
 import 'package:hisab_kitab/core/session/session_cubit.dart';
 import 'package:hisab_kitab/core/session/session_state.dart';
 import 'package:hisab_kitab/features/shops/domain/entity/shop_entity.dart';
+import 'package:hisab_kitab/features/shops/presentation/view/widget/add_shop_form.dart';
+import 'package:hisab_kitab/features/shops/presentation/view_model/shop_state.dart';
+import 'package:hisab_kitab/features/shops/presentation/view_model/shop_view_model.dart';
 
 class ShopSwitcherWidget extends StatelessWidget {
   const ShopSwitcherWidget({super.key});
@@ -25,26 +29,24 @@ class ShopSwitcherWidget extends StatelessWidget {
           );
         }
 
-        // Show the widget if there's at least one shop
         if (state.shops.isEmpty) {
-          return const SizedBox.shrink(); // Hide if no shops exist
+          return const SizedBox.shrink();
         }
 
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: GestureDetector(
-            onTap: () {
-              _showShopSwitcherBottomSheet(
-                context,
-                state.shops,
-                state.activeShop,
-              );
-            },
+            onTap:
+                () => _showShopSwitcherBottomSheet(
+                  context,
+                  state.shops,
+                  state.activeShop,
+                ),
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 12.0),
               height: 35,
               decoration: BoxDecoration(
-                color: Theme.of(context).cardColor, // Matches theme
+                color: Theme.of(context).cardColor,
                 borderRadius: BorderRadius.circular(20.0),
                 border: Border.all(color: Colors.orange),
               ),
@@ -52,8 +54,7 @@ class ShopSwitcherWidget extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    state.activeShop?.shopName ??
-                        'Select Shop', // Display active shop name
+                    state.activeShop?.shopName ?? 'Select Shop',
                     style: const TextStyle(color: Colors.white, fontSize: 14),
                   ),
                   const Icon(
@@ -69,6 +70,56 @@ class ShopSwitcherWidget extends StatelessWidget {
     );
   }
 
+  void _showAddShopDialog(BuildContext context) {
+    final formKey = GlobalKey<FormState>();
+    final shopNameController = TextEditingController();
+    final addressController = TextEditingController();
+    final contactController = TextEditingController();
+
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (dialogContext) {
+        return BlocBuilder<ShopViewModel, ShopState>(
+          builder: (context, state) {
+            if (state.errorMessage != null) {
+              showMySnackBar(
+                context: context,
+                message: state.errorMessage!,
+                color: Colors.red,
+              );
+            }
+            // The AlertDialog will contain our form.
+            return AlertDialog(
+              title: const Text('Add a New Shop'),
+              content: SingleChildScrollView(
+                child: Form(
+                  key: formKey,
+                  child: addShopForm(
+                    context: context,
+                    shopNameController: shopNameController,
+                    addressController: addressController,
+                    contactController: contactController,
+                    state: state,
+                    formKey: formKey,
+                    submitButtonText: 'Add Shop',
+                    isDialog: true, // Use the dialog layout
+                  ),
+                ),
+              ),
+              actions: [
+                TextButton(
+                  child: const Text('Cancel'),
+                  onPressed: () => Navigator.of(dialogContext).pop(),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
   void _showShopSwitcherBottomSheet(
     BuildContext context,
     List<ShopEntity> shops,
@@ -76,13 +127,10 @@ class ShopSwitcherWidget extends StatelessWidget {
   ) {
     showModalBottomSheet(
       context: context,
-      builder: (BuildContext bc) {
+      builder: (bottomSheetContext) {
         return Container(
           decoration: BoxDecoration(
-            color:
-                Theme.of(
-                  context,
-                ).appBarTheme.backgroundColor, // Background color for the sheet
+            color: Theme.of(context).appBarTheme.backgroundColor,
             borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(20.0),
               topRight: Radius.circular(20.0),
@@ -100,7 +148,6 @@ class ShopSwitcherWidget extends StatelessWidget {
                   ).textTheme.titleLarge?.copyWith(color: Colors.white),
                 ),
               ),
-              // List existing shops
               ...shops.map(
                 (shop) => ListTile(
                   leading: Icon(
@@ -127,11 +174,10 @@ class ShopSwitcherWidget extends StatelessWidget {
                         shop.shopName,
                       );
                     }
-                    Navigator.pop(bc); // Close bottom sheet
+                    Navigator.pop(bottomSheetContext);
                   },
                 ),
               ),
-              // Add New Shop option
               ListTile(
                 leading: const Icon(
                   Icons.add_circle_outline,
@@ -145,14 +191,10 @@ class ShopSwitcherWidget extends StatelessWidget {
                   ),
                 ),
                 onTap: () {
-                  Navigator.pop(bc); // Close bottom sheet
-                  // TODO: Navigate to the "Add New Shop" screen
-                  // Example: Navigator.push(context, MaterialPageRoute(builder: (context) => AddNewShopScreen()));
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Navigate to Add New Shop screen'),
-                    ),
-                  );
+                  Navigator.pop(
+                    bottomSheetContext,
+                  ); // Close the bottom sheet first
+                  _showAddShopDialog(context); // Then open the add shop dialog
                 },
               ),
               const SizedBox(height: 16.0),

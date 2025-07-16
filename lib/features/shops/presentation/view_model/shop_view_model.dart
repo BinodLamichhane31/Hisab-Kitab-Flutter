@@ -42,7 +42,7 @@ class ShopViewModel extends Bloc<ShopEvent, ShopState> {
     CreateShopEvent event,
     Emitter<ShopState> emit,
   ) async {
-    emit(state.copyWith(isLoading: true));
+    emit(state.copyWith(isLoading: true, errorMessage: null));
     await Future.delayed(const Duration(seconds: 1));
     final result = await createShopUsecase(
       CreateShopParams(
@@ -68,11 +68,9 @@ class ShopViewModel extends Bloc<ShopEvent, ShopState> {
   ) {
     Navigator.of(event.context).pushAndRemoveUntil(
       MaterialPageRoute(
-        // Instead of providing the ShopViewModel, create and provide
-        // the HomeViewModel that the HomeView actually needs.
         builder:
-            (context) => BlocProvider(
-              create: (context) => serviceLocator<HomeViewModel>(),
+            (context) => BlocProvider.value(
+              value: serviceLocator<HomeViewModel>(),
               child: const HomeView(),
             ),
       ),
