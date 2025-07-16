@@ -80,41 +80,62 @@ class ShopSwitcherWidget extends StatelessWidget {
       context: context,
       barrierDismissible: false,
       builder: (dialogContext) {
-        return BlocBuilder<ShopViewModel, ShopState>(
-          builder: (context, state) {
-            if (state.errorMessage != null) {
+        // Wrap the dialog's content with a BlocListener to handle side effects.
+        return BlocListener<ShopViewModel, ShopState>(
+          listener: (context, state) {
+            // On successful creation...
+            if (state.shopCreationSuccess) {
+              // 1. Show success snackbar
+              if (state.successMessage != null) {
+                showMySnackBar(
+                  context: context,
+                  message: state.successMessage!,
+                );
+              }
+              // 2. Update the SessionCubit with the fresh list of shops
+              context.read<SessionCubit>().onShopsUpdated(state.shops);
+              // 3. Close the dialog
+              Navigator.of(dialogContext).pop();
+            }
+            // On error...
+            else if (state.errorMessage != null) {
+              // Show error snackbar
               showMySnackBar(
                 context: context,
                 message: state.errorMessage!,
                 color: Colors.red,
               );
             }
-            // The AlertDialog will contain our form.
-            return AlertDialog(
-              title: const Text('Add a New Shop'),
-              content: SingleChildScrollView(
-                child: Form(
-                  key: formKey,
-                  child: addShopForm(
-                    context: context,
-                    shopNameController: shopNameController,
-                    addressController: addressController,
-                    contactController: contactController,
-                    state: state,
-                    formKey: formKey,
-                    submitButtonText: 'Add Shop',
-                    isDialog: true, // Use the dialog layout
+          },
+          child: BlocBuilder<ShopViewModel, ShopState>(
+            builder: (context, state) {
+              // The AlertDialog now only builds the UI, side effects are in the listener.
+              return AlertDialog(
+                title: const Text('Add a New Shop'),
+                content: SingleChildScrollView(
+                  child: Form(
+                    key: formKey,
+                    child: addShopForm(
+                      context: context,
+                      shopNameController: shopNameController,
+                      addressController: addressController,
+                      contactController: contactController,
+                      state: state,
+                      formKey: formKey,
+                      submitButtonText: 'Add Shop',
+                      isDialog: true,
+                    ),
                   ),
                 ),
-              ),
-              actions: [
-                TextButton(
-                  child: const Text('Cancel'),
-                  onPressed: () => Navigator.of(dialogContext).pop(),
-                ),
-              ],
-            );
-          },
+                actions: [
+                  TextButton(
+                    child: const Text('Cancel'),
+                    onPressed: () => Navigator.of(dialogContext).pop(),
+                  ),
+                ],
+              );
+            },
+          ),
         );
       },
     );
@@ -191,10 +212,8 @@ class ShopSwitcherWidget extends StatelessWidget {
                   ),
                 ),
                 onTap: () {
-                  Navigator.pop(
-                    bottomSheetContext,
-                  ); // Close the bottom sheet first
-                  _showAddShopDialog(context); // Then open the add shop dialog
+                  Navigator.pop(bottomSheetContext);
+                  _showAddShopDialog(context);
                 },
               ),
               const SizedBox(height: 16.0),

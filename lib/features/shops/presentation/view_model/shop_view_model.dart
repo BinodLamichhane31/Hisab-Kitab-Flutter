@@ -30,7 +30,9 @@ class ShopViewModel extends Bloc<ShopEvent, ShopState> {
     final result = await getAllShopsUsecase();
     result.fold(
       (failure) {
-        emit(state.copyWith(isLoading: false, errorMessage: failure.message));
+        emit(
+          state.copyWith(isLoading: false, errorMessage: () => failure.message),
+        );
       },
       (shops) {
         emit(state.copyWith(shops: shops, isLoading: false));
@@ -42,8 +44,15 @@ class ShopViewModel extends Bloc<ShopEvent, ShopState> {
     CreateShopEvent event,
     Emitter<ShopState> emit,
   ) async {
-    emit(state.copyWith(isLoading: true, errorMessage: null));
-    await Future.delayed(const Duration(seconds: 1));
+    emit(
+      state.copyWith(
+        isLoading: true,
+        errorMessage: () => null,
+        successMessage: () => null,
+        shopCreationSuccess: false,
+      ),
+    );
+
     final result = await createShopUsecase(
       CreateShopParams(
         shopName: event.shopName,
@@ -51,13 +60,37 @@ class ShopViewModel extends Bloc<ShopEvent, ShopState> {
         contactNumber: event.contactNumber,
       ),
     );
-    result.fold(
-      (failure) {
-        emit(state.copyWith(isLoading: false, errorMessage: failure.message));
+
+    await result.fold(
+      (failure) async {
+        emit(
+          state.copyWith(isLoading: false, errorMessage: () => failure.message),
+        );
       },
-      (_) {
-        emit(state.copyWith(isLoading: false));
-        add(LoadShopsEvent());
+      (_) async {
+        final shopsResult = await getAllShopsUsecase();
+        shopsResult.fold(
+          (failure) {
+            emit(
+              state.copyWith(
+                isLoading: false,
+                errorMessage:
+                    () =>
+                        "Shop created, but failed to refresh list: ${failure.message}",
+              ),
+            );
+          },
+          (allShops) {
+            emit(
+              state.copyWith(
+                isLoading: false,
+                shops: allShops,
+                successMessage: () => "'${event.shopName}' added successfully!",
+                shopCreationSuccess: true,
+              ),
+            );
+          },
+        );
       },
     );
   }

@@ -28,12 +28,18 @@ class SessionCubit extends Cubit<SessionState> {
     );
   }
 
+  void onShopsUpdated(List<ShopEntity> updatedShops) {
+    final newActiveShop =
+        state.activeShop ??
+        (updatedShops.isNotEmpty ? updatedShops.last : null);
+    emit(state.copyWith(shops: updatedShops, activeShop: () => newActiveShop));
+  }
+
   void onShopAdded(ShopEntity newShop) {
     final updatedShops = List<ShopEntity>.from(state.shops)..add(newShop);
     emit(
       state.copyWith(
         shops: updatedShops,
-        // If it's the first shop, make it active
         activeShop: () => state.activeShop ?? newShop,
       ),
     );
@@ -70,6 +76,4 @@ class SessionCubit extends Cubit<SessionState> {
       },
     );
   }
-
-  void reloadSession() {}
 }
