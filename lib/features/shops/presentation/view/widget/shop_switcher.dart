@@ -148,57 +148,73 @@ class ShopSwitcherWidget extends StatelessWidget {
   ) {
     showModalBottomSheet(
       context: context,
+      isScrollControlled: false, // As per your request
+      backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
+        ),
+      ),
       builder: (bottomSheetContext) {
-        return Container(
-          decoration: BoxDecoration(
-            color: Theme.of(context).appBarTheme.backgroundColor,
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(20.0),
-              topRight: Radius.circular(20.0),
-            ),
-          ),
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Text(
-                  'Switch Shop',
-                  style: Theme.of(
-                    context,
-                  ).textTheme.titleLarge?.copyWith(color: Colors.white),
-                ),
+            children: [
+              Text(
+                'Switch Shop',
+                style: Theme.of(
+                  context,
+                ).textTheme.titleLarge?.copyWith(color: Colors.white),
               ),
-              ...shops.map(
-                (shop) => ListTile(
-                  leading: Icon(
-                    shop == activeShop
-                        ? Icons.check_circle
-                        : Icons.circle_outlined,
-                    color: shop == activeShop ? Colors.orange : Colors.white70,
-                  ),
-                  title: Text(
-                    shop.shopName,
-                    style: TextStyle(
-                      color: shop == activeShop ? Colors.orange : Colors.white,
-                      fontWeight:
-                          shop == activeShop
-                              ? FontWeight.bold
-                              : FontWeight.normal,
-                    ),
-                  ),
-                  onTap: () {
-                    if (shop != activeShop) {
-                      context.read<SessionCubit>().switchShop(
-                        shop,
-                        context,
+              const SizedBox(height: 10),
+
+              /// Scrollable shop list
+              ConstrainedBox(
+                constraints: const BoxConstraints(
+                  maxHeight: 300, // 👈 Limit height so list becomes scrollable
+                ),
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: shops.length,
+                  itemBuilder: (context, index) {
+                    final shop = shops[index];
+                    return ListTile(
+                      leading: Icon(
+                        shop == activeShop
+                            ? Icons.check_circle
+                            : Icons.circle_outlined,
+                        color:
+                            shop == activeShop ? Colors.orange : Colors.white70,
+                      ),
+                      title: Text(
                         shop.shopName,
-                      );
-                    }
-                    Navigator.pop(bottomSheetContext);
+                        style: TextStyle(
+                          color:
+                              shop == activeShop ? Colors.orange : Colors.white,
+                          fontWeight:
+                              shop == activeShop
+                                  ? FontWeight.bold
+                                  : FontWeight.normal,
+                        ),
+                      ),
+                      onTap: () {
+                        if (shop != activeShop) {
+                          context.read<SessionCubit>().switchShop(
+                            shop,
+                            context,
+                            shop.shopName,
+                          );
+                        }
+                        Navigator.pop(bottomSheetContext);
+                      },
+                    );
                   },
                 ),
               ),
+
+              const Divider(),
               ListTile(
                 leading: const Icon(
                   Icons.add_circle_outline,
@@ -216,7 +232,7 @@ class ShopSwitcherWidget extends StatelessWidget {
                   _showAddShopDialog(context);
                 },
               ),
-              const SizedBox(height: 16.0),
+              const SizedBox(height: 8),
             ],
           ),
         );
