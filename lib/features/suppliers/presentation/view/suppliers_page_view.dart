@@ -5,6 +5,7 @@ import 'package:hisab_kitab/core/session/session_cubit.dart';
 import 'package:hisab_kitab/core/session/session_state.dart';
 import 'package:hisab_kitab/features/suppliers/domain/use_case/add_supplier_usecase.dart';
 import 'package:hisab_kitab/features/suppliers/domain/use_case/get_suppliers_by_shop_usecase.dart';
+import 'package:hisab_kitab/features/suppliers/presentation/view/add_supplier_dialog.dart';
 import 'package:hisab_kitab/features/suppliers/presentation/view_model/supplier_event.dart';
 import 'package:hisab_kitab/features/suppliers/presentation/view_model/supplier_state.dart';
 import 'package:hisab_kitab/features/suppliers/presentation/view_model/supplier_view_model.dart';
@@ -114,7 +115,9 @@ class SuppliersPageView extends StatelessWidget {
             floatingActionButton: Builder(
               builder:
                   (context) => FloatingActionButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      showAddSupplierDialog(context);
+                    },
                     backgroundColor: Colors.orange,
                     child: const Icon(Icons.add, size: 36),
                   ),
