@@ -1,6 +1,5 @@
 import 'package:dartz/dartz.dart';
 import 'package:hisab_kitab/core/error/failure.dart';
-import 'package:hisab_kitab/features/customers/domain/entity/customer_entity.dart';
 import 'package:hisab_kitab/features/suppliers/domain/entity/supplier_entity.dart';
 
 abstract interface class ISupplierRepository {
