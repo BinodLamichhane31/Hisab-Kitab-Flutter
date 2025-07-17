@@ -54,7 +54,7 @@ class SupplierRemoteDataSource implements ISupplierDataSource {
       }
 
       final response = await _apiService.dio.get(
-        ApiEndpoints.customers,
+        ApiEndpoints.suppliers,
         queryParameters: queryParams,
       );
 

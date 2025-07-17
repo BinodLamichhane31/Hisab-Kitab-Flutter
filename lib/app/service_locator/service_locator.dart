@@ -26,6 +26,11 @@ import 'package:hisab_kitab/features/shops/domain/use_case/get_all_shops_usecase
 import 'package:hisab_kitab/features/shops/domain/use_case/switch_shop_usecase.dart';
 import 'package:hisab_kitab/features/shops/presentation/view_model/shop_view_model.dart';
 import 'package:hisab_kitab/features/splash/presentation/view_model/splash_view_model.dart';
+import 'package:hisab_kitab/features/suppliers/data/data_source/remote_data_source/supplier_remote_data_source.dart';
+import 'package:hisab_kitab/features/suppliers/data/repository/supplier_remote_repository.dart';
+import 'package:hisab_kitab/features/suppliers/domain/repository/supplier_repository.dart';
+import 'package:hisab_kitab/features/suppliers/domain/use_case/add_supplier_usecase.dart';
+import 'package:hisab_kitab/features/suppliers/domain/use_case/get_suppliers_by_shop_usecase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final serviceLocator = GetIt.instance;
@@ -39,6 +44,7 @@ Future initDependencies() async {
   await _initSignupModule();
   await _initShopModule();
   await _initCustomerModule();
+  await _initSupplierModule();
   await _initHomeModule();
   await _initSessionModule();
 }
@@ -194,6 +200,37 @@ Future _initCustomerModule() async {
   serviceLocator.registerFactory(
     () => GetCustomersByShopUsecase(
       customerRepository: serviceLocator<ICustomerRepository>(),
+    ),
+  );
+
+  // ViewModel
+  // serviceLocator.registerFactory(
+  //   () => CustomerViewModel(getCustomersByShopUsecase: serviceLocator<GetCustomersByShopUsecase>(), addCustomerUsecase: serviceLocator<AddCustomerUsecase>(), shopId: shopId);
+  // );
+}
+
+Future _initSupplierModule() async {
+  // Data sources
+  serviceLocator.registerFactory(
+    () => SupplierRemoteDataSource(apiService: serviceLocator<ApiService>()),
+  );
+
+  // Repositories
+  serviceLocator.registerFactory<ISupplierRepository>(
+    () => SupplierRemoteRepository(
+      supplierRemoteDataSource: serviceLocator<SupplierRemoteDataSource>(),
+    ),
+  );
+
+  // Use cases
+  serviceLocator.registerFactory(
+    () => AddSupplierUsecase(
+      supplierRepository: serviceLocator<ISupplierRepository>(),
+    ),
+  );
+  serviceLocator.registerFactory(
+    () => GetSuppliersByShopUsecase(
+      supplierRepository: serviceLocator<ISupplierRepository>(),
     ),
   );
 
