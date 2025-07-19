@@ -5,6 +5,7 @@ import 'package:hisab_kitab/core/session/session_cubit.dart';
 import 'package:hisab_kitab/core/session/session_state.dart';
 import 'package:hisab_kitab/features/customers/domain/use_case/add_customer_usecase.dart';
 import 'package:hisab_kitab/features/customers/domain/use_case/get_customers_by_shop_usecase.dart';
+import 'package:hisab_kitab/features/customers/presentation/view/customer_detail_page.dart';
 import 'package:hisab_kitab/features/customers/presentation/view/widget/add_customer_dialog.dart';
 import 'package:hisab_kitab/features/customers/presentation/view_model/customer_event.dart';
 import 'package:hisab_kitab/features/customers/presentation/view_model/customer_state.dart';
@@ -103,9 +104,23 @@ class CustomersPageView extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        onTap: () {
-                          // TODO: Navigate to Customer Detail Page
-                          // Example: Navigator.push(context, MaterialPageRoute(builder: (_) => CustomerDetailPage(customerId: customer.customerId!)));
+                        onTap: () async {
+                          final result = await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder:
+                                  (_) => CustomerDetailPage(
+                                    customerId: customer.customerId!,
+                                  ),
+                            ),
+                          );
+
+                          if (result == true) {
+                            final viewModel = context.read<CustomerViewModel>();
+                            viewModel.add(
+                              LoadCustomersEvent(shopId: viewModel.shopId),
+                            );
+                          }
                         },
                       );
                     },

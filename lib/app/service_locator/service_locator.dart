@@ -16,7 +16,10 @@ import 'package:hisab_kitab/features/customers/data/data_source/remote_data_sour
 import 'package:hisab_kitab/features/customers/data/repository/customer_remote_repository.dart';
 import 'package:hisab_kitab/features/customers/domain/repository/customer_repository.dart';
 import 'package:hisab_kitab/features/customers/domain/use_case/add_customer_usecase.dart';
+import 'package:hisab_kitab/features/customers/domain/use_case/delete_customer_usecase.dart';
+import 'package:hisab_kitab/features/customers/domain/use_case/get_customer_usecase.dart';
 import 'package:hisab_kitab/features/customers/domain/use_case/get_customers_by_shop_usecase.dart';
+import 'package:hisab_kitab/features/customers/domain/use_case/update_customer_usecase.dart';
 import 'package:hisab_kitab/features/home/presentation/view_model/home_view_model.dart';
 import 'package:hisab_kitab/features/shops/data/data_source/remote_data_source/shop_remote_data_source.dart';
 import 'package:hisab_kitab/features/shops/data/repository/shop_remote_repository.dart';
@@ -199,6 +202,22 @@ Future _initCustomerModule() async {
   );
   serviceLocator.registerFactory(
     () => GetCustomersByShopUsecase(
+      customerRepository: serviceLocator<ICustomerRepository>(),
+    ),
+  );
+
+  serviceLocator.registerFactory(
+    () => GetCustomerUsecase(
+      customerRepository: serviceLocator<ICustomerRepository>(),
+    ),
+  );
+  serviceLocator.registerFactory(
+    () => UpdateCustomerUsecase(
+      customerRepository: serviceLocator<ICustomerRepository>(),
+    ),
+  );
+  serviceLocator.registerFactory(
+    () => DeleteCustomerUsecase(
       customerRepository: serviceLocator<ICustomerRepository>(),
     ),
   );

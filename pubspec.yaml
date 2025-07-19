@@ -50,6 +50,7 @@ dependencies:
   shared_preferences: ^2.5.3
   google_nav_bar: ^5.0.7
   test_cov_console: ^0.2.2
+  intl: ^0.20.2
   
   
 
