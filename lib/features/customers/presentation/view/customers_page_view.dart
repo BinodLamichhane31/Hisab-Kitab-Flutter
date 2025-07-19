@@ -6,7 +6,6 @@ import 'package:hisab_kitab/core/session/session_state.dart';
 import 'package:hisab_kitab/features/customers/domain/use_case/add_customer_usecase.dart';
 import 'package:hisab_kitab/features/customers/domain/use_case/get_customers_by_shop_usecase.dart';
 import 'package:hisab_kitab/features/customers/presentation/view/customer_detail_page.dart';
-import 'package:hisab_kitab/features/customers/presentation/view/widget/add_customer_dialog.dart';
 import 'package:hisab_kitab/features/customers/presentation/view/widget/customer_form_dialog.dart';
 import 'package:hisab_kitab/features/customers/presentation/view_model/customer_event.dart';
 import 'package:hisab_kitab/features/customers/presentation/view_model/customer_state.dart';

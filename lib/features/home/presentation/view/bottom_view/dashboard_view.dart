@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hisab_kitab/core/common/shortcut_buttons.dart';
 import 'package:hisab_kitab/core/utils/trend_chart.dart';
-import 'package:hisab_kitab/features/customers/presentation/view/widget/add_customer_dialog.dart';
+import 'package:hisab_kitab/features/customers/presentation/view/widget/customer_form_dialog.dart';
 
 class DashboardView extends StatelessWidget {
   const DashboardView({super.key});
@@ -135,7 +135,7 @@ class DashboardView extends StatelessWidget {
               childAspectRatio: 3 / 2,
               children: [
                 shortcut("Add Customers", Icons.group_add, () {
-                  showAddCustomerDialog(context);
+                  showCustomerFormDialog(context);
                 }),
                 shortcut("Add Suppliers", Icons.local_shipping, () {}),
                 shortcut("Manage Stocks", Icons.shopping_cart, () {}),

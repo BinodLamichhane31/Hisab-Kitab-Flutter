@@ -3,9 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hisab_kitab/app/service_locator/service_locator.dart';
 import 'package:hisab_kitab/core/session/session_cubit.dart';
 import 'package:hisab_kitab/core/session/session_state.dart';
+import 'package:hisab_kitab/features/customers/presentation/view/customer_detail_page.dart';
+import 'package:hisab_kitab/features/customers/presentation/view_model/customer_event.dart';
+import 'package:hisab_kitab/features/customers/presentation/view_model/customer_view_model.dart';
 import 'package:hisab_kitab/features/suppliers/domain/use_case/add_supplier_usecase.dart';
 import 'package:hisab_kitab/features/suppliers/domain/use_case/get_suppliers_by_shop_usecase.dart';
-import 'package:hisab_kitab/features/suppliers/presentation/view/add_supplier_dialog.dart';
+import 'package:hisab_kitab/features/suppliers/presentation/view/supplier_datail_page.dart';
+import 'package:hisab_kitab/features/suppliers/presentation/view/supplier_form_dialog.dart';
 import 'package:hisab_kitab/features/suppliers/presentation/view_model/supplier_event.dart';
 import 'package:hisab_kitab/features/suppliers/presentation/view_model/supplier_state.dart';
 import 'package:hisab_kitab/features/suppliers/presentation/view_model/supplier_view_model.dart';
@@ -103,8 +107,23 @@ class SuppliersPageView extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        onTap: () {
-                          // TODO: Navigate to Supplier Detail Page
+                        onTap: () async {
+                          final result = await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder:
+                                  (_) => SupplierDetailPage(
+                                    supplierId: supplier.supplierId!,
+                                  ),
+                            ),
+                          );
+
+                          if (result == true) {
+                            final viewModel = context.read<SupplierViewModel>();
+                            viewModel.add(
+                              LoadSuppliersEvent(shopId: viewModel.shopId),
+                            );
+                          }
                         },
                       );
                     },
@@ -116,7 +135,7 @@ class SuppliersPageView extends StatelessWidget {
               builder:
                   (context) => FloatingActionButton(
                     onPressed: () {
-                      showAddSupplierDialog(context);
+                      showSupplierFormDialog(context);
                     },
                     backgroundColor: Colors.orange,
                     child: const Icon(Icons.add, size: 36),

@@ -18,6 +18,25 @@ class SupplierEntity extends Equatable {
     required this.currentBalance,
     required this.shopId,
   });
+  SupplierEntity copyWith({
+    String? supplierId,
+    String? name,
+    String? phone,
+    String? email,
+    String? address,
+    double? currentBalance,
+    String? shopId,
+  }) {
+    return SupplierEntity(
+      supplierId: supplierId ?? this.supplierId,
+      name: name ?? this.name,
+      phone: phone ?? this.phone,
+      email: email ?? this.email,
+      address: address ?? this.address,
+      currentBalance: currentBalance ?? this.currentBalance,
+      shopId: shopId ?? this.shopId,
+    );
+  }
 
   @override
   List<Object?> get props => [

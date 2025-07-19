@@ -1,12 +1,9 @@
-import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hisab_kitab/features/customers/domain/entity/customer_entity.dart';
 import 'package:hisab_kitab/features/customers/domain/use_case/delete_customer_usecase.dart';
 import 'package:hisab_kitab/features/customers/domain/use_case/get_customer_usecase.dart';
 import 'package:hisab_kitab/features/customers/domain/use_case/update_customer_usecase.dart';
 import 'package:hisab_kitab/features/customers/presentation/view_model/customer_detail_event.dart';
 import 'package:hisab_kitab/features/customers/presentation/view_model/customer_detail_state.dart';
-import 'package:hisab_kitab/features/customers/presentation/view_model/customer_state.dart';
 
 class CustomerDetailViewModel
     extends Bloc<CustomerDetailEvent, CustomerDetailState> {

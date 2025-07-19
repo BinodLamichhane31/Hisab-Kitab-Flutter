@@ -33,7 +33,10 @@ import 'package:hisab_kitab/features/suppliers/data/data_source/remote_data_sour
 import 'package:hisab_kitab/features/suppliers/data/repository/supplier_remote_repository.dart';
 import 'package:hisab_kitab/features/suppliers/domain/repository/supplier_repository.dart';
 import 'package:hisab_kitab/features/suppliers/domain/use_case/add_supplier_usecase.dart';
+import 'package:hisab_kitab/features/suppliers/domain/use_case/delete_supplier_usecase.dart';
+import 'package:hisab_kitab/features/suppliers/domain/use_case/get_supplier_usecase.dart';
 import 'package:hisab_kitab/features/suppliers/domain/use_case/get_suppliers_by_shop_usecase.dart';
+import 'package:hisab_kitab/features/suppliers/domain/use_case/update_supplier_usecase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final serviceLocator = GetIt.instance;
@@ -253,8 +256,24 @@ Future _initSupplierModule() async {
     ),
   );
 
+  serviceLocator.registerFactory(
+    () => GetSupplierUsecase(
+      supplierRepository: serviceLocator<ISupplierRepository>(),
+    ),
+  );
+  serviceLocator.registerFactory(
+    () => UpdateSupplierUsecase(
+      supplierRepository: serviceLocator<ISupplierRepository>(),
+    ),
+  );
+  serviceLocator.registerFactory(
+    () => DeleteSupplierUsecase(
+      supplierRepository: serviceLocator<ISupplierRepository>(),
+    ),
+  );
+
   // ViewModel
   // serviceLocator.registerFactory(
-  //   () => CustomerViewModel(getCustomersByShopUsecase: serviceLocator<GetCustomersByShopUsecase>(), addCustomerUsecase: serviceLocator<AddCustomerUsecase>(), shopId: shopId);
+  //   () => SupplierViewModel(getSuppliersByShopUsecase: serviceLocator<GetCustomersByShopUsecase>(), addCustomerUsecase: serviceLocator<AddCustomerUsecase>(), shopId: shopId);
   // );
 }

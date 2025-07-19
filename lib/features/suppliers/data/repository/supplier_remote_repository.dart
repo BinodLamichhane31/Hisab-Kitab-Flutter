@@ -22,9 +22,17 @@ class SupplierRemoteRepository implements ISupplierRepository {
   }
 
   @override
-  Future<Either<Failure, SupplierEntity>> getSupplierById(String supplierId) {
-    // TODO: implement getSupplierById
-    throw UnimplementedError();
+  Future<Either<Failure, SupplierEntity>> getSupplierById(
+    String supplierId,
+  ) async {
+    try {
+      final supplier = await _supplierRemoteDataSource.getSupplierById(
+        supplierId,
+      );
+      return Right(supplier);
+    } catch (e) {
+      return Left(ApiFailure(message: e.toString()));
+    }
   }
 
   @override
@@ -46,14 +54,26 @@ class SupplierRemoteRepository implements ISupplierRepository {
   @override
   Future<Either<Failure, SupplierEntity>> updateSupplier(
     SupplierEntity supplier,
-  ) {
-    // TODO: implement updateSupplier
-    throw UnimplementedError();
+  ) async {
+    try {
+      final updatedSupplier = await _supplierRemoteDataSource.updateSupplier(
+        supplier,
+      );
+      return Right(updatedSupplier);
+    } catch (e) {
+      return Left(ApiFailure(message: e.toString()));
+    }
   }
 
   @override
-  Future<Either<Failure, bool>> deleteSupplier(String supplierId) {
-    // TODO: implement deleteSupplier
-    throw UnimplementedError();
+  Future<Either<Failure, bool>> deleteSupplier(String supplierId) async {
+    try {
+      final deleted = await _supplierRemoteDataSource.deleteSupplier(
+        supplierId,
+      );
+      return Right(deleted);
+    } catch (e) {
+      return Left(ApiFailure(message: e.toString()));
+    }
   }
 }

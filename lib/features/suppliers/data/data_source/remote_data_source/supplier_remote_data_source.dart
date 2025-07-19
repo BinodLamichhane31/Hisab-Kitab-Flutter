@@ -30,15 +30,42 @@ class SupplierRemoteDataSource implements ISupplierDataSource {
   }
 
   @override
-  Future<bool> deleteSupplier(String supplierId) {
-    // TODO: implement deleteCustomer
-    throw UnimplementedError();
+  Future<bool> deleteSupplier(String supplierId) async {
+    try {
+      final response = await _apiService.dio.delete(
+        ApiEndpoints.supplierById(supplierId),
+      );
+      return response.statusCode == 200;
+    } on DioException catch (e) {
+      throw Exception(
+        'Failed to delete supplier: ${e.response?.data['message'] ?? e.message}',
+      );
+    } catch (e) {
+      throw Exception('An unexpected error occurred: $e');
+    }
   }
 
   @override
-  Future<SupplierEntity> getSupplierById(String supplierId) {
-    // TODO: implement getSupplierById
-    throw UnimplementedError();
+  Future<SupplierEntity> getSupplierById(String supplierId) async {
+    try {
+      final response = await _apiService.dio.get(
+        ApiEndpoints.supplierById(supplierId),
+      );
+
+      if (response.statusCode == 200) {
+        final customerJson = response.data['data'];
+        final apiModel = SupplierApiModel.fromJson(customerJson);
+        return apiModel.toEntity();
+      } else {
+        throw Exception('Server returned status code ${response.statusCode}');
+      }
+    } on DioException catch (e) {
+      throw Exception(
+        'Failed to get supplier: ${e.response?.data['message'] ?? e.message}',
+      );
+    } catch (e) {
+      throw Exception('An unexpected error occurred: $e');
+    }
   }
 
   @override
@@ -78,8 +105,34 @@ class SupplierRemoteDataSource implements ISupplierDataSource {
   }
 
   @override
-  Future<SupplierEntity> updateSupplier(SupplierEntity supplier) {
-    // TODO: implement updateCustomer
-    throw UnimplementedError();
+  Future<SupplierEntity> updateSupplier(SupplierEntity supplier) async {
+    if (supplier.supplierId == null) {
+      throw ArgumentError(
+        "Customer ID cannot be null for an update operation.",
+      );
+    }
+
+    try {
+      final customerApiModel = SupplierApiModel.fromEntity(supplier);
+      final response = await _apiService.dio.put(
+        ApiEndpoints.supplierById(supplier.supplierId!),
+        data: customerApiModel.toJson(),
+      );
+      if (response.statusCode == 200) {
+        final updatedSupplierJson = response.data['data'];
+        final updatedApiModel = SupplierApiModel.fromJson(updatedSupplierJson);
+        return updatedApiModel.toEntity();
+      } else {
+        throw Exception(
+          'Failed to update supplier. Server returned status code ${response.statusCode}',
+        );
+      }
+    } on DioException catch (e) {
+      throw Exception(
+        'Failed to update customer: ${e.response?.data['message'] ?? e.message}',
+      );
+    } catch (e) {
+      throw Exception('An unexpected error occurred: $e');
+    }
   }
 }
