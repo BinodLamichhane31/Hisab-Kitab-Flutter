@@ -22,9 +22,9 @@ class ApiEndpoints {
 
   //Customers
   static const String customers = '/customers';
-  static const String customerById = '/customers/';
+  static String customerById(String customerId) => '/customers/$customerId';
 
   //Suppliers
   static const String suppliers = '/suppliers';
-  static const String supplierById = '/suppliers/';
+  static String supplierById(String supplierId) => '/suppliers/$supplierId';
 }
