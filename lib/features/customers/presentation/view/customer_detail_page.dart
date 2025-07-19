@@ -5,6 +5,8 @@ import 'package:hisab_kitab/core/common/snackbar/my_snackbar.dart';
 import 'package:hisab_kitab/features/customers/domain/entity/customer_entity.dart';
 import 'package:hisab_kitab/features/customers/domain/use_case/delete_customer_usecase.dart';
 import 'package:hisab_kitab/features/customers/domain/use_case/get_customer_usecase.dart';
+import 'package:hisab_kitab/features/customers/domain/use_case/update_customer_usecase.dart';
+import 'package:hisab_kitab/features/customers/presentation/view/widget/customer_form_dialog.dart';
 import 'package:hisab_kitab/features/customers/presentation/view_model/customer_detail_event.dart';
 import 'package:hisab_kitab/features/customers/presentation/view_model/customer_detail_state.dart';
 import 'package:hisab_kitab/features/customers/presentation/view_model/customer_detail_view_model.dart';
@@ -22,6 +24,7 @@ class CustomerDetailPage extends StatelessWidget {
           (context) => CustomerDetailViewModel(
             getCustomerByIdUsecase: serviceLocator<GetCustomerUsecase>(),
             deleteCustomerUsecase: serviceLocator<DeleteCustomerUsecase>(),
+            updateCustomerUsecase: serviceLocator<UpdateCustomerUsecase>(),
           )..add(LoadCustomerDetailEvent(customerId)),
       child: const CustomerDetailView(),
     );
@@ -66,7 +69,7 @@ class CustomerDetailView extends StatelessWidget {
                 IconButton(
                   icon: const Icon(Icons.edit_outlined),
                   onPressed: () {
-                    // TODO: Implement Edit navigation/dialog
+                    showCustomerFormDialog(context, customerToEdit: customer);
                   },
                 ),
               if (customer != null)

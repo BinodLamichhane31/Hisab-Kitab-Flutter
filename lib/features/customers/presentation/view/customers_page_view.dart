@@ -7,6 +7,7 @@ import 'package:hisab_kitab/features/customers/domain/use_case/add_customer_usec
 import 'package:hisab_kitab/features/customers/domain/use_case/get_customers_by_shop_usecase.dart';
 import 'package:hisab_kitab/features/customers/presentation/view/customer_detail_page.dart';
 import 'package:hisab_kitab/features/customers/presentation/view/widget/add_customer_dialog.dart';
+import 'package:hisab_kitab/features/customers/presentation/view/widget/customer_form_dialog.dart';
 import 'package:hisab_kitab/features/customers/presentation/view_model/customer_event.dart';
 import 'package:hisab_kitab/features/customers/presentation/view_model/customer_state.dart';
 import 'package:hisab_kitab/features/customers/presentation/view_model/customer_view_model.dart';
@@ -132,7 +133,7 @@ class CustomersPageView extends StatelessWidget {
               builder:
                   (context) => FloatingActionButton(
                     onPressed: () {
-                      showAddCustomerDialog(context);
+                      showCustomerFormDialog(context);
                     },
                     backgroundColor: Colors.orange,
                     child: const Icon(Icons.add, size: 36),

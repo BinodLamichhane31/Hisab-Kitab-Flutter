@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:hisab_kitab/features/customers/domain/entity/customer_entity.dart';
 
 abstract class CustomerDetailEvent extends Equatable {
   const CustomerDetailEvent();
@@ -14,6 +15,15 @@ class LoadCustomerDetailEvent extends CustomerDetailEvent {
 
   @override
   List<Object?> get props => [customerId];
+}
+
+class UpdateCustomerDetailEvent extends CustomerDetailEvent {
+  final CustomerEntity customer;
+
+  const UpdateCustomerDetailEvent(this.customer);
+
+  @override
+  List<Object?> get props => [customer];
 }
 
 class DeleteCustomerEvent extends CustomerDetailEvent {

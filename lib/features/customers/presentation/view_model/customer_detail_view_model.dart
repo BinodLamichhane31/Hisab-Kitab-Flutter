@@ -6,22 +6,24 @@ import 'package:hisab_kitab/features/customers/domain/use_case/get_customer_usec
 import 'package:hisab_kitab/features/customers/domain/use_case/update_customer_usecase.dart';
 import 'package:hisab_kitab/features/customers/presentation/view_model/customer_detail_event.dart';
 import 'package:hisab_kitab/features/customers/presentation/view_model/customer_detail_state.dart';
+import 'package:hisab_kitab/features/customers/presentation/view_model/customer_state.dart';
 
 class CustomerDetailViewModel
     extends Bloc<CustomerDetailEvent, CustomerDetailState> {
   final GetCustomerUsecase _getCustomerByIdUsecase;
   final DeleteCustomerUsecase _deleteCustomerUsecase;
-  // final UpdateCustomerUsecase _updateCustomerUsecase; // For future edit functionality
+  final UpdateCustomerUsecase _updateCustomerUsecase;
 
   CustomerDetailViewModel({
     required GetCustomerUsecase getCustomerByIdUsecase,
     required DeleteCustomerUsecase deleteCustomerUsecase,
-    // required UpdateCustomerUsecase updateCustomerUsecase,
+    required UpdateCustomerUsecase updateCustomerUsecase,
   }) : _getCustomerByIdUsecase = getCustomerByIdUsecase,
        _deleteCustomerUsecase = deleteCustomerUsecase,
-       // _updateCustomerUsecase = updateCustomerUsecase,
+       _updateCustomerUsecase = updateCustomerUsecase,
        super(const CustomerDetailState.initial()) {
     on<LoadCustomerDetailEvent>(_onLoadCustomerDetail);
+    on<UpdateCustomerDetailEvent>(_onUpdateCustomer);
     on<DeleteCustomerEvent>(_onDeleteCustomer);
   }
 
@@ -49,6 +51,29 @@ class CustomerDetailViewModel
     );
   }
 
+  Future<void> _onUpdateCustomer(
+    UpdateCustomerDetailEvent event,
+    Emitter<CustomerDetailState> emit,
+  ) async {
+    final result = await _updateCustomerUsecase(
+      UpdateCustomerParams(customer: event.customer),
+    );
+    result.fold(
+      (failure) {
+        // Emit an error message for the UI to show
+        emit(state.copyWith(errorMessage: failure.message, clearError: false));
+      },
+      (updatedCustomer) {
+        emit(
+          state.copyWith(
+            status: CustomerDetailStatus.success,
+            customer: updatedCustomer,
+          ),
+        );
+      },
+    );
+  }
+
   Future<void> _onDeleteCustomer(
     DeleteCustomerEvent event,
     Emitter<CustomerDetailState> emit,
@@ -56,19 +81,13 @@ class CustomerDetailViewModel
     final result = await _deleteCustomerUsecase(
       DeleteCustomerParams(customerId: event.customerId),
     );
-    result.fold(
-      (failure) {
-        // We don't change the main status, just set an error message
-        // to be shown in a snackbar by the UI layer.
-        emit(
-          state.copyWith(
-            status: CustomerDetailStatus.success,
-            errorMessage: failure.message,
-          ),
-        );
-      },
-      // On success, we emit a 'deleted' status to trigger navigation.
-      (_) => emit(state.copyWith(status: CustomerDetailStatus.deleted)),
-    );
+    result.fold((failure) {
+      emit(
+        state.copyWith(
+          status: CustomerDetailStatus.success,
+          errorMessage: failure.message,
+        ),
+      );
+    }, (_) => emit(state.copyWith(status: CustomerDetailStatus.deleted)));
   }
 }
