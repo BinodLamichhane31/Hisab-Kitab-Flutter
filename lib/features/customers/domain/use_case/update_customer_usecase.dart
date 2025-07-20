@@ -5,7 +5,6 @@ import 'package:hisab_kitab/core/error/failure.dart';
 import 'package:hisab_kitab/features/customers/domain/entity/customer_entity.dart';
 import 'package:hisab_kitab/features/customers/domain/repository/customer_repository.dart';
 
-/// Params class for passing the updated customer entity to the use case.
 class UpdateCustomerParams extends Equatable {
   final CustomerEntity customer;
 

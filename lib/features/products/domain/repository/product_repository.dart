@@ -13,6 +13,8 @@ abstract interface class IProductRepository {
 
   Future<Either<Failure, List<ProductEntity>>> getProductsByShop(
     String shopId, {
+    int? page,
+    int? limit,
     String? search,
   });
 
