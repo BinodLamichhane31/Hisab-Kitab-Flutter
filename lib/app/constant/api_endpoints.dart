@@ -7,7 +7,6 @@ class ApiEndpoints {
   static const String serverAddress = "http://localhost:6060";
 
   static const String baseUrl = "$serverAddress/api";
-  static const String imageUrl = "$serverAddress/uploads";
 
   //Auth
   static const String register = "/auth/register";
