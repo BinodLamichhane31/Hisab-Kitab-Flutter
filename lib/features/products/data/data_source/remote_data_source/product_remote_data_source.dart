@@ -22,10 +22,15 @@ class ProductRemoteDataSource implements IProductDataSource {
       productMap.removeWhere((key, value) => value == null);
       final formData = FormData.fromMap(productMap);
       if (imageFile != null) {
+        final fileName = imageFile.path.split('/').last;
         formData.files.add(
           MapEntry(
             'productImage',
-            await MultipartFile.fromFile(imageFile.path),
+            await MultipartFile.fromFile(
+              imageFile.path,
+              filename: fileName,
+              contentType: DioMediaType.parse(_getContentType(fileName)),
+            ),
           ),
         );
       }
@@ -142,18 +147,23 @@ class ProductRemoteDataSource implements IProductDataSource {
     try {
       final productMap = ProductApiModel.fromEntity(product).toJson();
       productMap.removeWhere((key, value) => value == null);
+      productMap.remove('_id');
 
       final formData = FormData.fromMap(productMap);
 
       if (imageFile != null) {
+        final fileName = imageFile.path.split('/').last;
         formData.files.add(
           MapEntry(
             'productImage',
-            await MultipartFile.fromFile(imageFile.path),
+            await MultipartFile.fromFile(
+              imageFile.path,
+              filename: fileName,
+              contentType: DioMediaType.parse(_getContentType(fileName)),
+            ),
           ),
         );
       }
-
       final response = await _apiService.dio.put(
         ApiEndpoints.productById(product.productId!),
         data: formData,
@@ -174,6 +184,23 @@ class ProductRemoteDataSource implements IProductDataSource {
       );
     } catch (e) {
       throw Exception('An unexpected error occurred: $e');
+    }
+  }
+
+  String _getContentType(String fileName) {
+    final extension = fileName.toLowerCase().split('.').last;
+    switch (extension) {
+      case 'jpg':
+      case 'jpeg':
+        return 'image/jpeg';
+      case 'png':
+        return 'image/png';
+      case 'gif':
+        return 'image/gif';
+      case 'webp':
+        return 'image/webp';
+      default:
+        return 'image/jpeg'; // Default fallback
     }
   }
 }

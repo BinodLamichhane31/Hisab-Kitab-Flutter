@@ -17,7 +17,6 @@ class ProductApiModel extends Equatable {
   final String category;
   final String description;
   final int reorderLevel;
-  @JsonKey(name: 'shop')
   final String shopId;
   final String? image;
 

@@ -7,6 +7,7 @@ import 'package:hisab_kitab/core/session/session_state.dart';
 import 'package:hisab_kitab/features/products/domain/use_case/add_product_usecase.dart';
 import 'package:hisab_kitab/features/products/domain/use_case/get_products_usecase.dart';
 import 'package:hisab_kitab/features/products/presentation/view/product_detail_view.dart';
+import 'package:hisab_kitab/features/products/presentation/view/product_form_page.dart';
 import 'package:hisab_kitab/features/products/presentation/view_model/product_event.dart';
 import 'package:hisab_kitab/features/products/presentation/view_model/product_state.dart';
 import 'package:hisab_kitab/features/products/presentation/view_model/product_view_model.dart';
@@ -193,7 +194,26 @@ class _ProductViewContentState extends State<_ProductViewContent> {
       floatingActionButton: Builder(
         builder:
             (context) => FloatingActionButton(
-              onPressed: () {},
+              onPressed: () async {
+                final result = await Navigator.push<bool>(
+                  context,
+                  MaterialPageRoute(
+                    builder:
+                        (_) => ProductFormPage(
+                          shopId: context.read<ProductViewModel>().shopId,
+                        ),
+                  ),
+                );
+                // If result is true, it means a product was added successfully
+                if (result == true) {
+                  // Refresh the list
+                  context.read<ProductViewModel>().add(
+                    LoadProductsEvent(
+                      shopId: context.read<ProductViewModel>().shopId,
+                    ),
+                  );
+                }
+              },
               backgroundColor: Colors.orange,
               child: const Icon(Icons.add, size: 36),
             ),

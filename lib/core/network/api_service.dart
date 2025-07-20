@@ -37,9 +37,6 @@ class ApiService {
           },
         ),
       )
-      ..options.headers = {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      };
+      ..options.headers = {'Accept': 'application/json'};
   }
 }

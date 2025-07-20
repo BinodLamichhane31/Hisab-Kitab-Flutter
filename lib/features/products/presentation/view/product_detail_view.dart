@@ -6,6 +6,7 @@ import 'package:hisab_kitab/features/products/domain/entity/product_entity.dart'
 import 'package:hisab_kitab/features/products/domain/use_case/delete_product_usecase.dart';
 import 'package:hisab_kitab/features/products/domain/use_case/get_product_by_id_usecase.dart';
 import 'package:hisab_kitab/features/products/domain/use_case/update_product_usecase.dart';
+import 'package:hisab_kitab/features/products/presentation/view/product_form_page.dart';
 import 'package:hisab_kitab/features/products/presentation/view_model/product_detail_event.dart';
 import 'package:hisab_kitab/features/products/presentation/view_model/product_detail_state.dart';
 import 'package:hisab_kitab/features/products/presentation/view_model/product_detail_view_model.dart';
@@ -74,7 +75,23 @@ class _ProductDetailView extends StatelessWidget {
                 IconButton(
                   icon: const Icon(Icons.edit_outlined),
                   tooltip: 'Edit Product',
-                  onPressed: () {},
+                  onPressed: () async {
+                    final result = await Navigator.push<bool>(
+                      context,
+                      MaterialPageRoute(
+                        builder:
+                            (_) => ProductFormPage(
+                              shopId: product.shopId,
+                              productToEdit: product,
+                            ),
+                      ),
+                    );
+                    if (result == true) {
+                      context.read<ProductDetailViewModel>().add(
+                        LoadProductDetailEvent(productId: product.productId!),
+                      );
+                    }
+                  },
                 ),
               if (state.status == ProductDetailStatus.success &&
                   product != null)
@@ -166,36 +183,40 @@ class _ProductDetailsContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final fullImageUrl = '${ApiEndpoints.serverAddress}${product.image!}';
+    String? fullImageUrl;
+    if (product.image != null && product.image!.isNotEmpty) {
+      fullImageUrl = '${ApiEndpoints.serverAddress}${product.image!}';
+    }
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Center(
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: Image.network(
-                fullImageUrl,
-                height: 200,
-                width: double.infinity,
-                fit: BoxFit.cover,
-                errorBuilder:
-                    (context, error, stackTrace) => Container(
-                      height: 200,
-                      color: Colors.grey.shade200,
-                      child: const Center(
-                        child: Icon(
-                          Icons.inventory_2_outlined,
-                          size: 60,
-                          color: Colors.grey,
+          if (fullImageUrl != null)
+            Center(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Image.network(
+                  fullImageUrl,
+                  height: 200,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                  errorBuilder:
+                      (context, error, stackTrace) => Container(
+                        height: 200,
+                        color: Colors.grey.shade200,
+                        child: const Center(
+                          child: Icon(
+                            Icons.inventory_2_outlined,
+                            size: 60,
+                            color: Colors.grey,
+                          ),
                         ),
                       ),
-                    ),
+                ),
               ),
             ),
-          ),
           const SizedBox(height: 24),
           Text(
             product.name,

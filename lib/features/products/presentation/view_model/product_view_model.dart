@@ -24,7 +24,6 @@ class ProductViewModel extends Bloc<ProductEvent, ProductState> {
     LoadProductsEvent event,
     Emitter<ProductState> emit,
   ) async {
-    // Set loading state and clear previous errors
     emit(state.copyWith(isLoading: true, errorMessage: null));
 
     final result = await getProductsUsecase(

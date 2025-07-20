@@ -9,7 +9,6 @@ abstract class ProductDetailEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-/// Event to load the details of a specific product.
 class LoadProductDetailEvent extends ProductDetailEvent {
   final String productId;
 
@@ -19,7 +18,6 @@ class LoadProductDetailEvent extends ProductDetailEvent {
   List<Object?> get props => [productId];
 }
 
-/// Event to update an existing product's details.
 class UpdateProductEvent extends ProductDetailEvent {
   final ProductEntity product;
   final File? imageFile;
@@ -30,7 +28,6 @@ class UpdateProductEvent extends ProductDetailEvent {
   List<Object?> get props => [product, imageFile];
 }
 
-/// Event to delete a product.
 class DeleteProductEvent extends ProductDetailEvent {
   final String productId;
 

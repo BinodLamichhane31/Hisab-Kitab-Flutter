@@ -16,7 +16,7 @@ ProductApiModel _$ProductApiModelFromJson(Map<String, dynamic> json) =>
       category: json['category'] as String,
       description: json['description'] as String,
       reorderLevel: (json['reorderLevel'] as num).toInt(),
-      shopId: json['shop'] as String,
+      shopId: json['shopId'] as String,
       image: json['image'] as String?,
     );
 
@@ -30,6 +30,6 @@ Map<String, dynamic> _$ProductApiModelToJson(ProductApiModel instance) =>
       'category': instance.category,
       'description': instance.description,
       'reorderLevel': instance.reorderLevel,
-      'shop': instance.shopId,
+      'shopId': instance.shopId,
       'image': instance.image,
     };
