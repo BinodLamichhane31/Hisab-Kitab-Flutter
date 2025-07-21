@@ -12,7 +12,6 @@ import 'package:hisab_kitab/features/products/presentation/view_model/product_fo
 import 'package:hisab_kitab/features/products/presentation/view_model/product_form_view_model.dart';
 import 'package:image_picker/image_picker.dart';
 
-// Statically defined categories for the dropdown
 const List<String> _productCategories = [
   'Groceries & Food',
   'Beverages',

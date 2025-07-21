@@ -34,9 +34,7 @@ class ProductsPageView extends StatelessWidget {
         }
 
         return BlocProvider(
-          key: ValueKey(
-            activeShop.shopId,
-          ), // Ensures BLoC is recreated for new shop
+          key: ValueKey(activeShop.shopId),
           create:
               (context) => ProductViewModel(
                 getProductsUsecase: serviceLocator<GetProductsUsecase>(),
@@ -50,7 +48,6 @@ class ProductsPageView extends StatelessWidget {
   }
 }
 
-// Inner stateful widget to handle the search controller
 class _ProductViewContent extends StatefulWidget {
   const _ProductViewContent();
 
@@ -60,16 +57,49 @@ class _ProductViewContent extends StatefulWidget {
 
 class _ProductViewContentState extends State<_ProductViewContent> {
   final _searchController = TextEditingController();
+  final _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_onScroll);
+  }
 
   @override
   void dispose() {
     _searchController.dispose();
+    _scrollController
+      ..removeListener(_onScroll)
+      ..dispose();
     super.dispose();
+  }
+
+  /// Checks if the user has scrolled to the bottom of the list.
+  bool get _isBottom {
+    if (!_scrollController.hasClients) return false;
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final currentScroll = _scrollController.offset;
+    // We trigger the load a little before the user reaches the absolute end.
+    return currentScroll >= (maxScroll * 0.9);
+  }
+
+  void _onScroll() {
+    if (_isBottom) {
+      final viewModel = context.read<ProductViewModel>();
+      viewModel.add(
+        LoadProductsEvent(
+          shopId: viewModel.shopId,
+          search: _searchController.text,
+        ),
+      );
+    }
   }
 
   void _onSearchChanged(String query) {
     final viewModel = context.read<ProductViewModel>();
-    viewModel.add(LoadProductsEvent(shopId: viewModel.shopId, search: query));
+    viewModel.add(
+      RefreshProductsEvent(shopId: viewModel.shopId, search: query),
+    );
   }
 
   @override
@@ -112,14 +142,29 @@ class _ProductViewContentState extends State<_ProductViewContent> {
           return RefreshIndicator(
             onRefresh: () async {
               final viewModel = context.read<ProductViewModel>();
-              viewModel.add(LoadProductsEvent(shopId: viewModel.shopId));
+              viewModel.add(
+                RefreshProductsEvent(
+                  shopId: viewModel.shopId,
+                  search: _searchController.text,
+                ),
+              );
             },
             child: ListView.builder(
-              itemCount: state.products.length,
+              controller: _scrollController,
+              itemCount:
+                  state.hasReachedMax
+                      ? state.products.length
+                      : state.products.length + 1,
               padding: const EdgeInsets.all(8.0),
               itemBuilder: (context, index) {
-                final product = state.products[index];
+                if (index >= state.products.length) {
+                  return const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 16.0),
+                    child: Center(child: CircularProgressIndicator()),
+                  );
+                }
 
+                final product = state.products[index];
                 return Card(
                   elevation: 2,
                   margin: const EdgeInsets.symmetric(vertical: 4),
@@ -177,10 +222,10 @@ class _ProductViewContentState extends State<_ProductViewContent> {
                         ),
                       );
 
-                      if (result == true) {
+                      if (result == true && mounted) {
                         final viewModel = context.read<ProductViewModel>();
                         viewModel.add(
-                          LoadProductsEvent(shopId: viewModel.shopId),
+                          RefreshProductsEvent(shopId: viewModel.shopId),
                         );
                       }
                     },
@@ -204,11 +249,10 @@ class _ProductViewContentState extends State<_ProductViewContent> {
                         ),
                   ),
                 );
-                // If result is true, it means a product was added successfully
-                if (result == true) {
-                  // Refresh the list
+
+                if (result == true && mounted) {
                   context.read<ProductViewModel>().add(
-                    LoadProductsEvent(
+                    RefreshProductsEvent(
                       shopId: context.read<ProductViewModel>().shopId,
                     ),
                   );
