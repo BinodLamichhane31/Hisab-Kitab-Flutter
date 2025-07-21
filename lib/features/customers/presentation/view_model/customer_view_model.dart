@@ -17,7 +17,6 @@ class CustomerViewModel extends Bloc<CustomerEvent, CustomerState> {
     on<LoadCustomersEvent>(_onLoadCustomers);
     on<CreateCustomerEvent>(_onCreateCustomer);
 
-    // Load customers for current shop initially
     add(LoadCustomersEvent(shopId: shopId));
   }
 

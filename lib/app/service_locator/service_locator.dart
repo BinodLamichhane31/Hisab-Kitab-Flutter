@@ -16,8 +16,19 @@ import 'package:hisab_kitab/features/customers/data/data_source/remote_data_sour
 import 'package:hisab_kitab/features/customers/data/repository/customer_remote_repository.dart';
 import 'package:hisab_kitab/features/customers/domain/repository/customer_repository.dart';
 import 'package:hisab_kitab/features/customers/domain/use_case/add_customer_usecase.dart';
+import 'package:hisab_kitab/features/customers/domain/use_case/delete_customer_usecase.dart';
+import 'package:hisab_kitab/features/customers/domain/use_case/get_customer_usecase.dart';
 import 'package:hisab_kitab/features/customers/domain/use_case/get_customers_by_shop_usecase.dart';
+import 'package:hisab_kitab/features/customers/domain/use_case/update_customer_usecase.dart';
 import 'package:hisab_kitab/features/home/presentation/view_model/home_view_model.dart';
+import 'package:hisab_kitab/features/products/data/data_source/remote_data_source/product_remote_data_source.dart';
+import 'package:hisab_kitab/features/products/data/repository/product_remote_repository.dart';
+import 'package:hisab_kitab/features/products/domain/repository/product_repository.dart';
+import 'package:hisab_kitab/features/products/domain/use_case/add_product_usecase.dart';
+import 'package:hisab_kitab/features/products/domain/use_case/delete_product_usecase.dart';
+import 'package:hisab_kitab/features/products/domain/use_case/get_product_by_id_usecase.dart';
+import 'package:hisab_kitab/features/products/domain/use_case/get_products_usecase.dart';
+import 'package:hisab_kitab/features/products/domain/use_case/update_product_usecase.dart';
 import 'package:hisab_kitab/features/shops/data/data_source/remote_data_source/shop_remote_data_source.dart';
 import 'package:hisab_kitab/features/shops/data/repository/shop_remote_repository.dart';
 import 'package:hisab_kitab/features/shops/domain/repository/shop_repository.dart';
@@ -26,6 +37,14 @@ import 'package:hisab_kitab/features/shops/domain/use_case/get_all_shops_usecase
 import 'package:hisab_kitab/features/shops/domain/use_case/switch_shop_usecase.dart';
 import 'package:hisab_kitab/features/shops/presentation/view_model/shop_view_model.dart';
 import 'package:hisab_kitab/features/splash/presentation/view_model/splash_view_model.dart';
+import 'package:hisab_kitab/features/suppliers/data/data_source/remote_data_source/supplier_remote_data_source.dart';
+import 'package:hisab_kitab/features/suppliers/data/repository/supplier_remote_repository.dart';
+import 'package:hisab_kitab/features/suppliers/domain/repository/supplier_repository.dart';
+import 'package:hisab_kitab/features/suppliers/domain/use_case/add_supplier_usecase.dart';
+import 'package:hisab_kitab/features/suppliers/domain/use_case/delete_supplier_usecase.dart';
+import 'package:hisab_kitab/features/suppliers/domain/use_case/get_supplier_usecase.dart';
+import 'package:hisab_kitab/features/suppliers/domain/use_case/get_suppliers_by_shop_usecase.dart';
+import 'package:hisab_kitab/features/suppliers/domain/use_case/update_supplier_usecase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final serviceLocator = GetIt.instance;
@@ -39,6 +58,8 @@ Future initDependencies() async {
   await _initSignupModule();
   await _initShopModule();
   await _initCustomerModule();
+  await _initSupplierModule();
+  await _initProductModule();
   await _initHomeModule();
   await _initSessionModule();
 }
@@ -194,6 +215,116 @@ Future _initCustomerModule() async {
   serviceLocator.registerFactory(
     () => GetCustomersByShopUsecase(
       customerRepository: serviceLocator<ICustomerRepository>(),
+    ),
+  );
+
+  serviceLocator.registerFactory(
+    () => GetCustomerUsecase(
+      customerRepository: serviceLocator<ICustomerRepository>(),
+    ),
+  );
+  serviceLocator.registerFactory(
+    () => UpdateCustomerUsecase(
+      customerRepository: serviceLocator<ICustomerRepository>(),
+    ),
+  );
+  serviceLocator.registerFactory(
+    () => DeleteCustomerUsecase(
+      customerRepository: serviceLocator<ICustomerRepository>(),
+    ),
+  );
+
+  // ViewModel
+  // serviceLocator.registerFactory(
+  //   () => CustomerViewModel(getCustomersByShopUsecase: serviceLocator<GetCustomersByShopUsecase>(), addCustomerUsecase: serviceLocator<AddCustomerUsecase>(), shopId: shopId);
+  // );
+}
+
+Future _initSupplierModule() async {
+  // Data sources
+  serviceLocator.registerFactory(
+    () => SupplierRemoteDataSource(apiService: serviceLocator<ApiService>()),
+  );
+
+  // Repositories
+  serviceLocator.registerFactory<ISupplierRepository>(
+    () => SupplierRemoteRepository(
+      supplierRemoteDataSource: serviceLocator<SupplierRemoteDataSource>(),
+    ),
+  );
+
+  // Use cases
+  serviceLocator.registerFactory(
+    () => AddSupplierUsecase(
+      supplierRepository: serviceLocator<ISupplierRepository>(),
+    ),
+  );
+  serviceLocator.registerFactory(
+    () => GetSuppliersByShopUsecase(
+      supplierRepository: serviceLocator<ISupplierRepository>(),
+    ),
+  );
+
+  serviceLocator.registerFactory(
+    () => GetSupplierUsecase(
+      supplierRepository: serviceLocator<ISupplierRepository>(),
+    ),
+  );
+  serviceLocator.registerFactory(
+    () => UpdateSupplierUsecase(
+      supplierRepository: serviceLocator<ISupplierRepository>(),
+    ),
+  );
+  serviceLocator.registerFactory(
+    () => DeleteSupplierUsecase(
+      supplierRepository: serviceLocator<ISupplierRepository>(),
+    ),
+  );
+
+  // ViewModel
+  // serviceLocator.registerFactory(
+  //   () => SupplierViewModel(getSuppliersByShopUsecase: serviceLocator<GetCustomersByShopUsecase>(), addCustomerUsecase: serviceLocator<AddCustomerUsecase>(), shopId: shopId);
+  // );
+}
+
+Future _initProductModule() async {
+  // Data sources
+  serviceLocator.registerFactory(
+    () => ProductRemoteDataSource(apiService: serviceLocator<ApiService>()),
+  );
+
+  // Repositories
+  serviceLocator.registerFactory<IProductRepository>(
+    () => ProductRemoteRepository(
+      productRemoteDataSource: serviceLocator<ProductRemoteDataSource>(),
+    ),
+  );
+
+  // Use cases
+  serviceLocator.registerFactory(
+    () => AddProductUsecase(
+      productRepository: serviceLocator<IProductRepository>(),
+    ),
+  );
+  serviceLocator.registerFactory(
+    () => GetProductsUsecase(
+      productRepository: serviceLocator<IProductRepository>(),
+    ),
+  );
+
+  serviceLocator.registerFactory(
+    () => GetProductByIdUsecase(
+      productRepository: serviceLocator<IProductRepository>(),
+    ),
+  );
+  serviceLocator.registerFactory(
+    () => UpdateProductUsecase(
+      productRepository: serviceLocator<IProductRepository>(),
+    ),
+  );
+  serviceLocator.registerFactory(
+    () => DeleteProductUsecase(
+      productRepository: serviceLocator<IProductRepository>(),
     ),
   );
 

@@ -22,9 +22,17 @@ class CustomerRemoteRepository implements ICustomerRepository {
   }
 
   @override
-  Future<Either<Failure, CustomerEntity>> getCustomerById(String customerId) {
-    // TODO: implement getCustomerById
-    throw UnimplementedError();
+  Future<Either<Failure, CustomerEntity>> getCustomerById(
+    String customerId,
+  ) async {
+    try {
+      final customer = await _customerRemoteDataSource.getCustomerById(
+        customerId,
+      );
+      return Right(customer);
+    } catch (e) {
+      return Left(ApiFailure(message: e.toString()));
+    }
   }
 
   @override
@@ -46,14 +54,26 @@ class CustomerRemoteRepository implements ICustomerRepository {
   @override
   Future<Either<Failure, CustomerEntity>> updateCustomer(
     CustomerEntity customer,
-  ) {
-    // TODO: implement updateCustomer
-    throw UnimplementedError();
+  ) async {
+    try {
+      final updatedCustomer = await _customerRemoteDataSource.updateCustomer(
+        customer,
+      );
+      return Right(updatedCustomer);
+    } catch (e) {
+      return Left(ApiFailure(message: e.toString()));
+    }
   }
 
   @override
-  Future<Either<Failure, bool>> deleteCustomer(String customerId) {
-    // TODO: implement deleteCustomer
-    throw UnimplementedError();
+  Future<Either<Failure, bool>> deleteCustomer(String customerId) async {
+    try {
+      final deleted = await _customerRemoteDataSource.deleteCustomer(
+        customerId,
+      );
+      return Right(deleted);
+    } catch (e) {
+      return Left(ApiFailure(message: e.toString()));
+    }
   }
 }

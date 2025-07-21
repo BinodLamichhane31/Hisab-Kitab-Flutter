@@ -7,7 +7,6 @@ class ApiEndpoints {
   static const String serverAddress = "http://localhost:6060";
 
   static const String baseUrl = "$serverAddress/api";
-  static const String imageUrl = "$serverAddress/uploads";
 
   //Auth
   static const String register = "/auth/register";
@@ -22,5 +21,13 @@ class ApiEndpoints {
 
   //Customers
   static const String customers = '/customers';
-  static const String customerById = '/customers/';
+  static String customerById(String customerId) => '/customers/$customerId';
+
+  //Suppliers
+  static const String suppliers = '/suppliers';
+  static String supplierById(String supplierId) => '/suppliers/$supplierId';
+
+  //Products
+  static const String products = '$baseUrl/products';
+  static String productById(String productId) => '$baseUrl/products/$productId';
 }
