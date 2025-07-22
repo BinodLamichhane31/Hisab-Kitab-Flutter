@@ -128,7 +128,7 @@ class SaleRemoteDataSource implements ISaleDataSource {
         body['paymentMethod'] = paymentMethod;
       }
 
-      final response = await _apiService.dio.post(
+      final response = await _apiService.dio.put(
         '${ApiEndpoints.saleById(saleId)}/payment',
         data: body,
       );

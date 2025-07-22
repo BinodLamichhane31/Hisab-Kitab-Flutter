@@ -154,7 +154,7 @@ class _ProductDetailView extends StatelessWidget {
           ),
           actions: <Widget>[
             TextButton(
-              child: const Text('Cancel'),
+              child: const Text('Cancel', style: TextStyle(color: Colors.grey)),
               onPressed: () {
                 Navigator.of(dialogContext).pop(); // Close the dialog
               },

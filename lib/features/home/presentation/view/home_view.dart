@@ -24,20 +24,6 @@ class HomeView extends StatelessWidget {
     ];
     return Scaffold(
       appBar: AppBar(
-        leading: Builder(
-          builder: (context) {
-            return Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Center(
-                child: Image.asset(
-                  isDark
-                      ? 'assets/logo/app_logo_white.png'
-                      : 'assets/logo/app_logo_black.png',
-                ),
-              ),
-            );
-          },
-        ),
         title: ShopSwitcherWidget(),
         actions: [
           Padding(

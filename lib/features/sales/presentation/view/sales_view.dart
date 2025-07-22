@@ -3,8 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hisab_kitab/app/service_locator/service_locator.dart';
 import 'package:hisab_kitab/core/session/session_cubit.dart';
 import 'package:hisab_kitab/core/session/session_state.dart';
+import 'package:hisab_kitab/features/customers/presentation/view_model/customer_view_model.dart';
 import 'package:hisab_kitab/features/sales/domain/entity/sale_enums.dart';
 import 'package:hisab_kitab/features/sales/domain/use_case/get_sales_usecase.dart';
+import 'package:hisab_kitab/features/sales/presentation/view/sale_detail_view.dart';
 import 'package:hisab_kitab/features/sales/presentation/view_model/sale_event.dart';
 import 'package:hisab_kitab/features/sales/presentation/view_model/sale_state.dart';
 import 'package:hisab_kitab/features/sales/presentation/view_model/sale_view_model.dart';
@@ -187,8 +189,13 @@ class _SalesViewContentState extends State<_SalesViewContent> {
                           leading: CircleAvatar(
                             backgroundColor: statusColor.withOpacity(0.1),
                             child: Icon(
-                              _getStatusIcon(sale.paymentStatus),
-                              color: statusColor,
+                              sale.status.name == "COMPLETED"
+                                  ? _getStatusIcon(sale.paymentStatus)
+                                  : Icons.cancel_outlined,
+                              color:
+                                  sale.status.name == "COMPLETED"
+                                      ? statusColor
+                                      : Colors.grey,
                             ),
                           ),
                           title: Text(
@@ -211,16 +218,36 @@ class _SalesViewContentState extends State<_SalesViewContent> {
                               ),
                               const SizedBox(height: 2),
                               Text(
-                                sale.paymentStatus.name,
+                                sale.status.name == "COMPLETED"
+                                    ? sale.paymentStatus.name
+                                    : "CANCELLED",
                                 style: TextStyle(
-                                  color: statusColor,
+                                  color:
+                                      sale.status.name == "COMPLETED"
+                                          ? statusColor
+                                          : Colors.grey,
                                   fontWeight: FontWeight.w500,
                                   fontSize: 12,
                                 ),
                               ),
                             ],
                           ),
-                          onTap: () {},
+                          onTap: () async {
+                            final result = await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder:
+                                    (_) => SaleDetailView(saleId: sale.saleId!),
+                              ),
+                            );
+
+                            if (result == true) {
+                              final viewModel = context.read<SaleViewModel>();
+                              viewModel.add(
+                                LoadSalesEvent(shopId: viewModel.shopId),
+                              );
+                            }
+                          },
                         ),
                       );
                     },
@@ -233,7 +260,7 @@ class _SalesViewContentState extends State<_SalesViewContent> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
-        backgroundColor: Colors.teal,
+        backgroundColor: Colors.orange,
         tooltip: 'New Sale',
         child: const Icon(Icons.add_shopping_cart, size: 28),
       ),
@@ -248,6 +275,8 @@ class _SalesViewContentState extends State<_SalesViewContent> {
         return Colors.orange;
       case PaymentStatus.UNPAID:
         return Colors.red;
+      case PaymentStatus.CANCELLED:
+        return Colors.grey;
     }
   }
 
@@ -259,6 +288,8 @@ class _SalesViewContentState extends State<_SalesViewContent> {
         return Icons.hourglass_bottom;
       case PaymentStatus.UNPAID:
         return Icons.error;
+      case PaymentStatus.CANCELLED:
+        return Icons.cancel_schedule_send;
     }
   }
 }

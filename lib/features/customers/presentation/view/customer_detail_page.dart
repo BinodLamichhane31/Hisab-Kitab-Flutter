@@ -97,7 +97,7 @@ class CustomerDetailView extends StatelessWidget {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(dialogContext).pop(),
-              child: const Text('Cancel'),
+              child: const Text('Cancel', style: TextStyle(color: Colors.grey)),
             ),
             FilledButton(
               style: FilledButton.styleFrom(backgroundColor: Colors.red),
