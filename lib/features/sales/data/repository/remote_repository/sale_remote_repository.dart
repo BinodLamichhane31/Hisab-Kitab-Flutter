@@ -47,7 +47,7 @@ class SaleRemoteRepository implements ISaleRepository {
   }
 
   @override
-  Future<Either<Failure, PaginatedSalesEntity>> getSales({
+  Future<Either<Failure, List<SaleEntity>>> getSales({
     required String shopId,
     int? page,
     int? limit,
@@ -65,14 +65,7 @@ class SaleRemoteRepository implements ISaleRepository {
         saleType: saleType,
       );
 
-      final paginatedEntity = PaginatedSalesEntity(
-        sales: SaleApiModel.toEntityList(response.data),
-        currentPage: response.pagination['currentPage'],
-        totalPages: response.pagination['totalPages'],
-        totalSales: response.pagination['totalSales'],
-      );
-
-      return Right(paginatedEntity);
+      return Right(SaleApiModel.toEntityList(response.data));
     } catch (e) {
       return Left(ApiFailure(message: e.toString()));
     }

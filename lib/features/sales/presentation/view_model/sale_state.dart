@@ -29,7 +29,7 @@ class SaleState extends Equatable {
     String? errorMessage,
     int? currentPage,
     bool? hasReachedMax,
-    bool clearError = false, // Helper to easily clear error messages
+    bool clearError = false,
   }) {
     return SaleState(
       sales: sales ?? this.sales,

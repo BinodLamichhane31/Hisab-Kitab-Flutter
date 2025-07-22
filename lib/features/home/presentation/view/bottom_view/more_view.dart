@@ -5,11 +5,11 @@ import 'package:hisab_kitab/app/service_locator/service_locator.dart';
 import 'package:hisab_kitab/core/session/session_cubit.dart';
 import 'package:hisab_kitab/features/home/presentation/view/bottom_view/profile_page_view.dart';
 import 'package:hisab_kitab/features/home/presentation/view_model/home_view_model.dart';
+import 'package:hisab_kitab/features/sales/presentation/view/sales_view.dart';
 import 'package:hisab_kitab/features/suppliers/presentation/view/suppliers_page_view.dart';
 
 class MoreView extends StatelessWidget {
   const MoreView({super.key});
-
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -27,15 +27,9 @@ class MoreView extends StatelessWidget {
                 onTap: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      // The builder for the new route.
-                      // It provides a new ProfileBloc instance to the ProfilePageView.
                       builder:
                           (_) => BlocProvider(
-                            create:
-                                (context) =>
-                                    serviceLocator<
-                                      SessionCubit
-                                    >(), // Creates the Bloc for the new screen
+                            create: (context) => serviceLocator<SessionCubit>(),
                             child: const ProfilePageView(),
                           ),
                     ),
@@ -64,9 +58,7 @@ class MoreView extends StatelessWidget {
                 title: 'Sales',
                 onTap:
                     () => Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (_) => const ProfilePageView(),
-                      ),
+                      MaterialPageRoute(builder: (_) => const SalesView()),
                     ),
               ),
               _OptionItem(
@@ -93,7 +85,6 @@ class MoreView extends StatelessWidget {
           ),
           const SizedBox(height: 24),
 
-          // --- Section: General ---
           _buildSectionHeader(context, 'General'),
           _buildOptionCard(
             context: context,
@@ -132,7 +123,6 @@ class MoreView extends StatelessWidget {
           ),
           const SizedBox(height: 32),
 
-          // --- Action: Logout ---
           _buildLogoutTile(context),
         ],
       ),

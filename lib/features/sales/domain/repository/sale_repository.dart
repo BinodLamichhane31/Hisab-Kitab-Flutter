@@ -42,7 +42,7 @@ class PaginatedSalesEntity {
 abstract interface class ISaleRepository {
   Future<Either<Failure, SaleEntity>> createSale(CreateSaleRequest saleRequest);
 
-  Future<Either<Failure, PaginatedSalesEntity>> getSales({
+  Future<Either<Failure, List<SaleEntity>>> getSales({
     required String shopId,
     int? page,
     int? limit,

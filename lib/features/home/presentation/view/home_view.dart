@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:hisab_kitab/core/session/session_cubit.dart';
-import 'package:hisab_kitab/core/session/session_state.dart';
 import 'package:hisab_kitab/features/customers/presentation/view/customers_page_view.dart';
 import 'package:hisab_kitab/features/home/presentation/view/bottom_view/dashboard_view.dart';
 import 'package:hisab_kitab/features/home/presentation/view/bottom_view/more_view.dart';
-import 'package:hisab_kitab/features/home/presentation/view/bottom_view/profile_page_view.dart';
 import 'package:hisab_kitab/features/shops/presentation/view/widget/shop_switcher.dart';
 import 'package:hisab_kitab/features/home/presentation/view_model/home_state.dart';
 import 'package:hisab_kitab/features/home/presentation/view_model/home_view_model.dart';

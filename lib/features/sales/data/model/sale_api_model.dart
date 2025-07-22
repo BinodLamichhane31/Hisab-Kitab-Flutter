@@ -6,6 +6,22 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'sale_api_model.g.dart';
 
+const _$SaleTypeEnumMap = {
+  SaleType.CUSTOMER: 'CUSTOMER',
+  SaleType.CASH: 'CASH',
+};
+
+const _$PaymentStatusEnumMap = {
+  PaymentStatus.PAID: 'PAID',
+  PaymentStatus.PARTIAL: 'PARTIAL',
+  PaymentStatus.UNPAID: 'UNPAID',
+};
+
+const _$SaleStatusEnumMap = {
+  SaleStatus.COMPLETED: 'COMPLETED',
+  SaleStatus.CANCELLED: 'CANCELLED',
+};
+
 @JsonSerializable()
 class PopulatedCustomerInfoModel extends Equatable {
   final String name;
@@ -47,7 +63,8 @@ class PopulatedUserInfoModel extends Equatable {
   List<Object?> get props => [fname, lname];
 }
 
-@JsonSerializable(createFactory: false)
+// *** THE MAIN CORRECTED CLASS ***
+@JsonSerializable(createFactory: false, createToJson: false)
 class SaleApiModel extends Equatable {
   @JsonKey(name: '_id')
   final String? saleId;
@@ -96,16 +113,32 @@ class SaleApiModel extends Equatable {
     this.updatedAt,
   });
 
+  // Robust fromJson factory to prevent crashes
   factory SaleApiModel.fromJson(Map<String, dynamic> json) {
     String? parsedCustomerId;
     PopulatedCustomerInfoModel? parsedCustomerInfo;
-
     final customerData = json['customer'];
     if (customerData is String) {
       parsedCustomerId = customerData;
     } else if (customerData is Map<String, dynamic>) {
       parsedCustomerInfo = PopulatedCustomerInfoModel.fromJson(customerData);
       parsedCustomerId = parsedCustomerInfo.id;
+    }
+
+    PopulatedUserInfoModel? parsedCreatedBy;
+    final createdByData = json['createdBy'];
+    if (createdByData is Map<String, dynamic>) {
+      parsedCreatedBy = PopulatedUserInfoModel.fromJson(createdByData);
+    }
+
+    List<SaleItemApiModel> parsedItems = [];
+    final itemsData = json['items'];
+    if (itemsData is List) {
+      parsedItems =
+          itemsData
+              .whereType<Map<String, dynamic>>()
+              .map((itemJson) => SaleItemApiModel.fromJson(itemJson))
+              .toList();
     }
 
     return SaleApiModel(
@@ -115,10 +148,7 @@ class SaleApiModel extends Equatable {
       customerId: parsedCustomerId,
       customerInfo: parsedCustomerInfo,
       saleType: $enumDecode(_$SaleTypeEnumMap, json['saleType']),
-      items:
-          (json['items'] as List<dynamic>)
-              .map((e) => SaleItemApiModel.fromJson(e as Map<String, dynamic>))
-              .toList(),
+      items: parsedItems,
       subTotal: (json['subTotal'] as num).toDouble(),
       discount: (json['discount'] as num?)?.toDouble(),
       tax: (json['tax'] as num?)?.toDouble(),
@@ -129,12 +159,7 @@ class SaleApiModel extends Equatable {
       saleDate: DateTime.parse(json['saleDate'] as String),
       status: $enumDecode(_$SaleStatusEnumMap, json['status']),
       notes: json['notes'] as String?,
-      createdBy:
-          json['createdBy'] == null
-              ? null
-              : PopulatedUserInfoModel.fromJson(
-                json['createdBy'] as Map<String, dynamic>,
-              ),
+      createdBy: parsedCreatedBy,
       createdAt:
           json['createdAt'] == null
               ? null
@@ -146,7 +171,29 @@ class SaleApiModel extends Equatable {
     );
   }
 
-  Map<String, dynamic> toJson() => _$SaleApiModelToJson(this);
+  // Manual toJson method to prevent build errors
+  Map<String, dynamic> toJson() {
+    return {
+      '_id': saleId,
+      'invoiceNumber': invoiceNumber,
+      'shop': shopId,
+      'customer': customerId,
+      'saleType': _$SaleTypeEnumMap[saleType],
+      'items': items.map((item) => item.toJson()).toList(),
+      'subTotal': subTotal,
+      'discount': discount,
+      'tax': tax,
+      'grandTotal': grandTotal,
+      'amountPaid': amountPaid,
+      'amountDue': amountDue,
+      'paymentStatus': _$PaymentStatusEnumMap[paymentStatus],
+      'saleDate': saleDate.toIso8601String(),
+      'status': _$SaleStatusEnumMap[status],
+      'notes': notes,
+      'createdAt': createdAt?.toIso8601String(),
+      'updatedAt': updatedAt?.toIso8601String(),
+    };
+  }
 
   SaleEntity toEntity() {
     return SaleEntity(
@@ -158,8 +205,8 @@ class SaleApiModel extends Equatable {
       saleType: saleType,
       items: items.map((item) => item.toEntity()).toList(),
       subTotal: subTotal,
-      discount: discount ?? 0,
-      tax: tax ?? 0,
+      discount: discount ?? 0.0,
+      tax: tax ?? 0.0,
       grandTotal: grandTotal,
       amountPaid: amountPaid,
       amountDue: amountDue,
