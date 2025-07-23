@@ -44,87 +44,164 @@ class SuppliersPageView extends StatelessWidget {
           child: Scaffold(
             body: BlocBuilder<SupplierViewModel, SupplierState>(
               builder: (context, state) {
-                if (state.isLoading && state.suppliers.isEmpty) {
-                  return const Center(child: CircularProgressIndicator());
-                }
+                final supplierViewModel = context.read<SupplierViewModel>();
+                final hasSearchQuery = state.search?.isNotEmpty ?? false;
 
-                if (state.errorMessage != null && state.suppliers.isEmpty) {
-                  return Center(child: Text(state.errorMessage!));
-                }
-
-                if (state.suppliers.isEmpty) {
-                  return const Center(
-                    child: Text(
-                      'No suppliers found.\nTap the + button to add one!',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 18, color: Colors.grey),
-                    ),
-                  );
-                }
-
-                return RefreshIndicator(
-                  onRefresh: () async {
-                    final shopId = context.read<SupplierViewModel>().shopId;
-                    context.read<SupplierViewModel>().add(
-                      LoadSuppliersEvent(shopId: shopId),
-                    );
-                  },
-                  child: ListView.separated(
-                    itemCount: state.suppliers.length,
-                    padding: const EdgeInsets.all(8.0),
-                    separatorBuilder:
-                        (context, index) => const Divider(height: 1),
-                    itemBuilder: (context, index) {
-                      final supplier = state.suppliers[index];
-                      return ListTile(
-                        leading: CircleAvatar(
-                          backgroundColor: Colors.orange.shade100,
-                          child: Text(
-                            supplier.name.isNotEmpty
-                                ? supplier.name[0].toUpperCase()
-                                : '?',
-                            style: const TextStyle(
-                              color: Colors.orange,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                        title: Text(
-                          supplier.name,
-                          style: const TextStyle(fontWeight: FontWeight.w500),
-                        ),
-                        subtitle: Text(supplier.phone),
-                        trailing: Text(
-                          'Rs. ${supplier.currentBalance.toStringAsFixed(2)}',
-                          style: TextStyle(
-                            color:
-                                supplier.currentBalance >= 0
-                                    ? Colors.green
-                                    : Colors.red,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        onTap: () async {
-                          final result = await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder:
-                                  (_) => SupplierDetailPage(
-                                    supplierId: supplier.supplierId!,
-                                  ),
+                return Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+                      child: TextField(
+                        key: ValueKey(state.search),
+                        onChanged: (query) {
+                          supplierViewModel.add(
+                            LoadSuppliersEvent(
+                              shopId: supplierViewModel.shopId,
+                              search: query,
                             ),
                           );
-
-                          if (result == true) {
-                            final viewModel = context.read<SupplierViewModel>();
-                            viewModel.add(
-                              LoadSuppliersEvent(shopId: viewModel.shopId),
+                        },
+                        decoration: InputDecoration(
+                          hintStyle: const TextStyle(fontSize: 14),
+                          hintText: 'Search suppliers by name or phone...',
+                          prefixIcon: const Icon(Icons.search),
+                          suffixIcon:
+                              hasSearchQuery
+                                  ? IconButton(
+                                    icon: const Icon(Icons.clear),
+                                    onPressed: () {
+                                      supplierViewModel.add(
+                                        LoadSuppliersEvent(
+                                          shopId: supplierViewModel.shopId,
+                                          search: '',
+                                        ),
+                                      );
+                                    },
+                                  )
+                                  : null,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                            borderSide: BorderSide.none,
+                          ),
+                          filled: true,
+                          contentPadding: const EdgeInsets.symmetric(
+                            vertical: 0,
+                            horizontal: 20,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Builder(
+                        builder: (context) {
+                          if (state.isLoading && state.suppliers.isEmpty) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
                             );
                           }
+
+                          if (state.errorMessage != null &&
+                              state.suppliers.isEmpty) {
+                            return Center(child: Text(state.errorMessage!));
+                          }
+
+                          if (state.suppliers.isEmpty) {
+                            return Center(
+                              child: Text(
+                                hasSearchQuery
+                                    ? 'No suppliers found for "${state.search}"'
+                                    : 'No suppliers found.\nTap the + button to add one!',
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            );
+                          }
+
+                          return RefreshIndicator(
+                            onRefresh: () async {
+                              // Pass the current search query on refresh
+                              supplierViewModel.add(
+                                LoadSuppliersEvent(
+                                  shopId: supplierViewModel.shopId,
+                                  search: state.search,
+                                ),
+                              );
+                            },
+                            child: ListView.separated(
+                              itemCount: state.suppliers.length,
+                              padding: const EdgeInsets.fromLTRB(
+                                8.0,
+                                0,
+                                8.0,
+                                8.0,
+                              ),
+                              separatorBuilder:
+                                  (context, index) => const Divider(height: 1),
+                              itemBuilder: (context, index) {
+                                final supplier = state.suppliers[index];
+                                return ListTile(
+                                  leading: CircleAvatar(
+                                    backgroundColor: Colors.orange.shade100,
+                                    child: Text(
+                                      supplier.name.isNotEmpty
+                                          ? supplier.name[0].toUpperCase()
+                                          : '?',
+                                      style: const TextStyle(
+                                        color: Colors.orange,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                  title: Text(
+                                    supplier.name,
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  subtitle: Text(supplier.phone),
+                                  trailing: Text(
+                                    'Rs. ${supplier.currentBalance.toStringAsFixed(2)}',
+                                    style: TextStyle(
+                                      color:
+                                          supplier.currentBalance >= 0
+                                              ? Colors.red
+                                              : Colors
+                                                  .green, // Suppliers balance is opposite
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  onTap: () async {
+                                    final result = await Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder:
+                                            (_) => SupplierDetailPage(
+                                              supplierId: supplier.supplierId!,
+                                            ),
+                                      ),
+                                    );
+
+                                    if (result == true) {
+                                      // Pass the current search query on reload
+                                      supplierViewModel.add(
+                                        LoadSuppliersEvent(
+                                          shopId: supplierViewModel.shopId,
+                                          search: state.search,
+                                        ),
+                                      );
+                                    }
+                                  },
+                                );
+                              },
+                            ),
+                          );
                         },
-                      );
-                    },
-                  ),
+                      ),
+                    ),
+                  ],
                 );
               },
             ),

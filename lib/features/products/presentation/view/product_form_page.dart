@@ -178,15 +178,90 @@ class _ProductFormViewState extends State<_ProductFormView> {
               const SizedBox(height: 20),
               TextFormField(
                 controller: _nameController,
-                decoration: const InputDecoration(labelText: 'Product Name'),
-                validator:
-                    (value) =>
-                        value!.isEmpty ? 'Please enter a product name' : null,
+                decoration: InputDecoration(
+                  labelText: 'Product Name',
+                  floatingLabelBehavior: FloatingLabelBehavior.auto,
+                  labelStyle: TextStyle(color: Colors.grey[400]),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                    borderSide: BorderSide(
+                      color: Colors.orange.withOpacity(0.3),
+                      width: 1.5,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                    borderSide: const BorderSide(
+                      color: Colors.orange,
+                      width: 2.0,
+                    ),
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                    borderSide: const BorderSide(
+                      color: Colors.redAccent,
+                      width: 2.0,
+                    ),
+                  ),
+                  focusedErrorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                    borderSide: const BorderSide(
+                      color: Colors.redAccent,
+                      width: 2.5,
+                    ),
+                  ),
+                  errorStyle: const TextStyle(
+                    color: Colors.redAccent,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a product name';
+                  }
+                  return null;
+                },
               ),
               const SizedBox(height: 12),
               DropdownButtonFormField<String>(
                 value: _selectedCategory,
-                decoration: const InputDecoration(labelText: 'Category'),
+                decoration: InputDecoration(
+                  labelText: 'Category',
+                  floatingLabelBehavior: FloatingLabelBehavior.auto,
+                  labelStyle: TextStyle(color: Colors.grey[400]),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                    borderSide: BorderSide(
+                      color: Colors.orange.withOpacity(0.3),
+                      width: 1.5,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                    borderSide: const BorderSide(
+                      color: Colors.orange,
+                      width: 2.0,
+                    ),
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                    borderSide: const BorderSide(
+                      color: Colors.redAccent,
+                      width: 2.0,
+                    ),
+                  ),
+                  focusedErrorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                    borderSide: const BorderSide(
+                      color: Colors.redAccent,
+                      width: 2.5,
+                    ),
+                  ),
+                  errorStyle: const TextStyle(
+                    color: Colors.redAccent,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
                 items:
                     _productCategories
                         .map(
@@ -205,8 +280,42 @@ class _ProductFormViewState extends State<_ProductFormView> {
                   Expanded(
                     child: TextFormField(
                       controller: _sellingPriceController,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         labelText: 'Selling Price',
+                        floatingLabelBehavior: FloatingLabelBehavior.auto,
+                        labelStyle: TextStyle(color: Colors.grey[400]),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12.0),
+                          borderSide: BorderSide(
+                            color: Colors.orange.withOpacity(0.3),
+                            width: 1.5,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12.0),
+                          borderSide: const BorderSide(
+                            color: Colors.orange,
+                            width: 2.0,
+                          ),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12.0),
+                          borderSide: const BorderSide(
+                            color: Colors.redAccent,
+                            width: 2.0,
+                          ),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12.0),
+                          borderSide: const BorderSide(
+                            color: Colors.redAccent,
+                            width: 2.5,
+                          ),
+                        ),
+                        errorStyle: const TextStyle(
+                          color: Colors.redAccent,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       keyboardType: const TextInputType.numberWithOptions(
                         decimal: true,
@@ -222,8 +331,42 @@ class _ProductFormViewState extends State<_ProductFormView> {
                   Expanded(
                     child: TextFormField(
                       controller: _purchasePriceController,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         labelText: 'Purchase Price',
+                        floatingLabelBehavior: FloatingLabelBehavior.auto,
+                        labelStyle: TextStyle(color: Colors.grey[400]),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12.0),
+                          borderSide: BorderSide(
+                            color: Colors.orange.withOpacity(0.3),
+                            width: 1.5,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12.0),
+                          borderSide: const BorderSide(
+                            color: Colors.orange,
+                            width: 2.0,
+                          ),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12.0),
+                          borderSide: const BorderSide(
+                            color: Colors.redAccent,
+                            width: 2.0,
+                          ),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12.0),
+                          borderSide: const BorderSide(
+                            color: Colors.redAccent,
+                            width: 2.5,
+                          ),
+                        ),
+                        errorStyle: const TextStyle(
+                          color: Colors.redAccent,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       keyboardType: const TextInputType.numberWithOptions(
                         decimal: true,
@@ -238,47 +381,89 @@ class _ProductFormViewState extends State<_ProductFormView> {
                 ],
               ),
               const SizedBox(height: 12),
-              Row(
-                children: [
-                  Expanded(
-                    child: TextFormField(
-                      controller: _quantityController,
-                      decoration: const InputDecoration(labelText: 'Quantity'),
-                      keyboardType: TextInputType.number,
-                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                      validator:
-                          (value) =>
-                              value!.isEmpty || int.tryParse(value) == null
-                                  ? 'Enter a valid quantity'
-                                  : null,
+              TextFormField(
+                controller: _reorderLevelController,
+                decoration: InputDecoration(
+                  labelText: 'Re-order Level',
+                  floatingLabelBehavior: FloatingLabelBehavior.auto,
+                  labelStyle: TextStyle(color: Colors.grey[400]),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                    borderSide: BorderSide(
+                      color: Colors.orange.withOpacity(0.3),
+                      width: 1.5,
                     ),
                   ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: TextFormField(
-                      controller: _reorderLevelController,
-                      decoration: const InputDecoration(
-                        labelText: 'Re-order Level',
-                      ),
-                      keyboardType: TextInputType.number,
-                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                      validator:
-                          (value) =>
-                              value!.isEmpty || int.tryParse(value) == null
-                                  ? 'Enter a valid number'
-                                  : null,
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                    borderSide: const BorderSide(
+                      color: Colors.orange,
+                      width: 2.0,
                     ),
                   ),
-                ],
+                  errorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                    borderSide: const BorderSide(
+                      color: Colors.redAccent,
+                      width: 2.0,
+                    ),
+                  ),
+                  focusedErrorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                    borderSide: const BorderSide(
+                      color: Colors.redAccent,
+                      width: 2.5,
+                    ),
+                  ),
+                  errorStyle: const TextStyle(
+                    color: Colors.redAccent,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
               const SizedBox(height: 12),
               TextFormField(
                 controller: _descriptionController,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: 'Description (Optional)',
+                  floatingLabelBehavior: FloatingLabelBehavior.auto,
+                  labelStyle: TextStyle(color: Colors.grey[400]),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                    borderSide: BorderSide(
+                      color: Colors.orange.withOpacity(0.3),
+                      width: 1.5,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                    borderSide: const BorderSide(
+                      color: Colors.orange,
+                      width: 2.0,
+                    ),
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                    borderSide: const BorderSide(
+                      color: Colors.redAccent,
+                      width: 2.0,
+                    ),
+                  ),
+                  focusedErrorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                    borderSide: const BorderSide(
+                      color: Colors.redAccent,
+                      width: 2.5,
+                    ),
+                  ),
+                  errorStyle: const TextStyle(
+                    color: Colors.redAccent,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 maxLines: 3,
               ),
+
               const SizedBox(height: 30),
               BlocBuilder<ProductFormViewModel, ProductFormState>(
                 builder: (context, state) {
@@ -304,6 +489,7 @@ class _ProductFormViewState extends State<_ProductFormView> {
                               widget.isEditing
                                   ? 'Update Product'
                                   : 'Save Product',
+                              style: TextStyle(color: Colors.grey[300]),
                             ),
                   );
                 },

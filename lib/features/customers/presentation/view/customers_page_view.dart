@@ -44,87 +44,166 @@ class CustomersPageView extends StatelessWidget {
           child: Scaffold(
             body: BlocBuilder<CustomerViewModel, CustomerState>(
               builder: (context, state) {
-                if (state.isLoading && state.customers.isEmpty) {
-                  return const Center(child: CircularProgressIndicator());
-                }
+                final customerViewModel = context.read<CustomerViewModel>();
 
-                if (state.errorMessage != null && state.customers.isEmpty) {
-                  return Center(child: Text(state.errorMessage!));
-                }
-
-                if (state.customers.isEmpty) {
-                  return const Center(
-                    child: Text(
-                      'No customers found.\nTap the + button to add one!',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 18, color: Colors.grey),
-                    ),
-                  );
-                }
-
-                return RefreshIndicator(
-                  onRefresh: () async {
-                    final shopId = context.read<CustomerViewModel>().shopId;
-                    context.read<CustomerViewModel>().add(
-                      LoadCustomersEvent(shopId: shopId),
-                    );
-                  },
-                  child: ListView.separated(
-                    itemCount: state.customers.length,
-                    padding: const EdgeInsets.all(8.0),
-                    separatorBuilder:
-                        (context, index) => const Divider(height: 1),
-                    itemBuilder: (context, index) {
-                      final customer = state.customers[index];
-                      return ListTile(
-                        leading: CircleAvatar(
-                          backgroundColor: Colors.orange.shade100,
-                          child: Text(
-                            customer.name.isNotEmpty
-                                ? customer.name[0].toUpperCase()
-                                : '?',
-                            style: const TextStyle(
-                              color: Colors.orange,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                        title: Text(
-                          customer.name,
-                          style: const TextStyle(fontWeight: FontWeight.w500),
-                        ),
-                        subtitle: Text(customer.phone),
-                        trailing: Text(
-                          'Rs. ${customer.currentBalance.toStringAsFixed(2)}',
-                          style: TextStyle(
-                            color:
-                                customer.currentBalance >= 0
-                                    ? Colors.green
-                                    : Colors.red,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        onTap: () async {
-                          final result = await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder:
-                                  (_) => CustomerDetailPage(
-                                    customerId: customer.customerId!,
-                                  ),
+                return Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+                      child: TextField(
+                        key: ValueKey(state.search),
+                        onChanged: (query) {
+                          customerViewModel.add(
+                            LoadCustomersEvent(
+                              shopId: customerViewModel.shopId,
+                              search: query,
                             ),
                           );
-
-                          if (result == true) {
-                            final viewModel = context.read<CustomerViewModel>();
-                            viewModel.add(
-                              LoadCustomersEvent(shopId: viewModel.shopId),
+                        },
+                        decoration: InputDecoration(
+                          hintStyle: const TextStyle(fontSize: 14),
+                          hintText: 'Search customers by name or phone...',
+                          prefixIcon: const Icon(Icons.search),
+                          suffixIcon:
+                              (state.search?.isNotEmpty ?? false)
+                                  ? IconButton(
+                                    icon: const Icon(Icons.clear),
+                                    onPressed: () {
+                                      customerViewModel.add(
+                                        LoadCustomersEvent(
+                                          shopId: customerViewModel.shopId,
+                                          search: '',
+                                        ),
+                                      );
+                                    },
+                                  )
+                                  : null,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                            borderSide: BorderSide.none,
+                          ),
+                          filled: true,
+                          contentPadding: const EdgeInsets.symmetric(
+                            vertical: 0,
+                            horizontal: 20,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Builder(
+                        builder: (context) {
+                          if (state.isLoading && state.customers.isEmpty) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
                             );
                           }
+
+                          if (state.errorMessage != null &&
+                              state.customers.isEmpty) {
+                            return Center(child: Text(state.errorMessage!));
+                          }
+
+                          if (state.customers.isEmpty) {
+                            final hasSearchQuery =
+                                state.search?.isNotEmpty ?? false;
+                            return Center(
+                              child: Text(
+                                hasSearchQuery
+                                    ? 'No customers found for "${state.search}"'
+                                    : 'No customers found.\nTap the + button to add one!',
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            );
+                          }
+
+                          return RefreshIndicator(
+                            onRefresh: () async {
+                              final viewModel =
+                                  context.read<CustomerViewModel>();
+                              viewModel.add(
+                                LoadCustomersEvent(
+                                  shopId: viewModel.shopId,
+                                  search: state.search,
+                                ),
+                              );
+                            },
+                            child: ListView.separated(
+                              itemCount: state.customers.length,
+                              padding: const EdgeInsets.fromLTRB(
+                                8.0,
+                                0,
+                                8.0,
+                                8.0,
+                              ),
+                              separatorBuilder:
+                                  (context, index) => const Divider(height: 1),
+                              itemBuilder: (context, index) {
+                                final customer = state.customers[index];
+                                return ListTile(
+                                  leading: CircleAvatar(
+                                    backgroundColor: Colors.orange.shade100,
+                                    child: Text(
+                                      customer.name.isNotEmpty
+                                          ? customer.name[0].toUpperCase()
+                                          : '?',
+                                      style: const TextStyle(
+                                        color: Colors.orange,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                  title: Text(
+                                    customer.name,
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  subtitle: Text(customer.phone),
+                                  trailing: Text(
+                                    'Rs. ${customer.currentBalance.toStringAsFixed(2)}',
+                                    style: TextStyle(
+                                      color:
+                                          customer.currentBalance >= 0
+                                              ? Colors.green
+                                              : Colors.red,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  onTap: () async {
+                                    final result = await Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder:
+                                            (_) => CustomerDetailPage(
+                                              customerId: customer.customerId!,
+                                            ),
+                                      ),
+                                    );
+
+                                    if (result == true) {
+                                      final viewModel =
+                                          context.read<CustomerViewModel>();
+                                      viewModel.add(
+                                        LoadCustomersEvent(
+                                          shopId: viewModel.shopId,
+                                          search: state.search,
+                                        ),
+                                      );
+                                    }
+                                  },
+                                );
+                              },
+                            ),
+                          );
                         },
-                      );
-                    },
-                  ),
+                      ),
+                    ),
+                  ],
                 );
               },
             ),

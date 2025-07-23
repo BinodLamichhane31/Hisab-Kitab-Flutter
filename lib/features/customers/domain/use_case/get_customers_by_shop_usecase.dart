@@ -26,7 +26,10 @@ class GetCustomersByShopUsecase
   Future<Either<Failure, List<CustomerEntity>>> call(
     GetCustomersByShopParams params,
   ) {
-    final customers = customerRepository.getCustomerByShop(params.shopId);
+    final customers = customerRepository.getCustomerByShop(
+      params.shopId,
+      search: params.search,
+    );
     return customers;
   }
 }

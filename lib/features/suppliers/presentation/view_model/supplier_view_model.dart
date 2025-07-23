@@ -17,7 +17,6 @@ class SupplierViewModel extends Bloc<SupplierEvent, SupplierState> {
     on<LoadSuppliersEvent>(_onLoadSuppliers);
     on<CreateSupplierEvent>(_onCreateSupplier);
 
-    // Load suppliers for current shop initially
     add(LoadSuppliersEvent(shopId: shopId));
   }
 
@@ -25,16 +24,26 @@ class SupplierViewModel extends Bloc<SupplierEvent, SupplierState> {
     LoadSuppliersEvent event,
     Emitter<SupplierState> emit,
   ) async {
-    emit(state.copyWith(isLoading: true));
+    if (state.suppliers.isEmpty) {
+      emit(state.copyWith(isLoading: true, errorMessage: null));
+    }
+
     final result = await getSuppliersByShopUsecase(
-      GetSuppliersByShopParams(shopId: event.shopId),
+      GetSuppliersByShopParams(shopId: event.shopId, search: event.search),
     );
+
     result.fold(
       (failure) {
         emit(state.copyWith(isLoading: false, errorMessage: failure.message));
       },
       (suppliers) {
-        emit(state.copyWith(suppliers: suppliers, isLoading: false));
+        emit(
+          state.copyWith(
+            suppliers: suppliers,
+            isLoading: false,
+            errorMessage: null,
+          ),
+        );
       },
     );
   }
@@ -45,6 +54,7 @@ class SupplierViewModel extends Bloc<SupplierEvent, SupplierState> {
   ) async {
     emit(state.copyWith(isLoading: true));
     await Future.delayed(const Duration(seconds: 1));
+
     final result = await addSupplierUsecase(
       AddSupplierParams(
         name: event.name,
@@ -55,12 +65,12 @@ class SupplierViewModel extends Bloc<SupplierEvent, SupplierState> {
         shopId: event.shopId,
       ),
     );
+
     result.fold(
       (failure) {
         emit(state.copyWith(isLoading: false, errorMessage: failure.message));
       },
       (_) {
-        emit(state.copyWith(isLoading: false));
         add(LoadSuppliersEvent(shopId: event.shopId));
       },
     );

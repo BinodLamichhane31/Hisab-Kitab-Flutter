@@ -3,6 +3,7 @@ import 'package:hisab_kitab/features/customers/domain/use_case/add_customer_usec
 import 'package:hisab_kitab/features/customers/domain/use_case/get_customers_by_shop_usecase.dart';
 import 'package:hisab_kitab/features/customers/presentation/view_model/customer_event.dart';
 import 'package:hisab_kitab/features/customers/presentation/view_model/customer_state.dart';
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 
 class CustomerViewModel extends Bloc<CustomerEvent, CustomerState> {
   final GetCustomersByShopUsecase getCustomersByShopUsecase;
@@ -14,7 +15,7 @@ class CustomerViewModel extends Bloc<CustomerEvent, CustomerState> {
     required this.addCustomerUsecase,
     required this.shopId,
   }) : super(const CustomerState.initial()) {
-    on<LoadCustomersEvent>(_onLoadCustomers);
+    on<LoadCustomersEvent>(_onLoadCustomers, transformer: restartable());
     on<CreateCustomerEvent>(_onCreateCustomer);
 
     add(LoadCustomersEvent(shopId: shopId));
@@ -24,9 +25,11 @@ class CustomerViewModel extends Bloc<CustomerEvent, CustomerState> {
     LoadCustomersEvent event,
     Emitter<CustomerState> emit,
   ) async {
-    emit(state.copyWith(isLoading: true));
+    if (state.customers.isEmpty) {
+      emit(state.copyWith(isLoading: true, errorMessage: null));
+    }
     final result = await getCustomersByShopUsecase(
-      GetCustomersByShopParams(shopId: event.shopId),
+      GetCustomersByShopParams(shopId: event.shopId, search: event.search),
     );
     result.fold(
       (failure) {
@@ -59,7 +62,6 @@ class CustomerViewModel extends Bloc<CustomerEvent, CustomerState> {
         emit(state.copyWith(isLoading: false, errorMessage: failure.message));
       },
       (_) {
-        emit(state.copyWith(isLoading: false));
         add(LoadCustomersEvent(shopId: event.shopId));
       },
     );

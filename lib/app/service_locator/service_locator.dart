@@ -29,6 +29,14 @@ import 'package:hisab_kitab/features/products/domain/use_case/delete_product_use
 import 'package:hisab_kitab/features/products/domain/use_case/get_product_by_id_usecase.dart';
 import 'package:hisab_kitab/features/products/domain/use_case/get_products_usecase.dart';
 import 'package:hisab_kitab/features/products/domain/use_case/update_product_usecase.dart';
+import 'package:hisab_kitab/features/sales/data/data_source/remote_datasource/sale_remote_data_source.dart';
+import 'package:hisab_kitab/features/sales/data/repository/remote_repository/sale_remote_repository.dart';
+import 'package:hisab_kitab/features/sales/domain/repository/sale_repository.dart';
+import 'package:hisab_kitab/features/sales/domain/use_case/cancel_sale_usecase.dart';
+import 'package:hisab_kitab/features/sales/domain/use_case/create_sale_usecase.dart';
+import 'package:hisab_kitab/features/sales/domain/use_case/get_sale_by_id_usecase.dart';
+import 'package:hisab_kitab/features/sales/domain/use_case/get_sales_usecase.dart';
+import 'package:hisab_kitab/features/sales/domain/use_case/record_payment_usecase.dart';
 import 'package:hisab_kitab/features/shops/data/data_source/remote_data_source/shop_remote_data_source.dart';
 import 'package:hisab_kitab/features/shops/data/repository/shop_remote_repository.dart';
 import 'package:hisab_kitab/features/shops/domain/repository/shop_repository.dart';
@@ -60,6 +68,7 @@ Future initDependencies() async {
   await _initCustomerModule();
   await _initSupplierModule();
   await _initProductModule();
+  await _initSaleModule();
   await _initHomeModule();
   await _initSessionModule();
 }
@@ -332,4 +341,31 @@ Future _initProductModule() async {
   // serviceLocator.registerFactory(
   //   () => CustomerViewModel(getCustomersByShopUsecase: serviceLocator<GetCustomersByShopUsecase>(), addCustomerUsecase: serviceLocator<AddCustomerUsecase>(), shopId: shopId);
   // );
+}
+
+Future _initSaleModule() async {
+  serviceLocator.registerFactory(
+    () => SaleRemoteDataSource(apiService: serviceLocator<ApiService>()),
+  );
+  serviceLocator.registerFactory<ISaleRepository>(
+    () => SaleRemoteRepository(
+      saleDataSource: serviceLocator<SaleRemoteDataSource>(),
+    ),
+  );
+  serviceLocator.registerFactory(
+    () => GetSalesUsecase(saleRepository: serviceLocator<ISaleRepository>()),
+  );
+  serviceLocator.registerFactory(
+    () => GetSaleByIdUsecase(saleRepository: serviceLocator<ISaleRepository>()),
+  );
+  serviceLocator.registerFactory(
+    () => CancelSaleUsecase(saleRepository: serviceLocator<ISaleRepository>()),
+  );
+  serviceLocator.registerFactory(
+    () =>
+        RecordPaymentUsecase(saleRepository: serviceLocator<ISaleRepository>()),
+  );
+  serviceLocator.registerFactory(
+    () => CreateSaleUsecase(saleRepository: serviceLocator<ISaleRepository>()),
+  );
 }

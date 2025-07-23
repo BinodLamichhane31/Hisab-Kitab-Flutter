@@ -26,7 +26,10 @@ class GetSuppliersByShopUsecase
   Future<Either<Failure, List<SupplierEntity>>> call(
     GetSuppliersByShopParams params,
   ) {
-    final suppliers = supplierRepository.getSupplierByShop(params.shopId);
+    final suppliers = supplierRepository.getSupplierByShop(
+      params.shopId,
+      search: params.search,
+    );
     return suppliers;
   }
 }
