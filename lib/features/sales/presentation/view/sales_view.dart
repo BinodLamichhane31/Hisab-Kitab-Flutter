@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hisab_kitab/app/service_locator/service_locator.dart';
 import 'package:hisab_kitab/core/session/session_cubit.dart';
 import 'package:hisab_kitab/core/session/session_state.dart';
-import 'package:hisab_kitab/features/customers/presentation/view_model/customer_view_model.dart';
 import 'package:hisab_kitab/features/sales/domain/entity/sale_enums.dart';
 import 'package:hisab_kitab/features/sales/domain/use_case/get_sales_usecase.dart';
+import 'package:hisab_kitab/features/sales/presentation/view/create_sale_view.dart';
 import 'package:hisab_kitab/features/sales/presentation/view/sale_detail_view.dart';
 import 'package:hisab_kitab/features/sales/presentation/view_model/sale_event.dart';
 import 'package:hisab_kitab/features/sales/presentation/view_model/sale_state.dart';
@@ -259,7 +259,25 @@ class _SalesViewContentState extends State<_SalesViewContent> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () async {
+          // Navigate to the CreateSaleView and wait for a result.
+          final result = await Navigator.push<bool>(
+            context,
+            MaterialPageRoute(builder: (context) => const CreateSaleView()),
+          );
+
+          // If the result is true, it means a sale was created,
+          // so we refresh the list.
+          if (result == true && context.mounted) {
+            final viewModel = context.read<SaleViewModel>();
+            viewModel.add(
+              RefreshSalesEvent(
+                shopId: viewModel.shopId,
+                search: _searchController.text,
+              ),
+            );
+          }
+        },
         backgroundColor: Colors.orange,
         tooltip: 'New Sale',
         child: const Icon(Icons.add_shopping_cart, size: 28),
