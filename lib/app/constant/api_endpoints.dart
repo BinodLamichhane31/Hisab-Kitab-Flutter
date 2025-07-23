@@ -34,4 +34,8 @@ class ApiEndpoints {
   //sale
   static const String sales = '$baseUrl/sales';
   static String saleById(String id) => '$baseUrl/sales/$id';
+
+  //sale
+  static const String purchases = '$baseUrl/purchases';
+  static String purchaseById(String id) => '$baseUrl/purchases/$id';
 }
