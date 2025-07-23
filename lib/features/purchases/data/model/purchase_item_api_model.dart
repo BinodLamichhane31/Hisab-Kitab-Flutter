@@ -24,33 +24,44 @@ class PurchaseItemApiModel extends Equatable {
   });
 
   factory PurchaseItemApiModel.fromJson(Map<String, dynamic> json) {
-    final productData = json['product'];
-    PopulatedProductInfoModel populatedProduct;
+    try {
+      final productData = json['product'];
+      PopulatedProductInfoModel populatedProduct;
 
-    if (productData is Map<String, dynamic>) {
-      populatedProduct = PopulatedProductInfoModel.fromJson(productData);
-    } else if (productData is String) {
-      populatedProduct = PopulatedProductInfoModel(
-        id: productData,
-        name: json['productName'] ?? 'Unknown Product',
+      if (productData is Map<String, dynamic>) {
+        populatedProduct = PopulatedProductInfoModel.fromJson(productData);
+      } else if (productData is String) {
+        // If we only get the product ID, create a minimal model.
+        // The productName from the parent object is crucial here.
+        populatedProduct = PopulatedProductInfoModel(
+          id: productData,
+          name: json['productName'] ?? 'Unknown Product',
+        );
+      } else {
+        // This case should be rare, but it's good to have a fallback.
+        throw FormatException(
+          "Invalid 'product' format in PurchaseItemApiModel: $productData",
+        );
+      }
+
+      return PurchaseItemApiModel(
+        product: populatedProduct,
+        productName: json['productName'] as String,
+        quantity: (json['quantity'] as num).toInt(),
+        unitCost: (json['unitCost'] as num).toDouble(),
+        total: (json['total'] as num).toDouble(),
       );
-    } else {
-      throw FormatException(
-        "Invalid 'product' format in PurchaseItemApiModel: $productData",
-      );
+    } catch (e) {
+      print("==== FAILED TO PARSE PurchaseItemApiModel ====");
+      print("Error: $e");
+      print("Problematic JSON: $json");
+      print("========================================");
+      rethrow;
     }
-
-    return PurchaseItemApiModel(
-      product: populatedProduct,
-      productName: json['productName'] as String,
-      quantity: (json['quantity'] as num).toInt(),
-      unitCost: (json['unitCost'] as num).toDouble(),
-      total: (json['total'] as num).toDouble(),
-    );
   }
 
   Map<String, dynamic> toJson() => {
-    'product': product.toJson(),
+    'product': product.id, // When sending data, just send the ID.
     'productName': productName,
     'quantity': quantity,
     'unitCost': unitCost,

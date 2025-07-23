@@ -5,6 +5,7 @@ import 'package:hisab_kitab/app/service_locator/service_locator.dart';
 import 'package:hisab_kitab/core/session/session_cubit.dart';
 import 'package:hisab_kitab/features/home/presentation/view/bottom_view/profile_page_view.dart';
 import 'package:hisab_kitab/features/home/presentation/view_model/home_view_model.dart';
+import 'package:hisab_kitab/features/purchases/presentation/view/purchase_view.dart';
 import 'package:hisab_kitab/features/sales/presentation/view/sales_view.dart';
 import 'package:hisab_kitab/features/suppliers/presentation/view/suppliers_page_view.dart';
 
@@ -66,9 +67,7 @@ class MoreView extends StatelessWidget {
                 title: 'Purchase',
                 onTap:
                     () => Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (_) => const ProfilePageView(),
-                      ),
+                      MaterialPageRoute(builder: (_) => const PurchasesView()),
                     ),
               ),
               _OptionItem(

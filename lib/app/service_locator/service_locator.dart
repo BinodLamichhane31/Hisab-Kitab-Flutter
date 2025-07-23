@@ -29,6 +29,11 @@ import 'package:hisab_kitab/features/products/domain/use_case/delete_product_use
 import 'package:hisab_kitab/features/products/domain/use_case/get_product_by_id_usecase.dart';
 import 'package:hisab_kitab/features/products/domain/use_case/get_products_usecase.dart';
 import 'package:hisab_kitab/features/products/domain/use_case/update_product_usecase.dart';
+import 'package:hisab_kitab/features/purchases/data/data_source/purchase_data_source.dart';
+import 'package:hisab_kitab/features/purchases/data/data_source/remote_datasource/purchase_remote_data_source.dart';
+import 'package:hisab_kitab/features/purchases/data/repository/remote_repository/purchase_remote_repository.dart';
+import 'package:hisab_kitab/features/purchases/domain/repository/purchase_repository.dart';
+import 'package:hisab_kitab/features/purchases/domain/use_case/get_purchase_usecase.dart';
 import 'package:hisab_kitab/features/sales/data/data_source/remote_datasource/sale_remote_data_source.dart';
 import 'package:hisab_kitab/features/sales/data/repository/remote_repository/sale_remote_repository.dart';
 import 'package:hisab_kitab/features/sales/domain/repository/sale_repository.dart';
@@ -69,6 +74,7 @@ Future initDependencies() async {
   await _initSupplierModule();
   await _initProductModule();
   await _initSaleModule();
+  await _initPurchaseModule();
   await _initHomeModule();
   await _initSessionModule();
 }
@@ -367,5 +373,21 @@ Future _initSaleModule() async {
   );
   serviceLocator.registerFactory(
     () => CreateSaleUsecase(saleRepository: serviceLocator<ISaleRepository>()),
+  );
+}
+
+Future _initPurchaseModule() async {
+  serviceLocator.registerFactory(
+    () => PurchaseRemoteDataSource(apiService: serviceLocator<ApiService>()),
+  );
+  serviceLocator.registerFactory<IPurchaseRepository>(
+    () => PurchaseRemoteRepository(
+      dataSource: serviceLocator<PurchaseRemoteDataSource>(),
+    ),
+  );
+  serviceLocator.registerFactory(
+    () => GetPurchasesUsecase(
+      purchaseRepository: serviceLocator<IPurchaseRepository>(),
+    ),
   );
 }

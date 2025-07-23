@@ -8,13 +8,18 @@ class PaginatedPurchasesResponse {
   PaginatedPurchasesResponse({required this.data, required this.pagination});
 
   factory PaginatedPurchasesResponse.fromJson(Map<String, dynamic> json) {
-    return PaginatedPurchasesResponse(
-      data:
-          (json['data'] as List)
-              .map((item) => PurchaseApiModel.fromJson(item))
-              .toList(),
-      pagination: json['pagination'],
-    );
+    try {
+      return PaginatedPurchasesResponse(
+        data:
+            (json['data'] as List)
+                .map((item) => PurchaseApiModel.fromJson(item))
+                .toList(),
+        pagination: json['pagination'],
+      );
+    } catch (e) {
+      print(e);
+      throw Exception();
+    }
   }
 }
 

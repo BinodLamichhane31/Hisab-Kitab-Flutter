@@ -96,53 +96,73 @@ class PurchaseApiModel extends Equatable {
   });
 
   factory PurchaseApiModel.fromJson(Map<String, dynamic> json) {
-    String? parsedSupplierId;
-    PopulatedSupplierInfoModel? parsedSupplierInfo;
-    final supplierData = json['supplier'];
-    if (supplierData is String) {
-      parsedSupplierId = supplierData;
-    } else if (supplierData is Map<String, dynamic>) {
-      parsedSupplierInfo = PopulatedSupplierInfoModel.fromJson(supplierData);
-      parsedSupplierId = parsedSupplierInfo.id;
-    }
+    try {
+      // Robustly parse the supplier
+      String? parsedSupplierId;
+      PopulatedSupplierInfoModel? parsedSupplierInfo;
+      final supplierData = json['supplier'];
+      if (supplierData is String) {
+        parsedSupplierId = supplierData;
+      } else if (supplierData is Map<String, dynamic>) {
+        parsedSupplierInfo = PopulatedSupplierInfoModel.fromJson(supplierData);
+        parsedSupplierId = parsedSupplierInfo.id;
+      }
 
-    return PurchaseApiModel(
-      purchaseId: json['_id'],
-      billNumber: json['billNumber'],
-      shopId: json['shop'],
-      supplierId: parsedSupplierId,
-      supplierInfo: parsedSupplierInfo,
-      purchaseType: $enumDecode(_$PurchaseTypeEnumMap, json['purchaseType']),
-      items:
-          (json['items'] as List)
-              .map(
-                (i) => PurchaseItemApiModel.fromJson(i as Map<String, dynamic>),
-              )
-              .toList(),
-      subTotal: (json['subTotal'] as num).toDouble(),
-      discount: (json['discount'] as num).toDouble(),
-      grandTotal: (json['grandTotal'] as num).toDouble(),
-      amountPaid: (json['amountPaid'] as num).toDouble(),
-      amountDue: (json['amountDue'] as num).toDouble(),
-      paymentStatus: $enumDecode(_$PaymentStatusEnumMap, json['paymentStatus']),
-      purchaseDate: DateTime.parse(json['purchaseDate'] as String),
-      status: $enumDecode(_$PurchaseStatusEnumMap, json['status']),
-      notes: json['notes'] as String?,
-      createdBy:
-          json['createdBy'] != null
-              ? PopulatedUserInfoModel.fromJson(
-                json['createdBy'] as Map<String, dynamic>,
-              )
-              : null,
-      createdAt:
-          json['createdAt'] == null
-              ? null
-              : DateTime.parse(json['createdAt'] as String),
-      updatedAt:
-          json['updatedAt'] == null
-              ? null
-              : DateTime.parse(json['updatedAt'] as String),
-    );
+      // Robustly parse the creator
+      PopulatedUserInfoModel? parsedCreatedBy;
+      final createdByData = json['createdBy'];
+      if (createdByData is Map<String, dynamic>) {
+        parsedCreatedBy = PopulatedUserInfoModel.fromJson(createdByData);
+      }
+
+      // Robustly parse items
+      List<PurchaseItemApiModel> parsedItems = [];
+      final itemsData = json['items'];
+      if (itemsData is List) {
+        parsedItems =
+            itemsData
+                .whereType<Map<String, dynamic>>()
+                .map((itemJson) => PurchaseItemApiModel.fromJson(itemJson))
+                .toList();
+      }
+
+      return PurchaseApiModel(
+        purchaseId: json['_id'] as String?,
+        billNumber: json['billNumber'] as String,
+        shopId: json['shop'] as String,
+        supplierId: parsedSupplierId,
+        supplierInfo: parsedSupplierInfo,
+        purchaseType: $enumDecode(_$PurchaseTypeEnumMap, json['purchaseType']),
+        items: parsedItems,
+        subTotal: (json['subTotal'] as num).toDouble(),
+        discount: (json['discount'] as num? ?? 0.0).toDouble(),
+        grandTotal: (json['grandTotal'] as num).toDouble(),
+        amountPaid: (json['amountPaid'] as num).toDouble(),
+        amountDue: (json['amountDue'] as num).toDouble(),
+        paymentStatus: $enumDecode(
+          _$PaymentStatusEnumMap,
+          json['paymentStatus'],
+        ),
+        purchaseDate: DateTime.parse(json['purchaseDate'] as String),
+        status: $enumDecode(_$PurchaseStatusEnumMap, json['status']),
+        notes: json['notes'] as String?,
+        createdBy: parsedCreatedBy,
+        createdAt:
+            json['createdAt'] == null
+                ? null
+                : DateTime.parse(json['createdAt'] as String),
+        updatedAt:
+            json['updatedAt'] == null
+                ? null
+                : DateTime.parse(json['updatedAt'] as String),
+      );
+    } catch (e) {
+      print("==== FAILED TO PARSE PurchaseApiModel ====");
+      print("Error: $e");
+      print("Problematic JSON: $json");
+      print("========================================");
+      rethrow;
+    }
   }
 
   Map<String, dynamic> toJson() {
