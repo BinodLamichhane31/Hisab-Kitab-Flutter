@@ -33,7 +33,10 @@ import 'package:hisab_kitab/features/purchases/data/data_source/purchase_data_so
 import 'package:hisab_kitab/features/purchases/data/data_source/remote_datasource/purchase_remote_data_source.dart';
 import 'package:hisab_kitab/features/purchases/data/repository/remote_repository/purchase_remote_repository.dart';
 import 'package:hisab_kitab/features/purchases/domain/repository/purchase_repository.dart';
+import 'package:hisab_kitab/features/purchases/domain/use_case/cancel_purchase_usecase.dart';
+import 'package:hisab_kitab/features/purchases/domain/use_case/get_purchase_by_id_usecase.dart';
 import 'package:hisab_kitab/features/purchases/domain/use_case/get_purchase_usecase.dart';
+import 'package:hisab_kitab/features/purchases/domain/use_case/record_payment_for_purchase_usecase.dart';
 import 'package:hisab_kitab/features/sales/data/data_source/remote_datasource/sale_remote_data_source.dart';
 import 'package:hisab_kitab/features/sales/data/repository/remote_repository/sale_remote_repository.dart';
 import 'package:hisab_kitab/features/sales/domain/repository/sale_repository.dart';
@@ -387,6 +390,21 @@ Future _initPurchaseModule() async {
   );
   serviceLocator.registerFactory(
     () => GetPurchasesUsecase(
+      purchaseRepository: serviceLocator<IPurchaseRepository>(),
+    ),
+  );
+  serviceLocator.registerFactory(
+    () => GetPurchaseByIdUsecase(
+      purchaseRepository: serviceLocator<IPurchaseRepository>(),
+    ),
+  );
+  serviceLocator.registerFactory(
+    () => CancelPurchaseUsecase(
+      purchaseRepository: serviceLocator<IPurchaseRepository>(),
+    ),
+  );
+  serviceLocator.registerFactory(
+    () => RecordPaymentForPurchaseUsecase(
       purchaseRepository: serviceLocator<IPurchaseRepository>(),
     ),
   );

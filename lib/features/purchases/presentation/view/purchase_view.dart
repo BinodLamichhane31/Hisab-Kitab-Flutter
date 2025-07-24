@@ -5,6 +5,7 @@ import 'package:hisab_kitab/core/session/session_cubit.dart';
 import 'package:hisab_kitab/core/session/session_state.dart';
 import 'package:hisab_kitab/features/purchases/domain/entity/purchase_enums.dart';
 import 'package:hisab_kitab/features/purchases/domain/use_case/get_purchase_usecase.dart';
+import 'package:hisab_kitab/features/purchases/presentation/view/purchase_detail_view.dart';
 import 'package:hisab_kitab/features/purchases/presentation/view_model/purchase_event.dart';
 import 'package:hisab_kitab/features/purchases/presentation/view_model/purchase_state.dart';
 import 'package:hisab_kitab/features/purchases/presentation/view_model/purchase_view_model.dart';
@@ -102,19 +103,8 @@ class _PurchasesViewContentState extends State<_PurchasesViewContent> {
         children: [_buildSearchHeader(), Expanded(child: _buildPurchaseList())],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          // final result = await Navigator.push<bool>(
-          //   context,
-          //   MaterialPageRoute(builder: (context) => const CreatePurchaseView()),
-          // );
-          // if (result == true && mounted) {
-          //   _onSearchChanged(_searchController.text);
-          // }
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Navigate to Create Purchase Page')),
-          );
-        },
-        backgroundColor: Colors.teal,
+        onPressed: () async {},
+        backgroundColor: Colors.orange,
         tooltip: 'New Purchase',
         child: const Icon(Icons.receipt_long, size: 28),
       ),
@@ -226,7 +216,20 @@ class _PurchasesViewContentState extends State<_PurchasesViewContent> {
                       ),
                     ],
                   ),
-                  onTap: () async {},
+                  onTap: () async {
+                    final result = await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder:
+                            (_) => PurchaseDetailView(
+                              purchaseId: purchase.purchaseId!,
+                            ),
+                      ),
+                    );
+                    if (result == true && mounted) {
+                      _onSearchChanged(_searchController.text);
+                    }
+                  },
                 ),
               );
             },
