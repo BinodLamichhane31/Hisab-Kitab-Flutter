@@ -34,6 +34,7 @@ import 'package:hisab_kitab/features/purchases/data/data_source/remote_datasourc
 import 'package:hisab_kitab/features/purchases/data/repository/remote_repository/purchase_remote_repository.dart';
 import 'package:hisab_kitab/features/purchases/domain/repository/purchase_repository.dart';
 import 'package:hisab_kitab/features/purchases/domain/use_case/cancel_purchase_usecase.dart';
+import 'package:hisab_kitab/features/purchases/domain/use_case/create_purchase_usecase.dart';
 import 'package:hisab_kitab/features/purchases/domain/use_case/get_purchase_by_id_usecase.dart';
 import 'package:hisab_kitab/features/purchases/domain/use_case/get_purchase_usecase.dart';
 import 'package:hisab_kitab/features/purchases/domain/use_case/record_payment_for_purchase_usecase.dart';
@@ -405,6 +406,11 @@ Future _initPurchaseModule() async {
   );
   serviceLocator.registerFactory(
     () => RecordPaymentForPurchaseUsecase(
+      purchaseRepository: serviceLocator<IPurchaseRepository>(),
+    ),
+  );
+  serviceLocator.registerFactory(
+    () => CreatePurchaseUsecase(
       purchaseRepository: serviceLocator<IPurchaseRepository>(),
     ),
   );
