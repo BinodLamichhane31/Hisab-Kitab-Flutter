@@ -62,6 +62,10 @@ import 'package:hisab_kitab/features/suppliers/domain/use_case/delete_supplier_u
 import 'package:hisab_kitab/features/suppliers/domain/use_case/get_supplier_usecase.dart';
 import 'package:hisab_kitab/features/suppliers/domain/use_case/get_suppliers_by_shop_usecase.dart';
 import 'package:hisab_kitab/features/suppliers/domain/use_case/update_supplier_usecase.dart';
+import 'package:hisab_kitab/features/transactions/data/data_source/remote_datasource/transaction_remote_data_source.dart';
+import 'package:hisab_kitab/features/transactions/data/repository/remote_repository/transaction_remote_repository.dart';
+import 'package:hisab_kitab/features/transactions/domain/repository/transaction_repository.dart';
+import 'package:hisab_kitab/features/transactions/domain/use_case/get_transactions_usecase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final serviceLocator = GetIt.instance;
@@ -78,6 +82,7 @@ Future initDependencies() async {
   await _initSupplierModule();
   await _initProductModule();
   await _initSaleModule();
+  await _initTransactionModule();
   await _initPurchaseModule();
   await _initHomeModule();
   await _initSessionModule();
@@ -412,6 +417,22 @@ Future _initPurchaseModule() async {
   serviceLocator.registerFactory(
     () => CreatePurchaseUsecase(
       purchaseRepository: serviceLocator<IPurchaseRepository>(),
+    ),
+  );
+}
+
+Future _initTransactionModule() async {
+  serviceLocator.registerFactory(
+    () => TransactionRemoteDataSource(apiService: serviceLocator<ApiService>()),
+  );
+  serviceLocator.registerFactory<ITransactionRepository>(
+    () => TransactionRemoteRepository(
+      dataSource: serviceLocator<TransactionRemoteDataSource>(),
+    ),
+  );
+  serviceLocator.registerFactory(
+    () => GetTransactionsUsecase(
+      repository: serviceLocator<ITransactionRepository>(),
     ),
   );
 }

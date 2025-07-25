@@ -46,6 +46,8 @@ class _PurchaseDetailContent extends StatelessWidget {
           content: Text(message),
           backgroundColor:
               isError ? Colors.red.shade600 : Colors.green.shade600,
+          duration: const Duration(seconds: 1),
+          behavior: SnackBarBehavior.floating,
         ),
       );
   }

@@ -92,6 +92,8 @@ class _CreateSaleContentState extends State<_CreateSaleContent> {
               const SnackBar(
                 content: Text('Sale created successfully!'),
                 backgroundColor: Colors.green,
+                duration: Duration(seconds: 1),
+                behavior: SnackBarBehavior.floating,
               ),
             );
           Navigator.of(context).pop(true);

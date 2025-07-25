@@ -8,6 +8,7 @@ import 'package:hisab_kitab/features/home/presentation/view_model/home_view_mode
 import 'package:hisab_kitab/features/purchases/presentation/view/purchase_view.dart';
 import 'package:hisab_kitab/features/sales/presentation/view/sales_view.dart';
 import 'package:hisab_kitab/features/suppliers/presentation/view/suppliers_page_view.dart';
+import 'package:hisab_kitab/features/transactions/presentation/view/transaction_view.dart';
 
 class MoreView extends StatelessWidget {
   const MoreView({super.key});
@@ -76,7 +77,7 @@ class MoreView extends StatelessWidget {
                 onTap:
                     () => Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (_) => const ProfilePageView(),
+                        builder: (_) => const TransactionsView(),
                       ),
                     ),
               ),

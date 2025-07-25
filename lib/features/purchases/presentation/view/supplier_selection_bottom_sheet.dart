@@ -91,13 +91,13 @@ class _BottomSheetContentState extends State<_BottomSheetContent> {
                   ),
               decoration: InputDecoration(
                 hintText: 'Search by name or phone...',
-                prefixIcon: const Icon(Icons.search, color: Colors.teal),
+                prefixIcon: const Icon(Icons.search, color: Colors.orange),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30),
-                  borderSide: const BorderSide(color: Colors.teal),
+                  borderSide: const BorderSide(color: Colors.orange),
                 ),
                 contentPadding: const EdgeInsets.symmetric(vertical: 0),
               ),
@@ -131,13 +131,13 @@ class _BottomSheetContentState extends State<_BottomSheetContent> {
                     final supplier = state.suppliers[index];
                     return ListTile(
                       leading: CircleAvatar(
-                        backgroundColor: Colors.teal.shade100,
+                        backgroundColor: Colors.orange.shade100,
                         child: Text(
                           supplier.name.isNotEmpty
                               ? supplier.name[0].toUpperCase()
                               : '?',
                           style: const TextStyle(
-                            color: Colors.teal,
+                            color: Colors.orange,
                             fontWeight: FontWeight.bold,
                           ),
                         ),

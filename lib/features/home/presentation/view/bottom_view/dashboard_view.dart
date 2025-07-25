@@ -3,7 +3,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hisab_kitab/core/common/shortcut_buttons.dart';
 import 'package:hisab_kitab/core/utils/trend_chart.dart';
 import 'package:hisab_kitab/features/customers/presentation/view/widget/customer_form_dialog.dart';
+import 'package:hisab_kitab/features/purchases/presentation/view/create_purchase_view.dart';
+import 'package:hisab_kitab/features/sales/presentation/view/create_sale_view.dart';
 import 'package:hisab_kitab/features/suppliers/presentation/view/supplier_form_dialog.dart';
+import 'package:hisab_kitab/features/transactions/presentation/view/transaction_view.dart';
 
 class DashboardView extends StatelessWidget {
   const DashboardView({super.key});
@@ -144,9 +147,26 @@ class DashboardView extends StatelessWidget {
                 shortcut("Manage Stocks", Icons.shopping_cart, () {}),
                 shortcut("Cash In", Icons.input, () {}),
                 shortcut("Cash Out", Icons.output, () {}),
-                shortcut("Sales Entry", Icons.attach_money, () {}),
-                shortcut("Purchase Entry", Icons.price_change, () {}),
-                shortcut("Transactions", Icons.currency_exchange, () {}),
+                shortcut("Sales Entry", Icons.attach_money, () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => CreateSaleView()),
+                  );
+                }),
+                shortcut("Purchase Entry", Icons.price_change, () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CreatePurchaseView(),
+                    ),
+                  );
+                }),
+                shortcut("Transactions", Icons.currency_exchange, () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => TransactionsView()),
+                  );
+                }),
                 shortcut("Hisab Bot", FontAwesomeIcons.robot, () {}),
               ],
             ),

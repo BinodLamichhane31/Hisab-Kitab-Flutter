@@ -136,7 +136,11 @@ class _SalesViewContentState extends State<_SalesViewContent> {
                   ScaffoldMessenger.of(context)
                     ..hideCurrentSnackBar()
                     ..showSnackBar(
-                      SnackBar(content: Text(state.errorMessage!)),
+                      SnackBar(
+                        content: Text(state.errorMessage!),
+                        duration: const Duration(seconds: 1),
+                        behavior: SnackBarBehavior.floating,
+                      ),
                     );
                 }
               },
@@ -260,14 +264,10 @@ class _SalesViewContentState extends State<_SalesViewContent> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          // Navigate to the CreateSaleView and wait for a result.
           final result = await Navigator.push<bool>(
             context,
             MaterialPageRoute(builder: (context) => const CreateSaleView()),
           );
-
-          // If the result is true, it means a sale was created,
-          // so we refresh the list.
           if (result == true && context.mounted) {
             final viewModel = context.read<SaleViewModel>();
             viewModel.add(

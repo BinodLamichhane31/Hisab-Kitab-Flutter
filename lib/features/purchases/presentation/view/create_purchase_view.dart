@@ -92,6 +92,8 @@ class _CreatePurchaseContentState extends State<_CreatePurchaseContent> {
               const SnackBar(
                 content: Text('Purchase created successfully!'),
                 backgroundColor: Colors.green,
+                duration: Duration(seconds: 1),
+                behavior: SnackBarBehavior.floating,
               ),
             );
           Navigator.of(context).pop(true);
