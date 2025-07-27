@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hisab_kitab/features/customers/presentation/view/customers_page_view.dart';
-import 'package:hisab_kitab/features/home/presentation/view/bottom_view/dashboard_view.dart';
+import 'package:hisab_kitab/features/dashboard/presentation/view/dashboard_view.dart';
 import 'package:hisab_kitab/features/home/presentation/view/bottom_view/more_view.dart';
 import 'package:hisab_kitab/features/shops/presentation/view/widget/shop_switcher.dart';
 import 'package:hisab_kitab/features/home/presentation/view_model/home_state.dart';

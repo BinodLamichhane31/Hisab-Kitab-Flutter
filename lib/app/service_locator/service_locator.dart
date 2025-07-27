@@ -20,6 +20,10 @@ import 'package:hisab_kitab/features/customers/domain/use_case/delete_customer_u
 import 'package:hisab_kitab/features/customers/domain/use_case/get_customer_usecase.dart';
 import 'package:hisab_kitab/features/customers/domain/use_case/get_customers_by_shop_usecase.dart';
 import 'package:hisab_kitab/features/customers/domain/use_case/update_customer_usecase.dart';
+import 'package:hisab_kitab/features/dashboard/data/data_source/remote_datasource/dashboard_remote_data_source.dart';
+import 'package:hisab_kitab/features/dashboard/data/repository/remote_repository/dashboard_remote_repository.dart';
+import 'package:hisab_kitab/features/dashboard/domain/repository/dashboard_repository.dart';
+import 'package:hisab_kitab/features/dashboard/domain/use_case/get_dashboard_data_usecase.dart';
 import 'package:hisab_kitab/features/home/presentation/view_model/home_view_model.dart';
 import 'package:hisab_kitab/features/products/data/data_source/remote_data_source/product_remote_data_source.dart';
 import 'package:hisab_kitab/features/products/data/repository/product_remote_repository.dart';
@@ -29,7 +33,6 @@ import 'package:hisab_kitab/features/products/domain/use_case/delete_product_use
 import 'package:hisab_kitab/features/products/domain/use_case/get_product_by_id_usecase.dart';
 import 'package:hisab_kitab/features/products/domain/use_case/get_products_usecase.dart';
 import 'package:hisab_kitab/features/products/domain/use_case/update_product_usecase.dart';
-import 'package:hisab_kitab/features/purchases/data/data_source/purchase_data_source.dart';
 import 'package:hisab_kitab/features/purchases/data/data_source/remote_datasource/purchase_remote_data_source.dart';
 import 'package:hisab_kitab/features/purchases/data/repository/remote_repository/purchase_remote_repository.dart';
 import 'package:hisab_kitab/features/purchases/domain/repository/purchase_repository.dart';
@@ -78,6 +81,7 @@ Future initDependencies() async {
   await _initLoginModule();
   await _initSignupModule();
   await _initShopModule();
+  await _initDashboardModule();
   await _initCustomerModule();
   await _initSupplierModule();
   await _initProductModule();
@@ -176,6 +180,27 @@ Future _initSignupModule() async {
 
 Future _initHomeModule() async {
   serviceLocator.registerLazySingleton(() => HomeViewModel());
+}
+
+Future _initDashboardModule() async {
+  // Data sources
+  serviceLocator.registerFactory(
+    () => DashboardRemoteDataSource(apiService: serviceLocator<ApiService>()),
+  );
+
+  // Repositories
+  serviceLocator.registerFactory<IDashboardRepository>(
+    () => DashboardRemoteRepository(
+      dashboardDataSource: serviceLocator<DashboardRemoteDataSource>(),
+    ),
+  );
+
+  // Use cases
+  serviceLocator.registerFactory(
+    () => GetDashboardDataUsecase(
+      dashboardRepository: serviceLocator<IDashboardRepository>(),
+    ),
+  );
 }
 
 Future _initSessionModule() async {

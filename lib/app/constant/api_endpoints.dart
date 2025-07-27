@@ -41,4 +41,7 @@ class ApiEndpoints {
 
   //transactions
   static const String transactions = '$baseUrl/transactions';
+
+  //dashboard
+  static const String dashboard = '$baseUrl/dashboard';
 }
