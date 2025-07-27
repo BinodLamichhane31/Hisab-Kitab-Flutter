@@ -51,6 +51,7 @@ class CustomerDetailView extends StatelessWidget {
             message: state.errorMessage!,
             color: Colors.red,
           );
+          // ignore: invalid_use_of_visible_for_testing_member
           context.read<CustomerDetailViewModel>().emit(
             state.copyWith(clearError: true),
           );
