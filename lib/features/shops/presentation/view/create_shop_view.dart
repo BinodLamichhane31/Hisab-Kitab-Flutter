@@ -9,7 +9,8 @@ import 'package:hisab_kitab/features/shops/presentation/view_model/shop_state.da
 import 'package:hisab_kitab/features/shops/presentation/view_model/shop_view_model.dart';
 
 class CreateShopView extends StatelessWidget {
-  const CreateShopView({super.key});
+  final String token;
+  const CreateShopView({super.key, required this.token});
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +44,7 @@ class CreateShopView extends StatelessWidget {
                 user: sessionCubit.state.user!,
                 shops: allShops,
                 activeShop: newShop,
+                token: token,
               );
 
               context.read<ShopViewModel>().add(

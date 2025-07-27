@@ -19,14 +19,14 @@ class NotificationRemoteDataSource {
   }
 
   Future<bool> markAsRead(String notificationId) async {
-    final response = await _apiService.dio.post(
+    final response = await _apiService.dio.put(
       '${ApiEndpoints.notifications}/$notificationId/read',
     );
     return response.statusCode == 200;
   }
 
   Future<bool> markAllAsRead() async {
-    final response = await _apiService.dio.post(
+    final response = await _apiService.dio.put(
       '${ApiEndpoints.notifications}/read-all',
     );
     return response.statusCode == 200;

@@ -83,6 +83,7 @@ class LoginViewModel extends Bloc<LoginEvent, LoginState> {
       (loginResponse) {
         final sessionCubit = event.context.read<SessionCubit>();
         final shops = loginResponse.shops;
+        final String token = loginResponse.token;
 
         ShopEntity? activeShop;
         if (loginResponse.currentShopId != null && shops.isNotEmpty) {
@@ -98,6 +99,7 @@ class LoginViewModel extends Bloc<LoginEvent, LoginState> {
           user: loginResponse.user,
           shops: shops,
           activeShop: activeShop,
+          token: token,
         );
 
         showMySnackBar(context: event.context, message: "Login Success");
@@ -108,7 +110,7 @@ class LoginViewModel extends Bloc<LoginEvent, LoginState> {
               builder:
                   (_) => BlocProvider(
                     create: (_) => serviceLocator<ShopViewModel>(),
-                    child: const CreateShopView(),
+                    child: CreateShopView(token: token),
                   ),
             ),
             (route) => false,

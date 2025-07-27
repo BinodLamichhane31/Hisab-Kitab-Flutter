@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:hisab_kitab/app/shared_preferences/token_shared_prefs.dart';
 import 'package:hisab_kitab/core/network/api_service.dart';
 import 'package:hisab_kitab/core/network/hive_service.dart';
+import 'package:hisab_kitab/core/network/socket_service.dart';
 import 'package:hisab_kitab/core/session/session_cubit.dart';
 import 'package:hisab_kitab/features/auth/data/data_source/remote_data_source/user_remote_data_source.dart';
 import 'package:hisab_kitab/features/auth/data/repository/remote_repository/user_remote_repository.dart';
@@ -27,6 +28,13 @@ import 'package:hisab_kitab/features/dashboard/domain/use_case/get_dashboard_dat
 import 'package:hisab_kitab/features/dashboard/domain/use_case/record_cash_in_usecase.dart';
 import 'package:hisab_kitab/features/dashboard/domain/use_case/record_cash_out_usecase.dart';
 import 'package:hisab_kitab/features/home/presentation/view_model/home_view_model.dart';
+import 'package:hisab_kitab/features/notification/data/data_source/remote_datasource/notification_remote_data_source.dart';
+import 'package:hisab_kitab/features/notification/data/repository/remote_repository/notification_remote_repository.dart';
+import 'package:hisab_kitab/features/notification/domain/repository/notification_repository.dart';
+import 'package:hisab_kitab/features/notification/domain/use_case/get_notifications_usecase.dart';
+import 'package:hisab_kitab/features/notification/domain/use_case/listen_for_notifications_usecase.dart';
+import 'package:hisab_kitab/features/notification/domain/use_case/mark_all_as_read_usecase.dart';
+import 'package:hisab_kitab/features/notification/domain/use_case/mark_as_read_usecase.dart';
 import 'package:hisab_kitab/features/products/data/data_source/remote_data_source/product_remote_data_source.dart';
 import 'package:hisab_kitab/features/products/data/repository/product_remote_repository.dart';
 import 'package:hisab_kitab/features/products/domain/repository/product_repository.dart';
@@ -79,8 +87,10 @@ Future initDependencies() async {
   await _initSharedPreference();
   await _initHiveService();
   await _initApiService();
+  await _initSocketService();
   await _initSplashModule();
   await _initLoginModule();
+  await _initNotificationModule();
   await _initSignupModule();
   await _initShopModule();
   await _initDashboardModule();
@@ -102,6 +112,10 @@ Future<void> _initApiService() async {
   serviceLocator.registerLazySingleton(
     () => ApiService(Dio(), serviceLocator<TokenSharedPrefs>()),
   );
+}
+
+Future<void> _initSocketService() async {
+  serviceLocator.registerLazySingleton(() => SocketService());
 }
 
 Future _initSharedPreference() async {
@@ -217,7 +231,10 @@ Future _initDashboardModule() async {
 
 Future _initSessionModule() async {
   serviceLocator.registerLazySingleton(
-    () => SessionCubit(switchShopUsecase: serviceLocator<SwitchShopUsecase>()),
+    () => SessionCubit(
+      switchShopUsecase: serviceLocator<SwitchShopUsecase>(),
+      socketService: serviceLocator<SocketService>(),
+    ),
   );
 }
 
@@ -470,6 +487,40 @@ Future _initTransactionModule() async {
   serviceLocator.registerFactory(
     () => GetTransactionsUsecase(
       repository: serviceLocator<ITransactionRepository>(),
+    ),
+  );
+}
+
+Future _initNotificationModule() async {
+  serviceLocator.registerFactory(
+    () => NotificationRemoteDataSource(
+      apiService: serviceLocator<ApiService>(),
+      socketService: serviceLocator<SocketService>(),
+    ),
+  );
+  serviceLocator.registerFactory<INotificationRepository>(
+    () => NotificationRemoteRepository(
+      dataSource: serviceLocator<NotificationRemoteDataSource>(),
+    ),
+  );
+  serviceLocator.registerFactory(
+    () => GetNotificationsUsecase(
+      repository: serviceLocator<INotificationRepository>(),
+    ),
+  );
+  serviceLocator.registerFactory(
+    () => MarkAllAsReadUsecase(
+      repository: serviceLocator<INotificationRepository>(),
+    ),
+  );
+  serviceLocator.registerFactory(
+    () => MarkAsReadUsecase(
+      repository: serviceLocator<INotificationRepository>(),
+    ),
+  );
+  serviceLocator.registerFactory(
+    () => ListenForNotificationsUsecase(
+      repository: serviceLocator<INotificationRepository>(),
     ),
   );
 }

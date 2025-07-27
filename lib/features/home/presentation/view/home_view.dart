@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:badges/badges.dart' as badges;
 import 'package:hisab_kitab/features/customers/presentation/view/customers_page_view.dart';
 import 'package:hisab_kitab/features/dashboard/presentation/view/dashboard_view.dart';
 import 'package:hisab_kitab/features/home/presentation/view/bottom_view/more_view.dart';
+import 'package:hisab_kitab/features/notification/presentation/view/notification_view.dart';
+import 'package:hisab_kitab/features/notification/presentation/view_model/notification_state.dart';
+import 'package:hisab_kitab/features/notification/presentation/view_model/notification_view_model.dart';
 import 'package:hisab_kitab/features/shops/presentation/view/widget/shop_switcher.dart';
 import 'package:hisab_kitab/features/home/presentation/view_model/home_state.dart';
 import 'package:hisab_kitab/features/home/presentation/view_model/home_view_model.dart';
@@ -28,13 +32,32 @@ class HomeView extends StatelessWidget {
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.notifications_none),
-              style: IconButton.styleFrom(
-                backgroundColor: Colors.orange.withOpacity(0.2),
-                foregroundColor: Colors.orange,
-              ),
+            child: BlocBuilder<NotificationViewModel, NotificationState>(
+              builder: (context, state) {
+                return badges.Badge(
+                  position: badges.BadgePosition.topEnd(top: 0, end: 3),
+                  showBadge: state.unreadCount > 0,
+                  badgeContent: Text(
+                    state.unreadCount.toString(),
+                    style: const TextStyle(color: Colors.white, fontSize: 10),
+                  ),
+                  child: IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const NotificationView(),
+                        ),
+                      );
+                    },
+                    icon: const Icon(Icons.notifications_none),
+                    style: IconButton.styleFrom(
+                      backgroundColor: Colors.orange.withOpacity(0.2),
+                      foregroundColor: Colors.orange,
+                    ),
+                  ),
+                );
+              },
             ),
           ),
         ],

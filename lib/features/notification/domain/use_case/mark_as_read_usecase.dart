@@ -5,7 +5,9 @@ import 'package:hisab_kitab/features/notification/domain/repository/notification
 
 class MarkAllAsReadUsecase implements UseCaseWithoutParams<bool> {
   final INotificationRepository _repository;
-  MarkAllAsReadUsecase(this._repository);
+
+  MarkAllAsReadUsecase({required INotificationRepository repository})
+    : _repository = repository;
 
   @override
   Future<Either<Failure, bool>> call() {

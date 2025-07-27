@@ -7,7 +7,9 @@ import 'package:hisab_kitab/features/notification/domain/repository/notification
 class GetNotificationsUsecase
     implements UseCaseWithoutParams<NotificationDataEntity> {
   final INotificationRepository _repository;
-  GetNotificationsUsecase(this._repository);
+
+  GetNotificationsUsecase({required INotificationRepository repository})
+    : _repository = repository;
 
   @override
   Future<Either<Failure, NotificationDataEntity>> call() {
