@@ -106,7 +106,6 @@ class SalesPurchaseChart extends StatelessWidget {
           ),
         ),
 
-        // Legend
         Padding(
           padding: const EdgeInsets.only(top: 8.0),
           child: Row(

@@ -5,6 +5,7 @@ import 'package:hisab_kitab/app/service_locator/service_locator.dart';
 import 'package:hisab_kitab/core/common/shortcut_buttons.dart';
 import 'package:hisab_kitab/core/session/session_cubit.dart';
 import 'package:hisab_kitab/core/session/session_state.dart';
+import 'package:hisab_kitab/features/dashboard/presentation/view/widget/cash_transaction_sheet.dart';
 import 'package:hisab_kitab/features/dashboard/presentation/view/widget/trend_chart.dart';
 import 'package:hisab_kitab/features/customers/presentation/view/widget/customer_form_dialog.dart';
 import 'package:hisab_kitab/features/dashboard/domain/entity/dashboard_stats_entity.dart';
@@ -13,7 +14,9 @@ import 'package:hisab_kitab/features/dashboard/presentation/view_model/dashboard
 import 'package:hisab_kitab/features/dashboard/presentation/view_model/dashboard_state.dart';
 import 'package:hisab_kitab/features/dashboard/presentation/view_model/dashboard_view_model.dart';
 import 'package:hisab_kitab/features/purchases/presentation/view/create_purchase_view.dart';
+import 'package:hisab_kitab/features/purchases/presentation/view/supplier_selection_bottom_sheet.dart';
 import 'package:hisab_kitab/features/sales/presentation/view/create_sale_view.dart';
+import 'package:hisab_kitab/features/sales/presentation/view/customer_selection_bottom_sheet.dart';
 import 'package:hisab_kitab/features/suppliers/presentation/view/supplier_form_dialog.dart';
 import 'package:intl/intl.dart';
 
@@ -38,6 +41,8 @@ class DashboardView extends StatelessWidget {
                 getDashboardDataUsecase:
                     serviceLocator<GetDashboardDataUsecase>(),
                 shopId: activeShop.shopId!,
+                recordCashInUsecase: serviceLocator(),
+                recordCashOutUsecase: serviceLocator(),
               )..add(LoadDashboardData()),
           child: const _DashboardContent(),
         );
@@ -49,13 +54,79 @@ class DashboardView extends StatelessWidget {
 class _DashboardContent extends StatelessWidget {
   const _DashboardContent();
 
+  Future<void> _handleCashTransaction(
+    BuildContext context,
+    PaymentType type,
+  ) async {
+    final dashboardViewModel = context.read<DashboardViewModel>();
+    final shopId = dashboardViewModel.shopId;
+
+    // Step 1: Show the appropriate selection sheet
+    final dynamic selectedEntity = await showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder:
+          (_) =>
+              type == PaymentType.cashIn
+                  ? const CustomerSelectionBottomSheet()
+                  : const SupplierSelectionBottomSheet(),
+    );
+
+    // If the user closed the sheet without selecting, do nothing.
+    if (selectedEntity == null) return;
+
+    // Check if the context is still valid before showing the next sheet
+    if (!context.mounted) return;
+
+    // Step 2: Show the amount entry sheet with the selected entity
+    await showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder:
+          (_) => BlocProvider.value(
+            value: dashboardViewModel, // Pass the existing ViewModel down
+            child: CashTransactionSheet(
+              type: type,
+              entity: selectedEntity,
+              shopId: shopId,
+            ),
+          ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<DashboardViewModel, DashboardState>(
+      body: BlocConsumer<DashboardViewModel, DashboardState>(
+        listener: (context, state) {
+          if (state.successMessage != null) {
+            ScaffoldMessenger.of(context)
+              ..hideCurrentSnackBar()
+              ..showSnackBar(
+                SnackBar(
+                  content: Text(state.successMessage!),
+                  backgroundColor: Colors.green,
+                ),
+              );
+
+            context.read<DashboardViewModel>().add(LoadDashboardData());
+          } else if (state.status == DashboardStatus.error &&
+              state.errorMessage != null) {
+            ScaffoldMessenger.of(context)
+              ..hideCurrentSnackBar()
+              ..showSnackBar(
+                SnackBar(
+                  content: Text(state.errorMessage!),
+                  backgroundColor: Colors.red,
+                ),
+              );
+          }
+        },
         builder: (context, state) {
-          if (state.status == DashboardStatus.loading &&
-              state.dashboardData == null) {
+          final isSubmitting = state.status == DashboardStatus.submitting;
+          final isLoading = state.status == DashboardStatus.loading;
+
+          if (isLoading && state.dashboardData == null) {
             return const Center(child: CircularProgressIndicator());
           }
 
@@ -80,47 +151,56 @@ class _DashboardContent extends StatelessWidget {
           }
 
           if (state.dashboardData != null) {
-            return RefreshIndicator(
-              onRefresh: () async {
-                context.read<DashboardViewModel>().add(LoadDashboardData());
-              },
-              child: SingleChildScrollView(
-                physics: const AlwaysScrollableScrollPhysics(),
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _StatsGrid(stats: state.dashboardData!.stats),
-                    const SizedBox(height: 16),
-                    _FinancialSummary(stats: state.dashboardData!.stats),
-                    const SizedBox(height: 24),
-                    const Text(
-                      "Trend Chart",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
+            return Stack(
+              children: [
+                RefreshIndicator(
+                  onRefresh: () async {
+                    context.read<DashboardViewModel>().add(LoadDashboardData());
+                  },
+                  child: SingleChildScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _StatsGrid(stats: state.dashboardData!.stats),
+                        const SizedBox(height: 16),
+                        _FinancialSummary(stats: state.dashboardData!.stats),
+                        const SizedBox(height: 24),
+                        const Text(
+                          "Trend Chart",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        SizedBox(
+                          height: 250,
+                          child: SalesPurchaseChart(
+                            data: state.dashboardData!.chartData,
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        const Text(
+                          "Shortcuts",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        _ShortcutsGrid(),
+                      ],
                     ),
-                    const SizedBox(height: 10),
-                    SizedBox(
-                      height: 250,
-                      child: SalesPurchaseChart(
-                        data: state.dashboardData!.chartData,
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    const Text(
-                      "Shortcuts",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    _ShortcutsGrid(),
-                  ],
+                  ),
                 ),
-              ),
+                if (isSubmitting)
+                  Container(
+                    color: Colors.black.withOpacity(0.1),
+                    child: const Center(child: CircularProgressIndicator()),
+                  ),
+              ],
             );
           }
 
@@ -265,6 +345,8 @@ class _FinancialRow extends StatelessWidget {
 class _ShortcutsGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final dashboardContent =
+        context.findAncestorWidgetOfExactType<_DashboardContent>()!;
     return GridView.count(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
@@ -279,8 +361,12 @@ class _ShortcutsGrid extends StatelessWidget {
         shortcut("Add Suppliers", FontAwesomeIcons.truckFast, () {
           showSupplierFormDialog(context);
         }),
-        shortcut("Cash In", Icons.input, () {}),
-        shortcut("Cash Out", Icons.output, () {}),
+        shortcut("Cash In", Icons.input, () {
+          dashboardContent._handleCashTransaction(context, PaymentType.cashIn);
+        }),
+        shortcut("Cash Out", Icons.output, () {
+          dashboardContent._handleCashTransaction(context, PaymentType.cashOut);
+        }),
         shortcut("Sales Entry", Icons.attach_money, () {
           Navigator.push(
             context,

@@ -44,4 +44,7 @@ class ApiEndpoints {
 
   //dashboard
   static const String dashboard = '$baseUrl/dashboard';
+
+  //cash
+  static const String cash = '$baseUrl/cash';
 }

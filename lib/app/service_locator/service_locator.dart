@@ -24,6 +24,8 @@ import 'package:hisab_kitab/features/dashboard/data/data_source/remote_datasourc
 import 'package:hisab_kitab/features/dashboard/data/repository/remote_repository/dashboard_remote_repository.dart';
 import 'package:hisab_kitab/features/dashboard/domain/repository/dashboard_repository.dart';
 import 'package:hisab_kitab/features/dashboard/domain/use_case/get_dashboard_data_usecase.dart';
+import 'package:hisab_kitab/features/dashboard/domain/use_case/record_cash_in_usecase.dart';
+import 'package:hisab_kitab/features/dashboard/domain/use_case/record_cash_out_usecase.dart';
 import 'package:hisab_kitab/features/home/presentation/view_model/home_view_model.dart';
 import 'package:hisab_kitab/features/products/data/data_source/remote_data_source/product_remote_data_source.dart';
 import 'package:hisab_kitab/features/products/data/repository/product_remote_repository.dart';
@@ -199,6 +201,16 @@ Future _initDashboardModule() async {
   serviceLocator.registerFactory(
     () => GetDashboardDataUsecase(
       dashboardRepository: serviceLocator<IDashboardRepository>(),
+    ),
+  );
+
+  serviceLocator.registerFactory(
+    () =>
+        RecordCashInUsecase(repository: serviceLocator<IDashboardRepository>()),
+  );
+  serviceLocator.registerFactory(
+    () => RecordCashOutUsecase(
+      repository: serviceLocator<IDashboardRepository>(),
     ),
   );
 }

@@ -6,6 +6,8 @@ import 'package:hisab_kitab/features/dashboard/data/model/chart_data_point_api_m
 import 'package:hisab_kitab/features/dashboard/data/model/dashboard_stats_api_model.dart';
 import 'package:hisab_kitab/features/dashboard/domain/entity/chart_data_point_entity.dart';
 import 'package:hisab_kitab/features/dashboard/domain/entity/dashboard_stats_entity.dart';
+import 'package:hisab_kitab/features/dashboard/domain/use_case/record_cash_in_usecase.dart';
+import 'package:hisab_kitab/features/dashboard/domain/use_case/record_cash_out_usecase.dart';
 
 class DashboardRemoteDataSource implements IDashboardDataSource {
   final ApiService _apiService;
@@ -67,6 +69,78 @@ class DashboardRemoteDataSource implements IDashboardDataSource {
     } catch (e) {
       throw Exception(
         'An unexpected error occurred while fetching chart data: $e',
+      );
+    }
+  }
+
+  @override
+  Future<String> recordCashIn(RecordCashInParams params) async {
+    try {
+      final Map<String, dynamic> data = {
+        'shopId': params.shopId,
+        'customerId': params.customerId,
+        'amount': params.amount,
+        'paymentMethod': params.paymentMethod,
+        'notes': params.notes,
+        if (params.transactionDate != null)
+          'transactionDate': params.transactionDate!.toIso8601String(),
+      };
+
+      final response = await _apiService.dio.post(
+        '${ApiEndpoints.cash}/in',
+        data: data,
+      );
+
+      if (response.statusCode == 200) {
+        return response.data['message'] as String;
+      } else {
+        throw Exception(
+          'Server returned status code ${response.statusCode} while recording cash in.',
+        );
+      }
+    } on DioException catch (e) {
+      throw Exception(
+        'Failed to record cash in: ${e.response?.data['message'] ?? e.message}',
+      );
+    } catch (e) {
+      throw Exception(
+        'An unexpected error occurred while recording cash in: $e',
+      );
+    }
+  }
+
+  @override
+  Future<String> recordCashOut(RecordCashOutParams params) async {
+    try {
+      final Map<String, dynamic> data = {
+        'shopId': params.shopId,
+        'supplierId': params.supplierId,
+        'amount': params.amount,
+        'paymentMethod': params.paymentMethod,
+        'notes': params.notes,
+        if (params.transactionDate != null)
+          'transactionDate': params.transactionDate!.toIso8601String(),
+      };
+
+      final response = await _apiService.dio.post(
+        '${ApiEndpoints.cash}/out',
+        data: data,
+      );
+
+      if (response.statusCode == 200) {
+        return response.data['message'] as String;
+      } else {
+        throw Exception(
+          'Server returned status code ${response.statusCode} while recording cash out.',
+        );
+      }
+    } on DioException catch (e) {
+      throw Exception(
+        'Failed to record cash out: ${e.response?.data['message'] ?? e.message}',
+      );
+    } catch (e) {
+      throw Exception(
+        'An unexpected error occurred while recording cash out: $e',
       );
     }
   }
