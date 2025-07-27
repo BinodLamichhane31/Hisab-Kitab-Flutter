@@ -17,7 +17,6 @@ class SocketService {
       _notificationController.stream;
 
   void connect(String token, String userId) {
-    // Disconnect if already connected to avoid multiple connections
     if (_socket?.connected ?? false) {
       disconnect();
     }
@@ -35,7 +34,6 @@ class SocketService {
 
     _socket!.onConnect((_) {
       print('Socket connected: ${_socket!.id}');
-      // Join a room specific to the user to receive targeted notifications
       _socket!.emit('join_room', userId);
     });
 
