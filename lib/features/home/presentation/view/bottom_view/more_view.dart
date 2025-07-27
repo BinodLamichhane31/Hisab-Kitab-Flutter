@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hisab_kitab/app/service_locator/service_locator.dart';
 import 'package:hisab_kitab/core/session/session_cubit.dart';
+import 'package:hisab_kitab/features/home/presentation/view/bottom_view/more/help_and_support_view.dart';
+import 'package:hisab_kitab/features/home/presentation/view/bottom_view/more/privacy_policy_view.dart';
 import 'package:hisab_kitab/features/home/presentation/view/bottom_view/profile_page_view.dart';
 import 'package:hisab_kitab/features/home/presentation/view_model/home_view_model.dart';
 import 'package:hisab_kitab/features/purchases/presentation/view/purchase_view.dart';
@@ -105,7 +107,7 @@ class MoreView extends StatelessWidget {
                 onTap:
                     () => Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (_) => const ProfilePageView(),
+                        builder: (_) => const HelpAndSupportView(),
                       ),
                     ),
               ),
@@ -115,7 +117,7 @@ class MoreView extends StatelessWidget {
                 onTap:
                     () => Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (_) => const ProfilePageView(),
+                        builder: (_) => const PrivacyPolicyView(),
                       ),
                     ),
               ),

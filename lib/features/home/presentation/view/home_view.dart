@@ -38,6 +38,7 @@ class HomeView extends StatelessWidget {
             ),
           ),
         ],
+        elevation: 1,
       ),
       body: BlocBuilder<HomeViewModel, HomeState>(
         builder: (context, state) {
