@@ -23,6 +23,7 @@ class CreateCustomerEvent extends CustomerEvent {
   final String email;
   final String address;
   final double currentBalance;
+  final double totalSpent;
   final String shopId;
 
   const CreateCustomerEvent({
@@ -31,6 +32,7 @@ class CreateCustomerEvent extends CustomerEvent {
     required this.email,
     required this.address,
     required this.currentBalance,
+    required this.totalSpent,
     required this.shopId,
   });
 

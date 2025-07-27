@@ -7,6 +7,7 @@ class SupplierEntity extends Equatable {
   final String email;
   final String address;
   final double currentBalance;
+  final double totalSupplied;
   final String shopId;
 
   const SupplierEntity({
@@ -16,6 +17,7 @@ class SupplierEntity extends Equatable {
     required this.email,
     required this.address,
     required this.currentBalance,
+    required this.totalSupplied,
     required this.shopId,
   });
   SupplierEntity copyWith({
@@ -25,6 +27,7 @@ class SupplierEntity extends Equatable {
     String? email,
     String? address,
     double? currentBalance,
+    double? totalSupplied,
     String? shopId,
   }) {
     return SupplierEntity(
@@ -34,6 +37,7 @@ class SupplierEntity extends Equatable {
       email: email ?? this.email,
       address: address ?? this.address,
       currentBalance: currentBalance ?? this.currentBalance,
+      totalSupplied: totalSupplied ?? this.totalSupplied,
       shopId: shopId ?? this.shopId,
     );
   }

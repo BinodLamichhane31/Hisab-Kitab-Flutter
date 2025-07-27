@@ -13,6 +13,7 @@ class SupplierApiModel extends Equatable {
   final String email;
   final String address;
   final double currentBalance;
+  final double totalSupplied;
   @JsonKey(name: 'shop')
   final String shopId;
 
@@ -23,6 +24,7 @@ class SupplierApiModel extends Equatable {
     required this.email,
     required this.address,
     required this.currentBalance,
+    required this.totalSupplied,
     required this.shopId,
   });
 
@@ -39,6 +41,7 @@ class SupplierApiModel extends Equatable {
       email: supplier.email,
       address: supplier.address,
       currentBalance: supplier.currentBalance,
+      totalSupplied: supplier.totalSupplied,
       shopId: supplier.shopId,
     );
   }
@@ -51,6 +54,7 @@ class SupplierApiModel extends Equatable {
       email: email,
       address: address,
       currentBalance: currentBalance,
+      totalSupplied: totalSupplied,
       shopId: shopId,
     );
   }
@@ -75,6 +79,7 @@ class SupplierApiModel extends Equatable {
     email,
     address,
     currentBalance,
+    totalSupplied,
     shopId,
   ];
 }

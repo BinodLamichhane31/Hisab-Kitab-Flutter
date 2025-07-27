@@ -23,6 +23,7 @@ class CreateSupplierEvent extends SupplierEvent {
   final String email;
   final String address;
   final double currentBalance;
+  final double totalSupplied;
   final String shopId;
 
   const CreateSupplierEvent({
@@ -31,6 +32,7 @@ class CreateSupplierEvent extends SupplierEvent {
     required this.email,
     required this.address,
     required this.currentBalance,
+    required this.totalSupplied,
     required this.shopId,
   });
 

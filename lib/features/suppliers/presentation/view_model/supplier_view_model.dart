@@ -62,6 +62,7 @@ class SupplierViewModel extends Bloc<SupplierEvent, SupplierState> {
         email: event.email,
         address: event.address,
         currentBalance: event.currentBalance,
+        totalSupplied: event.totalSupplied,
         shopId: event.shopId,
       ),
     );

@@ -20,6 +20,12 @@ import 'package:hisab_kitab/features/customers/domain/use_case/delete_customer_u
 import 'package:hisab_kitab/features/customers/domain/use_case/get_customer_usecase.dart';
 import 'package:hisab_kitab/features/customers/domain/use_case/get_customers_by_shop_usecase.dart';
 import 'package:hisab_kitab/features/customers/domain/use_case/update_customer_usecase.dart';
+import 'package:hisab_kitab/features/dashboard/data/data_source/remote_datasource/dashboard_remote_data_source.dart';
+import 'package:hisab_kitab/features/dashboard/data/repository/remote_repository/dashboard_remote_repository.dart';
+import 'package:hisab_kitab/features/dashboard/domain/repository/dashboard_repository.dart';
+import 'package:hisab_kitab/features/dashboard/domain/use_case/get_dashboard_data_usecase.dart';
+import 'package:hisab_kitab/features/dashboard/domain/use_case/record_cash_in_usecase.dart';
+import 'package:hisab_kitab/features/dashboard/domain/use_case/record_cash_out_usecase.dart';
 import 'package:hisab_kitab/features/home/presentation/view_model/home_view_model.dart';
 import 'package:hisab_kitab/features/products/data/data_source/remote_data_source/product_remote_data_source.dart';
 import 'package:hisab_kitab/features/products/data/repository/product_remote_repository.dart';
@@ -29,6 +35,14 @@ import 'package:hisab_kitab/features/products/domain/use_case/delete_product_use
 import 'package:hisab_kitab/features/products/domain/use_case/get_product_by_id_usecase.dart';
 import 'package:hisab_kitab/features/products/domain/use_case/get_products_usecase.dart';
 import 'package:hisab_kitab/features/products/domain/use_case/update_product_usecase.dart';
+import 'package:hisab_kitab/features/purchases/data/data_source/remote_datasource/purchase_remote_data_source.dart';
+import 'package:hisab_kitab/features/purchases/data/repository/remote_repository/purchase_remote_repository.dart';
+import 'package:hisab_kitab/features/purchases/domain/repository/purchase_repository.dart';
+import 'package:hisab_kitab/features/purchases/domain/use_case/cancel_purchase_usecase.dart';
+import 'package:hisab_kitab/features/purchases/domain/use_case/create_purchase_usecase.dart';
+import 'package:hisab_kitab/features/purchases/domain/use_case/get_purchase_by_id_usecase.dart';
+import 'package:hisab_kitab/features/purchases/domain/use_case/get_purchase_usecase.dart';
+import 'package:hisab_kitab/features/purchases/domain/use_case/record_payment_for_purchase_usecase.dart';
 import 'package:hisab_kitab/features/sales/data/data_source/remote_datasource/sale_remote_data_source.dart';
 import 'package:hisab_kitab/features/sales/data/repository/remote_repository/sale_remote_repository.dart';
 import 'package:hisab_kitab/features/sales/domain/repository/sale_repository.dart';
@@ -53,6 +67,10 @@ import 'package:hisab_kitab/features/suppliers/domain/use_case/delete_supplier_u
 import 'package:hisab_kitab/features/suppliers/domain/use_case/get_supplier_usecase.dart';
 import 'package:hisab_kitab/features/suppliers/domain/use_case/get_suppliers_by_shop_usecase.dart';
 import 'package:hisab_kitab/features/suppliers/domain/use_case/update_supplier_usecase.dart';
+import 'package:hisab_kitab/features/transactions/data/data_source/remote_datasource/transaction_remote_data_source.dart';
+import 'package:hisab_kitab/features/transactions/data/repository/remote_repository/transaction_remote_repository.dart';
+import 'package:hisab_kitab/features/transactions/domain/repository/transaction_repository.dart';
+import 'package:hisab_kitab/features/transactions/domain/use_case/get_transactions_usecase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final serviceLocator = GetIt.instance;
@@ -65,10 +83,13 @@ Future initDependencies() async {
   await _initLoginModule();
   await _initSignupModule();
   await _initShopModule();
+  await _initDashboardModule();
   await _initCustomerModule();
   await _initSupplierModule();
   await _initProductModule();
   await _initSaleModule();
+  await _initTransactionModule();
+  await _initPurchaseModule();
   await _initHomeModule();
   await _initSessionModule();
 }
@@ -161,6 +182,37 @@ Future _initSignupModule() async {
 
 Future _initHomeModule() async {
   serviceLocator.registerLazySingleton(() => HomeViewModel());
+}
+
+Future _initDashboardModule() async {
+  // Data sources
+  serviceLocator.registerFactory(
+    () => DashboardRemoteDataSource(apiService: serviceLocator<ApiService>()),
+  );
+
+  // Repositories
+  serviceLocator.registerFactory<IDashboardRepository>(
+    () => DashboardRemoteRepository(
+      dashboardDataSource: serviceLocator<DashboardRemoteDataSource>(),
+    ),
+  );
+
+  // Use cases
+  serviceLocator.registerFactory(
+    () => GetDashboardDataUsecase(
+      dashboardRepository: serviceLocator<IDashboardRepository>(),
+    ),
+  );
+
+  serviceLocator.registerFactory(
+    () =>
+        RecordCashInUsecase(repository: serviceLocator<IDashboardRepository>()),
+  );
+  serviceLocator.registerFactory(
+    () => RecordCashOutUsecase(
+      repository: serviceLocator<IDashboardRepository>(),
+    ),
+  );
 }
 
 Future _initSessionModule() async {
@@ -367,5 +419,57 @@ Future _initSaleModule() async {
   );
   serviceLocator.registerFactory(
     () => CreateSaleUsecase(saleRepository: serviceLocator<ISaleRepository>()),
+  );
+}
+
+Future _initPurchaseModule() async {
+  serviceLocator.registerFactory(
+    () => PurchaseRemoteDataSource(apiService: serviceLocator<ApiService>()),
+  );
+  serviceLocator.registerFactory<IPurchaseRepository>(
+    () => PurchaseRemoteRepository(
+      dataSource: serviceLocator<PurchaseRemoteDataSource>(),
+    ),
+  );
+  serviceLocator.registerFactory(
+    () => GetPurchasesUsecase(
+      purchaseRepository: serviceLocator<IPurchaseRepository>(),
+    ),
+  );
+  serviceLocator.registerFactory(
+    () => GetPurchaseByIdUsecase(
+      purchaseRepository: serviceLocator<IPurchaseRepository>(),
+    ),
+  );
+  serviceLocator.registerFactory(
+    () => CancelPurchaseUsecase(
+      purchaseRepository: serviceLocator<IPurchaseRepository>(),
+    ),
+  );
+  serviceLocator.registerFactory(
+    () => RecordPaymentForPurchaseUsecase(
+      purchaseRepository: serviceLocator<IPurchaseRepository>(),
+    ),
+  );
+  serviceLocator.registerFactory(
+    () => CreatePurchaseUsecase(
+      purchaseRepository: serviceLocator<IPurchaseRepository>(),
+    ),
+  );
+}
+
+Future _initTransactionModule() async {
+  serviceLocator.registerFactory(
+    () => TransactionRemoteDataSource(apiService: serviceLocator<ApiService>()),
+  );
+  serviceLocator.registerFactory<ITransactionRepository>(
+    () => TransactionRemoteRepository(
+      dataSource: serviceLocator<TransactionRemoteDataSource>(),
+    ),
+  );
+  serviceLocator.registerFactory(
+    () => GetTransactionsUsecase(
+      repository: serviceLocator<ITransactionRepository>(),
+    ),
   );
 }

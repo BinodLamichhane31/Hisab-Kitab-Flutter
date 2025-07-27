@@ -7,6 +7,7 @@ class CustomerEntity extends Equatable {
   final String email;
   final String address;
   final double currentBalance;
+  final double totalSpent;
   final String shopId;
 
   const CustomerEntity({
@@ -16,6 +17,7 @@ class CustomerEntity extends Equatable {
     required this.email,
     required this.address,
     required this.currentBalance,
+    required this.totalSpent,
     required this.shopId,
   });
 
@@ -26,6 +28,7 @@ class CustomerEntity extends Equatable {
     String? email,
     String? address,
     double? currentBalance,
+    double? totalSpent,
     String? shopId,
   }) {
     return CustomerEntity(
@@ -35,6 +38,7 @@ class CustomerEntity extends Equatable {
       email: email ?? this.email,
       address: address ?? this.address,
       currentBalance: currentBalance ?? this.currentBalance,
+      totalSpent: totalSpent ?? this.totalSpent,
       shopId: shopId ?? this.shopId,
     );
   }

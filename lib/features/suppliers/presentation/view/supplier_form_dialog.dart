@@ -99,6 +99,7 @@ class _SupplierFormDialogState extends State<SupplierFormDialog> {
         email: _emailController.text.trim(),
         address: _addressController.text.trim(),
         currentBalance: widget.supplierToEdit!.currentBalance,
+        totalSupplied: widget.supplierToEdit!.totalSupplied,
         shopId: widget.supplierToEdit!.shopId,
       );
       context.read<SupplierDetailViewModel>().add(
@@ -114,6 +115,7 @@ class _SupplierFormDialogState extends State<SupplierFormDialog> {
           email: _emailController.text.trim(),
           address: _addressController.text.trim(),
           currentBalance: 0.0,
+          totalSupplied: 0.0,
         ),
       );
     }

@@ -3,10 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hisab_kitab/app/service_locator/service_locator.dart';
 import 'package:hisab_kitab/core/session/session_cubit.dart';
+import 'package:hisab_kitab/features/home/presentation/view/bottom_view/more/help_and_support_view.dart';
+import 'package:hisab_kitab/features/home/presentation/view/bottom_view/more/privacy_policy_view.dart';
 import 'package:hisab_kitab/features/home/presentation/view/bottom_view/profile_page_view.dart';
 import 'package:hisab_kitab/features/home/presentation/view_model/home_view_model.dart';
+import 'package:hisab_kitab/features/purchases/presentation/view/purchase_view.dart';
 import 'package:hisab_kitab/features/sales/presentation/view/sales_view.dart';
 import 'package:hisab_kitab/features/suppliers/presentation/view/suppliers_page_view.dart';
+import 'package:hisab_kitab/features/transactions/presentation/view/transaction_view.dart';
 
 class MoreView extends StatelessWidget {
   const MoreView({super.key});
@@ -66,9 +70,7 @@ class MoreView extends StatelessWidget {
                 title: 'Purchase',
                 onTap:
                     () => Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (_) => const ProfilePageView(),
-                      ),
+                      MaterialPageRoute(builder: (_) => const PurchasesView()),
                     ),
               ),
               _OptionItem(
@@ -77,7 +79,7 @@ class MoreView extends StatelessWidget {
                 onTap:
                     () => Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (_) => const ProfilePageView(),
+                        builder: (_) => const TransactionsView(),
                       ),
                     ),
               ),
@@ -105,7 +107,7 @@ class MoreView extends StatelessWidget {
                 onTap:
                     () => Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (_) => const ProfilePageView(),
+                        builder: (_) => const HelpAndSupportView(),
                       ),
                     ),
               ),
@@ -115,7 +117,7 @@ class MoreView extends StatelessWidget {
                 onTap:
                     () => Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (_) => const ProfilePageView(),
+                        builder: (_) => const PrivacyPolicyView(),
                       ),
                     ),
               ),

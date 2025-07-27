@@ -55,12 +55,9 @@ class ShopSwitcherWidget extends StatelessWidget {
                 children: [
                   Text(
                     state.activeShop?.shopName ?? 'Select Shop',
-                    style: const TextStyle(color: Colors.white, fontSize: 14),
+                    style: const TextStyle(fontSize: 14),
                   ),
-                  const Icon(
-                    Icons.arrow_drop_down_outlined,
-                    color: Colors.white,
-                  ),
+                  const Icon(Icons.arrow_drop_down_outlined),
                 ],
               ),
             ),
@@ -80,26 +77,18 @@ class ShopSwitcherWidget extends StatelessWidget {
       context: context,
       barrierDismissible: false,
       builder: (dialogContext) {
-        // Wrap the dialog's content with a BlocListener to handle side effects.
         return BlocListener<ShopViewModel, ShopState>(
           listener: (context, state) {
-            // On successful creation...
             if (state.shopCreationSuccess) {
-              // 1. Show success snackbar
               if (state.successMessage != null) {
                 showMySnackBar(
                   context: context,
                   message: state.successMessage!,
                 );
               }
-              // 2. Update the SessionCubit with the fresh list of shops
               context.read<SessionCubit>().onShopsUpdated(state.shops);
-              // 3. Close the dialog
               Navigator.of(dialogContext).pop();
-            }
-            // On error...
-            else if (state.errorMessage != null) {
-              // Show error snackbar
+            } else if (state.errorMessage != null) {
               showMySnackBar(
                 context: context,
                 message: state.errorMessage!,
@@ -109,7 +98,6 @@ class ShopSwitcherWidget extends StatelessWidget {
           },
           child: BlocBuilder<ShopViewModel, ShopState>(
             builder: (context, state) {
-              // The AlertDialog now only builds the UI, side effects are in the listener.
               return AlertDialog(
                 title: const Text('Add a New Shop'),
                 content: SingleChildScrollView(
@@ -148,7 +136,7 @@ class ShopSwitcherWidget extends StatelessWidget {
   ) {
     showModalBottomSheet(
       context: context,
-      isScrollControlled: false, // As per your request
+      isScrollControlled: false,
       backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
@@ -164,17 +152,12 @@ class ShopSwitcherWidget extends StatelessWidget {
             children: [
               Text(
                 'Switch Shop',
-                style: Theme.of(
-                  context,
-                ).textTheme.titleLarge?.copyWith(color: Colors.white),
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(),
               ),
               const SizedBox(height: 10),
 
-              /// Scrollable shop list
               ConstrainedBox(
-                constraints: const BoxConstraints(
-                  maxHeight: 300, // 👈 Limit height so list becomes scrollable
-                ),
+                constraints: const BoxConstraints(maxHeight: 300),
                 child: ListView.builder(
                   shrinkWrap: true,
                   itemCount: shops.length,
@@ -185,14 +168,13 @@ class ShopSwitcherWidget extends StatelessWidget {
                         shop == activeShop
                             ? Icons.check_circle
                             : Icons.circle_outlined,
-                        color:
-                            shop == activeShop ? Colors.orange : Colors.white70,
+                        color: shop == activeShop ? Colors.orange : Colors.grey,
                       ),
                       title: Text(
                         shop.shopName,
                         style: TextStyle(
                           color:
-                              shop == activeShop ? Colors.orange : Colors.white,
+                              shop == activeShop ? Colors.orange : Colors.grey,
                           fontWeight:
                               shop == activeShop
                                   ? FontWeight.bold

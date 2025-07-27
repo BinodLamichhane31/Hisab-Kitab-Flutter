@@ -11,6 +11,7 @@ class AddSupplierParams extends Equatable {
   final String email;
   final String address;
   final double currentBalance;
+  final double totalSupplied;
   final String shopId;
 
   const AddSupplierParams({
@@ -19,6 +20,7 @@ class AddSupplierParams extends Equatable {
     required this.email,
     required this.address,
     required this.currentBalance,
+    required this.totalSupplied,
     required this.shopId,
   });
 
@@ -28,6 +30,7 @@ class AddSupplierParams extends Equatable {
       email = '_empty.string',
       address = '_empty.string',
       currentBalance = 0.0,
+      totalSupplied = 0.0,
       shopId = '_empty.string';
 
   @override
@@ -37,6 +40,7 @@ class AddSupplierParams extends Equatable {
     email,
     address,
     currentBalance,
+    totalSupplied,
     shopId,
   ];
 }
@@ -54,6 +58,7 @@ class AddSupplierUsecase implements UseCaseWithParams<void, AddSupplierParams> {
         email: params.email,
         address: params.address,
         currentBalance: params.currentBalance,
+        totalSupplied: params.totalSupplied,
         shopId: params.shopId,
       ),
     );

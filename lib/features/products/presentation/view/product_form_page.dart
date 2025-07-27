@@ -381,6 +381,62 @@ class _ProductFormViewState extends State<_ProductFormView> {
                 ],
               ),
               const SizedBox(height: 12),
+              // ADD THIS WIDGET
+              TextFormField(
+                controller: _quantityController,
+                decoration: InputDecoration(
+                  labelText: 'Quantity in Stock',
+                  floatingLabelBehavior: FloatingLabelBehavior.auto,
+                  labelStyle: TextStyle(color: Colors.grey[400]),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                    borderSide: BorderSide(
+                      color: Colors.orange.withOpacity(0.3),
+                      width: 1.5,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                    borderSide: const BorderSide(
+                      color: Colors.orange,
+                      width: 2.0,
+                    ),
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                    borderSide: const BorderSide(
+                      color: Colors.redAccent,
+                      width: 2.0,
+                    ),
+                  ),
+                  focusedErrorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                    borderSide: const BorderSide(
+                      color: Colors.redAccent,
+                      width: 2.5,
+                    ),
+                  ),
+                  errorStyle: const TextStyle(
+                    color: Colors.redAccent,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                keyboardType: TextInputType.number,
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                ], // Prevents non-numeric input
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return 'Please enter the quantity';
+                  }
+                  if (int.tryParse(value.trim()) == null) {
+                    return 'Please enter a valid number';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 12),
+
               TextFormField(
                 controller: _reorderLevelController,
                 decoration: InputDecoration(
@@ -420,6 +476,15 @@ class _ProductFormViewState extends State<_ProductFormView> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return 'Please enter a reorder level';
+                  }
+                  if (int.tryParse(value.trim()) == null) {
+                    return 'Please enter a valid number';
+                  }
+                  return null;
+                },
               ),
               const SizedBox(height: 12),
               TextFormField(

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hisab_kitab/features/customers/domain/use_case/add_customer_usecase.dart';
 import 'package:hisab_kitab/features/customers/domain/use_case/get_customers_by_shop_usecase.dart';
@@ -54,6 +56,7 @@ class CustomerViewModel extends Bloc<CustomerEvent, CustomerState> {
         email: event.email,
         address: event.address,
         currentBalance: event.currentBalance,
+        totalSpent: event.totalSpent,
         shopId: event.shopId,
       ),
     );
