@@ -99,6 +99,7 @@ class _CustomerFormDialogState extends State<CustomerFormDialog> {
         email: _emailController.text.trim(),
         address: _addressController.text.trim(),
         currentBalance: widget.customerToEdit!.currentBalance,
+        totalSpent: widget.customerToEdit!.totalSpent,
         shopId: widget.customerToEdit!.shopId,
       );
       context.read<CustomerDetailViewModel>().add(
@@ -114,6 +115,7 @@ class _CustomerFormDialogState extends State<CustomerFormDialog> {
           email: _emailController.text.trim(),
           address: _addressController.text.trim(),
           currentBalance: 0.0,
+          totalSpent: 0.0,
         ),
       );
     }

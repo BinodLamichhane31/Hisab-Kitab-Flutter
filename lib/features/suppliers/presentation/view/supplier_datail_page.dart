@@ -247,7 +247,7 @@ class SupplierDetailView extends StatelessWidget {
           _StatCard(
             icon: Icons.local_shipping_outlined,
             title: 'Total Purchased',
-            value: 'Rs. 0.00',
+            value: 'Rs. ${supplier.totalSupplied.toStringAsFixed(2)}',
             color: Colors.orange.shade700,
           ),
           const SizedBox(height: 12),

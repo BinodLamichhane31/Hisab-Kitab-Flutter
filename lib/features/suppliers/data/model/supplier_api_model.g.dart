@@ -14,6 +14,7 @@ SupplierApiModel _$SupplierApiModelFromJson(Map<String, dynamic> json) =>
       email: json['email'] as String,
       address: json['address'] as String,
       currentBalance: (json['currentBalance'] as num).toDouble(),
+      totalSupplied: (json['totalSupplied'] as num).toDouble(),
       shopId: json['shop'] as String,
     );
 
@@ -25,5 +26,6 @@ Map<String, dynamic> _$SupplierApiModelToJson(SupplierApiModel instance) =>
       'email': instance.email,
       'address': instance.address,
       'currentBalance': instance.currentBalance,
+      'totalSupplied': instance.totalSupplied,
       'shop': instance.shopId,
     };

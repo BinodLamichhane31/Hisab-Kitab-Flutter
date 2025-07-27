@@ -244,7 +244,7 @@ class CustomerDetailView extends StatelessWidget {
           _StatCard(
             icon: Icons.receipt,
             title: 'Total Received',
-            value: 'Rs. 0.00',
+            value: 'Rs. ${customer.totalSpent.toStringAsFixed(2)}',
             color: Colors.orange.shade700,
           ),
           const SizedBox(height: 12),
