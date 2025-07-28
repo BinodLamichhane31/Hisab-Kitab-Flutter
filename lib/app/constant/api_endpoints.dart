@@ -50,4 +50,7 @@ class ApiEndpoints {
 
   //notification
   static const String notifications = '$baseUrl/notifications';
+
+  //assistant bot
+  static const String hisabAssistant = '$baseUrl/bot/assist';
 }

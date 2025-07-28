@@ -2,8 +2,8 @@ import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:hisab_kitab/app/use_case/usecase.dart';
 import 'package:hisab_kitab/core/error/failure.dart';
-import 'package:hisab_kitab/features/assistant/domain/entity/assistant_entity.dart';
-import 'package:hisab_kitab/features/assistant/domain/repository/assistant_repository.dart';
+import 'package:hisab_kitab/features/assistant_bot/domain/entity/assistant_entity.dart';
+import 'package:hisab_kitab/features/assistant_bot/domain/repository/assistant_repository.dart';
 
 class AskAssistantParams extends Equatable {
   final String query;
