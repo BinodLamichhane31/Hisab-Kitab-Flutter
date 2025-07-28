@@ -12,5 +12,5 @@ class AssistantApiModel {
     required this.conversationHistory,
   });
 
-  Map<String, dynamic> toJson() => _$AssistantRequestModelToJson(this);
+  Map<String, dynamic> toJson() => _$AssistantApiModelToJson(this);
 }
