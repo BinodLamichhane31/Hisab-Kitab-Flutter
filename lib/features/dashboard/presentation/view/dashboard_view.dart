@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:haptic_feedback/haptic_feedback.dart';
 import 'package:hisab_kitab/app/service_locator/service_locator.dart';
 import 'package:hisab_kitab/core/common/shortcut_buttons.dart';
 import 'package:hisab_kitab/core/session/session_cubit.dart';
@@ -208,6 +210,59 @@ class _DashboardContent extends StatelessWidget {
           return const Center(child: Text('Welcome to your Dashboard!'));
         },
       ),
+      floatingActionButton: Builder(
+        builder:
+            (context) => FloatingActionButton(
+                  onPressed: () async {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const AssistantView(),
+                      ),
+                    );
+                  },
+                  shape: const CircleBorder(),
+                  child: Ink(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Colors.orange.shade600,
+                          Colors.orange.shade400,
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      borderRadius: BorderRadius.circular(50.0),
+                    ),
+                    child: Container(
+                      alignment: Alignment.center,
+                      constraints: const BoxConstraints.expand(),
+                      child: const Icon(
+                        FontAwesomeIcons.robot,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                )
+                .animate()
+                .slideY(
+                  begin: 2,
+                  duration: 600.ms,
+                  curve: Curves.easeOutCubic,
+                  delay: 300.ms,
+                )
+                .fadeIn(
+                  duration: 600.ms,
+                  curve: Curves.easeOutCubic,
+                  delay: 300.ms,
+                )
+                .scale(
+                  begin: const Offset(0.8, 0.8),
+                  duration: 400.ms,
+                  curve: Curves.easeOutBack,
+                  delay: 300.ms,
+                ),
+      ),
     );
   }
 }
@@ -378,12 +433,6 @@ class _ShortcutsGrid extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => CreatePurchaseView()),
-          );
-        }),
-        shortcut("Hisab Bot", FontAwesomeIcons.robot, () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => AssistantView()),
           );
         }),
       ],
