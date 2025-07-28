@@ -1,4 +1,6 @@
 import 'package:dartz/dartz.dart';
+import 'package:dio/dio.dart';
+import 'package:hisab_kitab/core/error/error_handler.dart';
 import 'package:hisab_kitab/core/error/failure.dart';
 import 'package:hisab_kitab/features/assistant_bot/data/data_source/remote_datasource/assistant_remote_datasource.dart';
 import 'package:hisab_kitab/features/assistant_bot/domain/entity/assistant_entity.dart';
@@ -7,7 +9,8 @@ import 'package:hisab_kitab/features/assistant_bot/domain/repository/assistant_r
 class AssistantRemoteRepository implements IAssistantRepository {
   final AssistantRemoteDatasource _dataSource;
 
-  AssistantRemoteRepository(this._dataSource);
+  AssistantRemoteRepository({required AssistantRemoteDatasource dataSource})
+    : _dataSource = dataSource;
 
   @override
   Future<Either<Failure, AssistantEntity>> postQuery({
@@ -26,8 +29,12 @@ class AssistantRemoteRepository implements IAssistantRepository {
           timestamp: DateTime.now(),
         ),
       );
-    } on Exception catch (e) {
-      return Left(ApiFailure(message: e.toString()));
+    } on DioException catch (e) {
+      return Left(handleDioError(e));
+    } catch (e) {
+      return Left(
+        ApiFailure(message: 'An unexpected application error occurred.'),
+      );
     }
   }
 }

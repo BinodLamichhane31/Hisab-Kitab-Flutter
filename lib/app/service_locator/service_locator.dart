@@ -5,6 +5,10 @@ import 'package:hisab_kitab/core/network/api_service.dart';
 import 'package:hisab_kitab/core/network/hive_service.dart';
 import 'package:hisab_kitab/core/network/socket_service.dart';
 import 'package:hisab_kitab/core/session/session_cubit.dart';
+import 'package:hisab_kitab/features/assistant_bot/data/data_source/remote_datasource/assistant_remote_datasource.dart';
+import 'package:hisab_kitab/features/assistant_bot/data/repository/remote_repository/assistant_remote_repository.dart';
+import 'package:hisab_kitab/features/assistant_bot/domain/repository/assistant_repository.dart';
+import 'package:hisab_kitab/features/assistant_bot/domain/use_case/ask_assistant_usecase.dart';
 import 'package:hisab_kitab/features/auth/data/data_source/remote_data_source/user_remote_data_source.dart';
 import 'package:hisab_kitab/features/auth/data/repository/remote_repository/user_remote_repository.dart';
 import 'package:hisab_kitab/features/auth/domain/use_case/get_profile_usecase.dart';
@@ -102,6 +106,7 @@ Future initDependencies() async {
   await _initPurchaseModule();
   await _initHomeModule();
   await _initSessionModule();
+  await _initAssistantBotModule();
 }
 
 Future<void> _initHiveService() async {
@@ -522,5 +527,20 @@ Future _initNotificationModule() async {
     () => ListenForNotificationsUsecase(
       repository: serviceLocator<INotificationRepository>(),
     ),
+  );
+}
+
+Future _initAssistantBotModule() async {
+  serviceLocator.registerFactory(
+    () => AssistantRemoteDatasource(apiService: serviceLocator<ApiService>()),
+  );
+  serviceLocator.registerFactory<IAssistantRepository>(
+    () => AssistantRemoteRepository(
+      dataSource: serviceLocator<AssistantRemoteDatasource>(),
+    ),
+  );
+  serviceLocator.registerFactory(
+    () =>
+        AskAssistantUsecase(repository: serviceLocator<IAssistantRepository>()),
   );
 }

@@ -5,6 +5,7 @@ import 'package:hisab_kitab/app/service_locator/service_locator.dart';
 import 'package:hisab_kitab/core/common/shortcut_buttons.dart';
 import 'package:hisab_kitab/core/session/session_cubit.dart';
 import 'package:hisab_kitab/core/session/session_state.dart';
+import 'package:hisab_kitab/features/assistant_bot/presentation/view/assistant_view.dart';
 import 'package:hisab_kitab/features/dashboard/presentation/view/widget/cash_transaction_sheet.dart';
 import 'package:hisab_kitab/features/dashboard/presentation/view/widget/trend_chart.dart';
 import 'package:hisab_kitab/features/customers/presentation/view/widget/customer_form_dialog.dart';
@@ -379,7 +380,12 @@ class _ShortcutsGrid extends StatelessWidget {
             MaterialPageRoute(builder: (context) => CreatePurchaseView()),
           );
         }),
-        shortcut("Hisab Bot", FontAwesomeIcons.robot, () {}),
+        shortcut("Hisab Bot", FontAwesomeIcons.robot, () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AssistantView()),
+          );
+        }),
       ],
     );
   }

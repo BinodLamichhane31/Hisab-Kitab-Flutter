@@ -19,7 +19,8 @@ class AskAssistantUsecase
     implements UseCaseWithParams<AssistantEntity, AskAssistantParams> {
   final IAssistantRepository _repository;
 
-  AskAssistantUsecase(this._repository);
+  AskAssistantUsecase({required IAssistantRepository repository})
+    : _repository = repository;
 
   @override
   Future<Either<Failure, AssistantEntity>> call(AskAssistantParams params) {

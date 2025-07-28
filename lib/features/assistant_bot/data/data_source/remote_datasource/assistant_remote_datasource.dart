@@ -8,7 +8,8 @@ import 'package:hisab_kitab/features/assistant_bot/domain/entity/assistant_entit
 class AssistantRemoteDatasource implements IAssistantDatasource {
   final ApiService _apiService;
 
-  AssistantRemoteDatasource(this._apiService);
+  AssistantRemoteDatasource({required ApiService apiService})
+    : _apiService = apiService;
 
   @override
   Future<String> postQuery({
