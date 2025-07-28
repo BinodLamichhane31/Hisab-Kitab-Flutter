@@ -40,6 +40,7 @@ class SplashViewModel extends Cubit<void> {
                 user: userEntity,
                 shops: userEntity.shops,
                 activeShop: userEntity.activeShop,
+                token: token,
               );
               _navigateTo(context, HomeView());
             },

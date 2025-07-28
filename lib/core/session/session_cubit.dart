@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hisab_kitab/core/common/snackbar/my_snackbar.dart';
+import 'package:hisab_kitab/core/network/socket_service.dart';
 import 'package:hisab_kitab/core/session/session_state.dart';
 import 'package:hisab_kitab/features/auth/domain/entity/user_entity.dart';
 import 'package:hisab_kitab/features/shops/domain/entity/shop_entity.dart';
@@ -8,20 +9,28 @@ import 'package:hisab_kitab/features/shops/domain/use_case/switch_shop_usecase.d
 
 class SessionCubit extends Cubit<SessionState> {
   final SwitchShopUsecase _switchShopUsecase;
+  final SocketService _socketService;
 
-  SessionCubit({required SwitchShopUsecase switchShopUsecase})
-    : _switchShopUsecase = switchShopUsecase,
-      super(SessionState.initial());
+  SessionCubit({
+    required SwitchShopUsecase switchShopUsecase,
+    required SocketService socketService,
+  }) : _switchShopUsecase = switchShopUsecase,
+       _socketService = socketService,
+       super(SessionState.initial());
 
   void onLoginSuccess({
     required UserEntity user,
+    required String token,
     required List<ShopEntity> shops,
     required ShopEntity? activeShop,
   }) {
+    _socketService.connect(token, user.userId!);
+
     emit(
       state.copyWith(
         isAuthenticated: true,
         user: user,
+        token: token,
         shops: shops,
         activeShop: () => activeShop,
       ),
@@ -46,6 +55,7 @@ class SessionCubit extends Cubit<SessionState> {
   }
 
   void onLogout() {
+    _socketService.disconnect();
     emit(SessionState.initial());
   }
 

@@ -51,6 +51,7 @@ class SupplierDetailView extends StatelessWidget {
             message: state.errorMessage!,
             color: Colors.red,
           );
+          // ignore: invalid_use_of_visible_for_testing_member
           context.read<SupplierDetailViewModel>().emit(
             state.copyWith(clearError: true),
           );

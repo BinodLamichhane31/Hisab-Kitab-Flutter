@@ -47,4 +47,10 @@ class ApiEndpoints {
 
   //cash
   static const String cash = '$baseUrl/cash';
+
+  //notification
+  static const String notifications = '$baseUrl/notifications';
+
+  //assistant bot
+  static const String hisabAssistant = '$baseUrl/bot/assist';
 }

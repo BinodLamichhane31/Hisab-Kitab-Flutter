@@ -6,6 +6,7 @@ import 'package:hisab_kitab/features/shops/domain/entity/shop_entity.dart';
 class SessionState extends Equatable {
   final bool isAuthenticated;
   final UserEntity? user;
+  final String? token;
   final List<ShopEntity> shops;
   final ShopEntity? activeShop;
   final bool isLoading;
@@ -13,6 +14,7 @@ class SessionState extends Equatable {
   const SessionState({
     this.isAuthenticated = false,
     this.user,
+    this.token,
     this.shops = const [],
     this.activeShop,
     this.isLoading = false,
@@ -25,6 +27,7 @@ class SessionState extends Equatable {
   SessionState copyWith({
     bool? isAuthenticated,
     UserEntity? user,
+    String? token,
     List<ShopEntity>? shops,
     ValueGetter<ShopEntity?>? activeShop,
     bool? isLoading,
@@ -32,6 +35,7 @@ class SessionState extends Equatable {
     return SessionState(
       isAuthenticated: isAuthenticated ?? this.isAuthenticated,
       user: user ?? this.user,
+      token: token ?? this.token,
       shops: shops ?? this.shops,
       activeShop: activeShop != null ? activeShop() : this.activeShop,
       isLoading: isLoading ?? this.isLoading,
@@ -42,6 +46,7 @@ class SessionState extends Equatable {
   List<Object?> get props => [
     isAuthenticated,
     user,
+    token,
     shops,
     activeShop,
     isLoading,
