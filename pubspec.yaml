@@ -57,6 +57,8 @@ dependencies:
   socket_io_client: ^3.1.2
   timeago: ^3.7.1
   badges: ^3.1.2
+  flutter_animate: ^4.5.2
+  haptic_feedback: ^0.5.1+1
   
   
 
