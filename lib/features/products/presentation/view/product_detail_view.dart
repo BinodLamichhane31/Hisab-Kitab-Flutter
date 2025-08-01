@@ -185,7 +185,7 @@ class _ProductDetailsContent extends StatelessWidget {
   Widget build(BuildContext context) {
     String? fullImageUrl;
     if (product.image != null && product.image!.isNotEmpty) {
-      fullImageUrl = '${ApiEndpoints.serverAddress}${product.image!}';
+      fullImageUrl = '${ApiEndpoints.baseUrl}${product.image!}';
     }
 
     return SingleChildScrollView(

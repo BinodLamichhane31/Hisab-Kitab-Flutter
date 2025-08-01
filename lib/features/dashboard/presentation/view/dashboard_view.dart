@@ -433,8 +433,7 @@ class _ShortcutsGrid extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => CreatePurchaseView()),
-          );
-        }),
+          ); }),
       ],
     );
   }
