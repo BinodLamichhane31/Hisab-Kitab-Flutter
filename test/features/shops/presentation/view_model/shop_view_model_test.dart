@@ -23,7 +23,7 @@ void main() {
 
     test('state copyWith works correctly', () {
       final initialState = const ShopState.initial();
-      
+
       // Test with shops
       final shops = [
         ShopEntity(
@@ -34,7 +34,7 @@ void main() {
           ownerId: 'user1',
         ),
       ];
-      
+
       final updatedState = initialState.copyWith(
         shops: shops,
         isLoading: true,
@@ -42,7 +42,7 @@ void main() {
         successMessage: () => 'Test success',
         shopCreationSuccess: true,
       );
-      
+
       expect(updatedState.shops, shops);
       expect(updatedState.isLoading, true);
       expect(updatedState.errorMessage, 'Test error');
@@ -54,7 +54,7 @@ void main() {
       final state1 = const ShopState.initial();
       final state2 = const ShopState.initial();
       final state3 = const ShopState.initial().copyWith(isLoading: true);
-      
+
       expect(state1, equals(state2));
       expect(state1, isNot(equals(state3)));
     });
@@ -67,7 +67,7 @@ void main() {
         contactNumber: '1234567890',
         ownerId: 'user1',
       );
-      
+
       expect(shop.shopId, '1');
       expect(shop.shopName, 'Test Shop');
       expect(shop.address, 'Test Address');
@@ -78,7 +78,7 @@ void main() {
     test('ShopEvent classes can be instantiated', () {
       // Test LoadShopsEvent
       expect(LoadShopsEvent(), isA<LoadShopsEvent>());
-      
+
       // Test CreateShopEvent
       expect(
         CreateShopEvent(
@@ -96,7 +96,7 @@ void main() {
         address: 'Test Address',
         contactNumber: '1234567890',
       );
-      
+
       expect(event.shopName, 'Test Shop');
       expect(event.address, 'Test Address');
       expect(event.contactNumber, '1234567890');
@@ -110,7 +110,7 @@ void main() {
         contactNumber: '1234567890',
         ownerId: 'user1',
       );
-      
+
       final shop2 = ShopEntity(
         shopId: '1',
         shopName: 'Test Shop',
@@ -118,7 +118,7 @@ void main() {
         contactNumber: '1234567890',
         ownerId: 'user1',
       );
-      
+
       final shop3 = ShopEntity(
         shopId: '2',
         shopName: 'Different Shop',
@@ -126,7 +126,7 @@ void main() {
         contactNumber: '0987654321',
         ownerId: 'user2',
       );
-      
+
       expect(shop1, equals(shop2));
       expect(shop1, isNot(equals(shop3)));
     });
