@@ -72,8 +72,9 @@ class _TransactionsViewContentState extends State<_TransactionsViewContent> {
 
   void _onScroll() {
     if (!_scrollController.hasClients ||
-        context.read<TransactionViewModel>().state.isLoading)
+        context.read<TransactionViewModel>().state.isLoading) {
       return;
+    }
     final maxScroll = _scrollController.position.maxScrollExtent;
     final currentScroll = _scrollController.offset;
     if (currentScroll >= (maxScroll * 0.9)) {
@@ -107,7 +108,6 @@ class _TransactionsViewContentState extends State<_TransactionsViewContent> {
           IconButton(
             icon: const Icon(Icons.filter_list),
             onPressed: () {
-              // TODO: Implement filter bottom sheet
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
                   content: Text('Filter functionality to be added.'),
@@ -219,6 +219,7 @@ class _TransactionTile extends StatelessWidget {
 
     return ListTile(
       leading: CircleAvatar(
+        // ignore: deprecated_member_use
         backgroundColor: color.withOpacity(0.1),
         child: Icon(icon, color: color, size: 20),
       ),
@@ -235,9 +236,7 @@ class _TransactionTile extends StatelessWidget {
           fontSize: 15,
         ),
       ),
-      onTap: () {
-        // TODO: Navigate to Transaction Detail View
-      },
+      onTap: () {},
     );
   }
 }

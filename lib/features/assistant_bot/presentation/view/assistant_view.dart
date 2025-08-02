@@ -172,6 +172,7 @@ class _ChatMessage extends StatelessWidget {
       textColor = isDarkMode ? Colors.white70 : Colors.black87;
     }
 
+    // ignore: unnecessary_null_comparison
     if (message.timestamp == null) {
       return Align(
         alignment: Alignment.centerLeft,

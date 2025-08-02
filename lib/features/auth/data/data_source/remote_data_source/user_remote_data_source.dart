@@ -96,4 +96,81 @@ class UserRemoteDataSource implements IUserDataSource {
       print("Server logout failed, but proceeding with local logout: $e");
     }
   }
+
+  @override
+  Future<UserApiModel> updateProfile(String fname, String lname) async {
+    try {
+      final response = await _apiService.dio.put(
+        ApiEndpoints.profile,
+        data: {'fname': fname, 'lname': lname},
+      );
+
+      if (response.statusCode == 200) {
+        return UserApiModel.fromJson(response.data['data']);
+      } else {
+        throw Exception(
+          'Failed to update profile: ${response.data['message']}',
+        );
+      }
+    } on DioException catch (e) {
+      throw Exception('Failed to update profile: ${e.message}');
+    }
+  }
+
+  @override
+  Future<void> changePassword(String oldPassword, String newPassword) async {
+    try {
+      final response = await _apiService.dio.put(
+        ApiEndpoints.changePassword,
+        data: {'oldPassword': oldPassword, 'newPassword': newPassword},
+      );
+
+      if (response.statusCode != 200) {
+        throw Exception(
+          'Failed to change password: ${response.data['message']}',
+        );
+      }
+    } on DioException catch (e) {
+      throw Exception('Failed to change password: ${e.message}');
+    }
+  }
+
+  @override
+  Future<void> deleteAccount() async {
+    try {
+      final response = await _apiService.dio.delete(ApiEndpoints.deleteAccount);
+
+      if (response.statusCode != 200) {
+        throw Exception(
+          'Failed to delete account: ${response.data['message']}',
+        );
+      }
+    } on DioException catch (e) {
+      throw Exception('Failed to delete account: ${e.message}');
+    }
+  }
+
+  @override
+  Future<UserApiModel> uploadProfileImage(String imagePath) async {
+    try {
+      final formData = FormData.fromMap({
+        'image': await MultipartFile.fromFile(imagePath),
+      });
+
+      final response = await _apiService.dio.put(
+        ApiEndpoints.uploadProfileImage,
+        data: formData,
+      );
+
+      if (response.statusCode == 200) {
+        return UserApiModel.fromJson(response.data['data']);
+      } else {
+        throw Exception(
+          'Failed to upload profile image: ${response.data['message']}',
+        );
+      }
+    } on DioException catch (e) {
+      throw Exception('Failed to upload profile image: ${e.message}');
+    }
+  }
 }

@@ -47,6 +47,7 @@ void showSupplierFormDialog(
 
   showDialog(context: context, builder: (_) => blocProvider).then((success) {
     if (success == true && supplierToEdit == null) {
+      // ignore: use_build_context_synchronously
       final viewModel = context.read<SupplierViewModel>();
       viewModel.add(LoadSuppliersEvent(shopId: viewModel.shopId));
     }

@@ -53,4 +53,34 @@ class UserLocalRepository implements IUserRepository {
     // TODO: implement logoutUser
     throw UnimplementedError();
   }
+
+  @override
+  Future<Either<Failure, void>> changePassword(
+    String oldPassword,
+    String newPassword,
+  ) {
+    // TODO: implement changePassword
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<Failure, void>> deleteAccount() {
+    // TODO: implement deleteAccount
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<Failure, UserEntity>> updateProfile(
+    String fname,
+    String lname,
+  ) {
+    // TODO: implement updateProfile
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<Failure, UserEntity>> uploadProfileImage(String imagePath) {
+    // TODO: implement uploadProfileImage
+    throw UnimplementedError();
+  }
 }

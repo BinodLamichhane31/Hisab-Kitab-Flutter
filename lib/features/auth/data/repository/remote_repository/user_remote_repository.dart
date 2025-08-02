@@ -56,4 +56,57 @@ class UserRemoteRepository implements IUserRepository {
       return Left(ApiFailure(message: e.toString()));
     }
   }
+
+  @override
+  Future<Either<Failure, UserEntity>> updateProfile(
+    String fname,
+    String lname,
+  ) async {
+    try {
+      final userApiModel = await _userRemoteDataSource.updateProfile(
+        fname,
+        lname,
+      );
+      return Right(userApiModel.toEntity());
+    } catch (e) {
+      return Left(ApiFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> changePassword(
+    String oldPassword,
+    String newPassword,
+  ) async {
+    try {
+      await _userRemoteDataSource.changePassword(oldPassword, newPassword);
+      return const Right(null);
+    } catch (e) {
+      return Left(ApiFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> deleteAccount() async {
+    try {
+      await _userRemoteDataSource.deleteAccount();
+      return const Right(null);
+    } catch (e) {
+      return Left(ApiFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, UserEntity>> uploadProfileImage(
+    String imagePath,
+  ) async {
+    try {
+      final userApiModel = await _userRemoteDataSource.uploadProfileImage(
+        imagePath,
+      );
+      return Right(userApiModel.toEntity());
+    } catch (e) {
+      return Left(ApiFailure(message: e.toString()));
+    }
+  }
 }

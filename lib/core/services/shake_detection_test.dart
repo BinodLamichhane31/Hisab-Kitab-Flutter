@@ -15,7 +15,6 @@ class _ShakeDetectionTestWidgetState extends State<ShakeDetectionTestWidget> {
   final ShakeDetectionService _shakeDetectionService = ShakeDetectionService();
   String _lastShakeTime = 'No shake detected yet';
   bool _isSupported = true;
-  bool _isInitialized = false;
 
   @override
   void initState() {
@@ -32,9 +31,7 @@ class _ShakeDetectionTestWidgetState extends State<ShakeDetectionTestWidget> {
             _lastShakeTime = 'Shake detected at: ${event.timestamp}';
           });
         });
-        setState(() {
-          _isInitialized = true;
-        });
+        setState(() {});
       } catch (e) {
         setState(() {
           _isSupported = false;

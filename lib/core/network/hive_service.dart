@@ -33,6 +33,13 @@ class HiveService {
     return user;
   }
 
+  Future<UserHiveModel?> getUser(String email) async {
+    var box = await Hive.openBox(HiveTableConstant.userBox);
+    var user = box.values.firstWhere((u) => u.email == email);
+    box.close();
+    return user;
+  }
+
   Future<void> clearAllBoxes() async {
     // List all your box names here that you want to clear
     List<String> boxNames = [

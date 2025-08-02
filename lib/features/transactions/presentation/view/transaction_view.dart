@@ -72,8 +72,9 @@ class _TransactionsViewContentState extends State<_TransactionsViewContent> {
 
   void _onScroll() {
     if (!_scrollController.hasClients ||
-        context.read<TransactionViewModel>().state.isLoading)
+        context.read<TransactionViewModel>().state.isLoading) {
       return;
+    }
     final maxScroll = _scrollController.position.maxScrollExtent;
     final currentScroll = _scrollController.offset;
     if (currentScroll >= (maxScroll * 0.9)) {
@@ -235,9 +236,7 @@ class _TransactionTile extends StatelessWidget {
           fontSize: 15,
         ),
       ),
-      onTap: () {
-        // TODO: Navigate to Transaction Detail View
-      },
+      onTap: () {},
     );
   }
 }

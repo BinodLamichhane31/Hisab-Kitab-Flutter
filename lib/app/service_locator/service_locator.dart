@@ -11,7 +11,11 @@ import 'package:hisab_kitab/features/assistant_bot/domain/repository/assistant_r
 import 'package:hisab_kitab/features/assistant_bot/domain/use_case/ask_assistant_usecase.dart';
 import 'package:hisab_kitab/features/auth/data/data_source/remote_data_source/user_remote_data_source.dart';
 import 'package:hisab_kitab/features/auth/data/repository/remote_repository/user_remote_repository.dart';
+import 'package:hisab_kitab/features/auth/domain/use_case/change_password_usecase.dart';
+import 'package:hisab_kitab/features/auth/domain/use_case/delete_account_usecase.dart';
 import 'package:hisab_kitab/features/auth/domain/use_case/get_profile_usecase.dart';
+import 'package:hisab_kitab/features/auth/domain/use_case/update_profile_usecase.dart';
+import 'package:hisab_kitab/features/auth/domain/use_case/upload_profile_image_usecase.dart';
 import 'package:hisab_kitab/features/auth/domain/use_case/user_login_usecase.dart';
 import 'package:hisab_kitab/features/auth/domain/use_case/user_logout_usecase.dart';
 import 'package:hisab_kitab/features/auth/domain/use_case/user_register_usecase.dart';
@@ -85,6 +89,9 @@ import 'package:hisab_kitab/features/transactions/domain/repository/transaction_
 import 'package:hisab_kitab/features/transactions/domain/use_case/get_transactions_usecase.dart';
 import 'package:hisab_kitab/core/services/shake_detection_service.dart';
 import 'package:hisab_kitab/core/services/shop_switch_service.dart';
+import 'package:hisab_kitab/core/services/gyroscope_sensor_service.dart';
+import 'package:hisab_kitab/core/services/rotation_service.dart';
+import 'package:hisab_kitab/core/services/gyroscope_transaction_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final serviceLocator = GetIt.instance;
@@ -101,6 +108,7 @@ Future initDependencies() async {
   await _initShopModule();
   await _initDashboardModule();
   await _initShakeDetectionModule();
+  await _initGyroscopeSensorModule();
   await _initCustomerModule();
   await _initSupplierModule();
   await _initProductModule();
@@ -109,6 +117,7 @@ Future initDependencies() async {
   await _initPurchaseModule();
   await _initHomeModule();
   await _initSessionModule();
+  await _initProfileModule();
   await _initAssistantBotModule();
 }
 
@@ -243,6 +252,24 @@ Future _initSessionModule() async {
       switchShopUsecase: serviceLocator<SwitchShopUsecase>(),
       socketService: serviceLocator<SocketService>(),
     ),
+  );
+}
+
+Future _initProfileModule() async {
+  serviceLocator.registerFactory(
+    () => UpdateProfileUsecase(serviceLocator<UserRemoteRepository>()),
+  );
+  //delete account usecase
+  serviceLocator.registerFactory(
+    () => DeleteAccountUsecase(serviceLocator<UserRemoteRepository>()),
+  );
+  //change password usecase
+  serviceLocator.registerFactory(
+    () => ChangePasswordUsecase(serviceLocator<UserRemoteRepository>()),
+  );
+  //upload profile image usecase
+  serviceLocator.registerFactory(
+    () => UploadProfileImageUsecase(serviceLocator<UserRemoteRepository>()),
   );
 }
 
@@ -556,6 +583,23 @@ Future _initShakeDetectionModule() async {
     () => ShopSwitchService(
       shakeDetectionService: serviceLocator<ShakeDetectionService>(),
       sessionCubit: serviceLocator<SessionCubit>(),
+    ),
+  );
+}
+
+Future _initGyroscopeSensorModule() async {
+  serviceLocator.registerFactory<GyroscopeSensorService>(
+    () => GyroscopeSensorService(),
+  );
+  serviceLocator.registerFactory<RotationService>(
+    () => RotationService(
+      gyroscopeSensorService: serviceLocator<GyroscopeSensorService>(),
+      sessionCubit: serviceLocator<SessionCubit>(),
+    ),
+  );
+  serviceLocator.registerFactory<GyroscopeTransactionService>(
+    () => GyroscopeTransactionService(
+      gyroscopeSensorService: serviceLocator<GyroscopeSensorService>(),
     ),
   );
 }

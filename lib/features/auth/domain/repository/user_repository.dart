@@ -10,5 +10,12 @@ abstract interface class IUserRepository {
     String password,
   );
   Future<Either<Failure, UserEntity>> getProfile();
+  Future<Either<Failure, UserEntity>> updateProfile(String fname, String lname);
+  Future<Either<Failure, void>> changePassword(
+    String oldPassword,
+    String newPassword,
+  );
+  Future<Either<Failure, void>> deleteAccount();
+  Future<Either<Failure, UserEntity>> uploadProfileImage(String imagePath);
   Future<Either<Failure, void>> logoutUser();
 }

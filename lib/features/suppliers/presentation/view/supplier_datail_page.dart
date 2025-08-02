@@ -329,6 +329,7 @@ class _StatCard extends StatelessWidget {
         child: Row(
           children: [
             CircleAvatar(
+              // ignore: deprecated_member_use
               backgroundColor: color.withOpacity(0.1),
               child: Icon(icon, color: color),
             ),

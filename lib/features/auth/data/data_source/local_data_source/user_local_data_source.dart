@@ -62,14 +62,43 @@ class UserLocalDataSource implements IUserDataSource {
   }
 
   @override
-  Future<UserApiModel> getProfile() {
-    // TODO: implement getProfile
-    throw UnimplementedError();
+  Future<UserApiModel> getProfile() async {
+    final user = await _hiveService.getUser("jjj");
+    return UserApiModel(
+      fname: user?.fname ?? '',
+      lname: user?.lname ?? '',
+      phone: user?.phone ?? '',
+      email: user?.email ?? '',
+    );
   }
 
   @override
   Future<void> logoutUser() {
     // TODO: implement logoutUser
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> changePassword(String oldPassword, String newPassword) {
+    // TODO: implement changePassword
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> deleteAccount() {
+    // TODO: implement deleteAccount
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<UserApiModel> updateProfile(String fname, String lname) {
+    // TODO: implement updateProfile
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<UserApiModel> uploadProfileImage(String imagePath) {
+    // TODO: implement uploadProfileImage
     throw UnimplementedError();
   }
 }

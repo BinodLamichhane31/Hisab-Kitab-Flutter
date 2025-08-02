@@ -13,6 +13,7 @@ import 'package:hisab_kitab/features/home/presentation/view_model/home_view_mode
 import 'package:hisab_kitab/features/products/presentation/view/products_page_view.dart';
 import 'package:hisab_kitab/features/suppliers/presentation/view/suppliers_page_view.dart';
 import 'package:hisab_kitab/core/services/shop_switch_service.dart';
+import 'package:hisab_kitab/core/services/gyroscope_transaction_service.dart';
 import 'package:hisab_kitab/app/service_locator/service_locator.dart';
 
 class HomeView extends StatefulWidget {
@@ -24,12 +25,16 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   late ShopSwitchService _shopSwitchService;
+  late GyroscopeTransactionService _gyroscopeTransactionService;
   bool _shakeDetectionInitialized = false;
+  bool _gyroscopeTransactionInitialized = false;
 
   @override
   void initState() {
     super.initState();
     _shopSwitchService = serviceLocator<ShopSwitchService>();
+    _gyroscopeTransactionService =
+        serviceLocator<GyroscopeTransactionService>();
     // Start listening for shake events when the home view is initialized
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (_shopSwitchService.isSupported) {
@@ -40,12 +45,23 @@ class _HomeViewState extends State<HomeView> {
       } else {
         print('Shake detection not supported on this platform');
       }
+
+      // Start listening for gyroscope events for transaction navigation
+      if (_gyroscopeTransactionService.isSupported) {
+        await _gyroscopeTransactionService.startListening(context);
+        setState(() {
+          _gyroscopeTransactionInitialized = true;
+        });
+      } else {
+        print('Gyroscope transaction service not supported on this platform');
+      }
     });
   }
 
   @override
   void dispose() {
     _shopSwitchService.stopListening();
+    _gyroscopeTransactionService.stopListening();
     super.dispose();
   }
 

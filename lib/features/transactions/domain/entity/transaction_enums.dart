@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 enum TransactionType { CASH_IN, CASH_OUT }
 
 enum TransactionCategory {
