@@ -14,6 +14,8 @@ class TransactionState extends Equatable {
   final TransactionCategory? category;
   final DateTime? startDate;
   final DateTime? endDate;
+  final String? customerId;
+  final String? supplierId;
 
   const TransactionState({
     required this.transactions,
@@ -26,6 +28,8 @@ class TransactionState extends Equatable {
     this.category,
     this.startDate,
     this.endDate,
+    this.customerId,
+    this.supplierId,
   });
 
   const TransactionState.initial()
@@ -38,7 +42,9 @@ class TransactionState extends Equatable {
       type = null,
       category = null,
       startDate = null,
-      endDate = null;
+      endDate = null,
+      customerId = null,
+      supplierId = null;
 
   TransactionState copyWith({
     List<TransactionEntity>? transactions,
@@ -51,6 +57,8 @@ class TransactionState extends Equatable {
     TransactionCategory? category,
     DateTime? startDate,
     DateTime? endDate,
+    String? customerId,
+    String? supplierId,
     bool clearError = false,
   }) {
     return TransactionState(
@@ -64,6 +72,8 @@ class TransactionState extends Equatable {
       category: category ?? this.category,
       startDate: startDate ?? this.startDate,
       endDate: endDate ?? this.endDate,
+      customerId: customerId ?? this.customerId,
+      supplierId: supplierId ?? this.supplierId,
     );
   }
 
@@ -79,5 +89,7 @@ class TransactionState extends Equatable {
     category,
     startDate,
     endDate,
+    customerId,
+    supplierId,
   ];
 }

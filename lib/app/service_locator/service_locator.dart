@@ -83,6 +83,8 @@ import 'package:hisab_kitab/features/transactions/data/data_source/remote_dataso
 import 'package:hisab_kitab/features/transactions/data/repository/remote_repository/transaction_remote_repository.dart';
 import 'package:hisab_kitab/features/transactions/domain/repository/transaction_repository.dart';
 import 'package:hisab_kitab/features/transactions/domain/use_case/get_transactions_usecase.dart';
+import 'package:hisab_kitab/core/services/shake_detection_service.dart';
+import 'package:hisab_kitab/core/services/shop_switch_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final serviceLocator = GetIt.instance;
@@ -98,6 +100,7 @@ Future initDependencies() async {
   await _initSignupModule();
   await _initShopModule();
   await _initDashboardModule();
+  await _initShakeDetectionModule();
   await _initCustomerModule();
   await _initSupplierModule();
   await _initProductModule();
@@ -542,5 +545,17 @@ Future _initAssistantBotModule() async {
   serviceLocator.registerFactory(
     () =>
         AskAssistantUsecase(repository: serviceLocator<IAssistantRepository>()),
+  );
+}
+
+Future _initShakeDetectionModule() async {
+  serviceLocator.registerFactory<ShakeDetectionService>(
+    () => ShakeDetectionService(),
+  );
+  serviceLocator.registerFactory<ShopSwitchService>(
+    () => ShopSwitchService(
+      shakeDetectionService: serviceLocator<ShakeDetectionService>(),
+      sessionCubit: serviceLocator<SessionCubit>(),
+    ),
   );
 }

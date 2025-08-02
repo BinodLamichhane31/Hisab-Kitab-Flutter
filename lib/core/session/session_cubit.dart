@@ -74,14 +74,21 @@ class SessionCubit extends Cubit<SessionState> {
 
     result.fold(
       (failure) {
-        showMySnackBar(context: context, message: failure.message);
+        // Check if context is still mounted before showing snackbar
+        if (context.mounted) {
+          showMySnackBar(context: context, message: failure.message);
+        }
         emit(state.copyWith(isLoading: false));
       },
       (success) {
-        showMySnackBar(
-          context: context,
-          message: "Active shop set to $shopName.",
-        );
+        // Check if context is still mounted before showing snackbar
+        if (context.mounted) {
+          showMySnackBar(
+            context: context,
+            message: "Active shop set to $shopName.",
+          );
+        }
+        // Update the active shop in the state
         emit(state.copyWith(activeShop: () => newActiveShop, isLoading: false));
       },
     );

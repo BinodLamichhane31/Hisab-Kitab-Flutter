@@ -10,6 +10,7 @@ import 'package:hisab_kitab/features/customers/presentation/view/widget/customer
 import 'package:hisab_kitab/features/customers/presentation/view_model/customer_detail_event.dart';
 import 'package:hisab_kitab/features/customers/presentation/view_model/customer_detail_state.dart';
 import 'package:hisab_kitab/features/customers/presentation/view_model/customer_detail_view_model.dart';
+import 'package:hisab_kitab/features/transactions/presentation/view/customer_transactions_view.dart';
 import 'package:intl/intl.dart';
 
 class CustomerDetailPage extends StatelessWidget {
@@ -170,7 +171,12 @@ class CustomerDetailView extends StatelessWidget {
           children: [
             _buildOverviewTab(customer),
             _buildDetailsTab(customer),
-            const Center(child: Text("Transactions will be shown here.")),
+            customer.customerId != null
+                ? CustomerTransactionsView(
+                  customerId: customer.customerId!,
+                  customerName: customer.name,
+                )
+                : const Center(child: Text("Customer ID not available.")),
           ],
         ),
       ),

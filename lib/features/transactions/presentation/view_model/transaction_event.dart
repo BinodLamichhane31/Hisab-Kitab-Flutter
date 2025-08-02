@@ -14,6 +14,8 @@ class LoadTransactionsEvent extends TransactionEvent {
   final TransactionCategory? category;
   final DateTime? startDate;
   final DateTime? endDate;
+  final String? customerId;
+  final String? supplierId;
 
   const LoadTransactionsEvent({
     required this.shopId,
@@ -22,6 +24,8 @@ class LoadTransactionsEvent extends TransactionEvent {
     this.category,
     this.startDate,
     this.endDate,
+    this.customerId,
+    this.supplierId,
   });
 
   @override
@@ -32,6 +36,8 @@ class LoadTransactionsEvent extends TransactionEvent {
     category,
     startDate,
     endDate,
+    customerId,
+    supplierId,
   ];
 }
 
@@ -42,6 +48,8 @@ class RefreshTransactionsEvent extends TransactionEvent {
   final TransactionCategory? category;
   final DateTime? startDate;
   final DateTime? endDate;
+  final String? customerId;
+  final String? supplierId;
 
   const RefreshTransactionsEvent({
     required this.shopId,
@@ -50,6 +58,8 @@ class RefreshTransactionsEvent extends TransactionEvent {
     this.category,
     this.startDate,
     this.endDate,
+    this.customerId,
+    this.supplierId,
   });
 
   @override
@@ -60,5 +70,7 @@ class RefreshTransactionsEvent extends TransactionEvent {
     category,
     startDate,
     endDate,
+    customerId,
+    supplierId,
   ];
 }

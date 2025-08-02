@@ -13,5 +13,7 @@ abstract interface class ITransactionRepository {
     TransactionCategory? category,
     DateTime? startDate,
     DateTime? endDate,
+    String? customerId,
+    String? supplierId,
   });
 }

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hisab_kitab/core/common/snackbar/my_snackbar.dart';
 import 'package:hisab_kitab/core/session/session_cubit.dart';
 import 'package:hisab_kitab/core/session/session_state.dart';
+
 import 'package:hisab_kitab/features/shops/domain/entity/shop_entity.dart';
 import 'package:hisab_kitab/features/shops/presentation/view/widget/add_shop_form.dart';
 import 'package:hisab_kitab/features/shops/presentation/view_model/shop_state.dart';
@@ -37,7 +38,7 @@ class ShopSwitcherWidget extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: GestureDetector(
             onTap:
-                () => _showShopSwitcherBottomSheet(
+                () => showShopSwitcherBottomSheet(
                   context,
                   state.shops,
                   state.activeShop,
@@ -129,7 +130,7 @@ class ShopSwitcherWidget extends StatelessWidget {
     );
   }
 
-  void _showShopSwitcherBottomSheet(
+  void showShopSwitcherBottomSheet(
     BuildContext context,
     List<ShopEntity> shops,
     ShopEntity? activeShop,
@@ -165,31 +166,37 @@ class ShopSwitcherWidget extends StatelessWidget {
                     final shop = shops[index];
                     return ListTile(
                       leading: Icon(
-                        shop == activeShop
+                        shop.shopId == activeShop?.shopId
                             ? Icons.check_circle
                             : Icons.circle_outlined,
-                        color: shop == activeShop ? Colors.orange : Colors.grey,
+                        color:
+                            shop.shopId == activeShop?.shopId
+                                ? Colors.orange
+                                : Colors.grey,
                       ),
                       title: Text(
                         shop.shopName,
                         style: TextStyle(
                           color:
-                              shop == activeShop ? Colors.orange : Colors.grey,
+                              shop.shopId == activeShop?.shopId
+                                  ? Colors.orange
+                                  : Colors.grey,
                           fontWeight:
-                              shop == activeShop
+                              shop.shopId == activeShop?.shopId
                                   ? FontWeight.bold
                                   : FontWeight.normal,
                         ),
                       ),
                       onTap: () {
-                        if (shop != activeShop) {
+                        if (shop.shopId != activeShop?.shopId) {
+                          Navigator.pop(bottomSheetContext);
+                          // Direct shop switch without animation
                           context.read<SessionCubit>().switchShop(
                             shop,
                             context,
                             shop.shopName,
                           );
                         }
-                        Navigator.pop(bottomSheetContext);
                       },
                     );
                   },

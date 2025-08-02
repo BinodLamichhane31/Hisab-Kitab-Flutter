@@ -10,6 +10,7 @@ import 'package:hisab_kitab/features/suppliers/presentation/view/supplier_form_d
 import 'package:hisab_kitab/features/suppliers/presentation/view_model/supplier_detail_event.dart';
 import 'package:hisab_kitab/features/suppliers/presentation/view_model/supplier_detail_state.dart';
 import 'package:hisab_kitab/features/suppliers/presentation/view_model/supplier_detail_view_model.dart';
+import 'package:hisab_kitab/features/transactions/presentation/view/supplier_transactions_view.dart';
 import 'package:intl/intl.dart';
 
 class SupplierDetailPage extends StatelessWidget {
@@ -173,7 +174,12 @@ class SupplierDetailView extends StatelessWidget {
           children: [
             _buildOverviewTab(supplier),
             _buildDetailsTab(supplier),
-            const Center(child: Text("Transactions will be shown here.")),
+            supplier.supplierId != null
+                ? SupplierTransactionsView(
+                  supplierId: supplier.supplierId!,
+                  supplierName: supplier.name,
+                )
+                : const Center(child: Text("Supplier ID not available.")),
           ],
         ),
       ),

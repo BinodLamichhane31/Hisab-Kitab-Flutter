@@ -32,6 +32,8 @@ class TransactionRemoteDataSource implements ITransactionDataSource {
     TransactionCategory? category,
     DateTime? startDate,
     DateTime? endDate,
+    String? customerId,
+    String? supplierId,
   }) async {
     try {
       final Map<String, dynamic> queryParams = {'shopId': shopId};
@@ -43,7 +45,11 @@ class TransactionRemoteDataSource implements ITransactionDataSource {
       if (startDate != null) {
         queryParams['startDate'] = startDate.toIso8601String();
       }
-      if (endDate != null) queryParams['endDate'] = endDate.toIso8601String();
+      if (endDate != null) {
+        queryParams['endDate'] = endDate.toIso8601String();
+      }
+      if (customerId != null) queryParams['customerId'] = customerId;
+      if (supplierId != null) queryParams['supplierId'] = supplierId;
 
       final response = await _apiService.dio.get(
         ApiEndpoints.transactions, // You need to add this endpoint

@@ -22,6 +22,8 @@ class TransactionRemoteRepository implements ITransactionRepository {
     TransactionCategory? category,
     DateTime? startDate,
     DateTime? endDate,
+    String? customerId,
+    String? supplierId,
   }) async {
     try {
       final response = await _dataSource.getTransactions(
@@ -33,6 +35,8 @@ class TransactionRemoteRepository implements ITransactionRepository {
         category: category,
         startDate: startDate,
         endDate: endDate,
+        customerId: customerId,
+        supplierId: supplierId,
       );
       return Right(TransactionApiModel.toEntityList(response.data));
     } catch (e) {

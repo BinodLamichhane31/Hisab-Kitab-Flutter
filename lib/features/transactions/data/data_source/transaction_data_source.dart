@@ -29,5 +29,7 @@ abstract interface class ITransactionDataSource {
     TransactionCategory? category,
     DateTime? startDate,
     DateTime? endDate,
+    String? customerId,
+    String? supplierId,
   });
 }

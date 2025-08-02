@@ -42,6 +42,8 @@ class TransactionViewModel extends Bloc<TransactionEvent, TransactionState> {
         category: event.category,
         startDate: event.startDate,
         endDate: event.endDate,
+        customerId: event.customerId,
+        supplierId: event.supplierId,
       ),
     );
 
@@ -72,6 +74,8 @@ class TransactionViewModel extends Bloc<TransactionEvent, TransactionState> {
         category: event.category,
         startDate: event.startDate,
         endDate: event.endDate,
+        customerId: event.customerId,
+        supplierId: event.supplierId,
       ),
     );
 
@@ -83,6 +87,8 @@ class TransactionViewModel extends Bloc<TransactionEvent, TransactionState> {
         category: event.category,
         startDate: event.startDate,
         endDate: event.endDate,
+        customerId: event.customerId,
+        supplierId: event.supplierId,
       ),
     );
   }

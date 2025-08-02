@@ -12,9 +12,42 @@ import 'package:hisab_kitab/features/home/presentation/view_model/home_state.dar
 import 'package:hisab_kitab/features/home/presentation/view_model/home_view_model.dart';
 import 'package:hisab_kitab/features/products/presentation/view/products_page_view.dart';
 import 'package:hisab_kitab/features/suppliers/presentation/view/suppliers_page_view.dart';
+import 'package:hisab_kitab/core/services/shop_switch_service.dart';
+import 'package:hisab_kitab/app/service_locator/service_locator.dart';
 
-class HomeView extends StatelessWidget {
+class HomeView extends StatefulWidget {
   const HomeView({super.key});
+
+  @override
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
+  late ShopSwitchService _shopSwitchService;
+  bool _shakeDetectionInitialized = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _shopSwitchService = serviceLocator<ShopSwitchService>();
+    // Start listening for shake events when the home view is initialized
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (_shopSwitchService.isSupported) {
+        await _shopSwitchService.startListening(context);
+        setState(() {
+          _shakeDetectionInitialized = true;
+        });
+      } else {
+        print('Shake detection not supported on this platform');
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _shopSwitchService.stopListening();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

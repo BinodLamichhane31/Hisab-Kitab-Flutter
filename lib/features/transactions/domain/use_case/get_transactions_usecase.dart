@@ -15,6 +15,8 @@ class GetTransactionsParams extends Equatable {
   final TransactionCategory? category;
   final DateTime? startDate;
   final DateTime? endDate;
+  final String? customerId;
+  final String? supplierId;
 
   const GetTransactionsParams({
     required this.shopId,
@@ -25,6 +27,8 @@ class GetTransactionsParams extends Equatable {
     this.category,
     this.startDate,
     this.endDate,
+    this.customerId,
+    this.supplierId,
   });
 
   @override
@@ -37,6 +41,8 @@ class GetTransactionsParams extends Equatable {
     category,
     startDate,
     endDate,
+    customerId,
+    supplierId,
   ];
 }
 
@@ -61,6 +67,8 @@ class GetTransactionsUsecase
       category: params.category,
       startDate: params.startDate,
       endDate: params.endDate,
+      customerId: params.customerId,
+      supplierId: params.supplierId,
     );
   }
 }
