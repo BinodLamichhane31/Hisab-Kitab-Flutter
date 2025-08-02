@@ -8,6 +8,7 @@ import 'package:hisab_kitab/core/services/gyroscope_sensor_test.dart';
 import 'package:hisab_kitab/core/services/gyroscope_transaction_test.dart';
 import 'package:hisab_kitab/features/home/presentation/view/bottom_view/more/help_and_support_view.dart';
 import 'package:hisab_kitab/features/home/presentation/view/bottom_view/more/privacy_policy_view.dart';
+import 'package:hisab_kitab/features/home/presentation/view/bottom_view/more/subscription_view.dart';
 import 'package:hisab_kitab/features/home/presentation/view/bottom_view/profile_page_view.dart';
 import 'package:hisab_kitab/features/home/presentation/view_model/home_view_model.dart';
 import 'package:hisab_kitab/features/notification/presentation/view/notification_view.dart';
@@ -109,7 +110,7 @@ class MoreView extends StatelessWidget {
                 onTap:
                     () => Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (_) => const ProfilePageView(),
+                        builder: (_) => const SubscriptionView(),
                       ),
                     ),
               ),
