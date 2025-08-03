@@ -1,0 +1,20 @@
+{
+  "" : {
+    "const-values" : "/Users/binodlamichhane/Documents/developer/HisabKitab/hisab_kitab/ios/build/Pods.build/Release-iphoneos/sensors_plus.build/Objects-normal/arm64/sensors_plus-master.swiftconstvalues",
+    "dependencies" : "/Users/binodlamichhane/Documents/developer/HisabKitab/hisab_kitab/ios/build/Pods.build/Release-iphoneos/sensors_plus.build/Objects-normal/arm64/sensors_plus-master.d",
+    "diagnostics" : "/Users/binodlamichhane/Documents/developer/HisabKitab/hisab_kitab/ios/build/Pods.build/Release-iphoneos/sensors_plus.build/Objects-normal/arm64/sensors_plus-master.dia",
+    "emit-module-dependencies" : "/Users/binodlamichhane/Documents/developer/HisabKitab/hisab_kitab/ios/build/Pods.build/Release-iphoneos/sensors_plus.build/Objects-normal/arm64/sensors_plus-master-emit-module.d",
+    "emit-module-diagnostics" : "/Users/binodlamichhane/Documents/developer/HisabKitab/hisab_kitab/ios/build/Pods.build/Release-iphoneos/sensors_plus.build/Objects-normal/arm64/sensors_plus-master-emit-module.dia",
+    "swift-dependencies" : "/Users/binodlamichhane/Documents/developer/HisabKitab/hisab_kitab/ios/build/Pods.build/Release-iphoneos/sensors_plus.build/Objects-normal/arm64/sensors_plus-master.swiftdeps"
+  },
+  "/Users/binodlamichhane/.pub-cache/hosted/pub.dev/sensors_plus-4.0.2/ios/Classes/FPPSensorsPlusPlugin.swift" : {
+    "index-unit-output-path" : "/Pods.build/Release-iphoneos/sensors_plus.build/Objects-normal/arm64/FPPSensorsPlusPlugin.o",
+    "llvm-bc" : "/Users/binodlamichhane/Documents/developer/HisabKitab/hisab_kitab/ios/build/Pods.build/Release-iphoneos/sensors_plus.build/Objects-normal/arm64/FPPSensorsPlusPlugin.bc",
+    "object" : "/Users/binodlamichhane/Documents/developer/HisabKitab/hisab_kitab/ios/build/Pods.build/Release-iphoneos/sensors_plus.build/Objects-normal/arm64/FPPSensorsPlusPlugin.o"
+  },
+  "/Users/binodlamichhane/.pub-cache/hosted/pub.dev/sensors_plus-4.0.2/ios/Classes/FPPStreamHandlerPlus.swift" : {
+    "index-unit-output-path" : "/Pods.build/Release-iphoneos/sensors_plus.build/Objects-normal/arm64/FPPStreamHandlerPlus.o",
+    "llvm-bc" : "/Users/binodlamichhane/Documents/developer/HisabKitab/hisab_kitab/ios/build/Pods.build/Release-iphoneos/sensors_plus.build/Objects-normal/arm64/FPPStreamHandlerPlus.bc",
+    "object" : "/Users/binodlamichhane/Documents/developer/HisabKitab/hisab_kitab/ios/build/Pods.build/Release-iphoneos/sensors_plus.build/Objects-normal/arm64/FPPStreamHandlerPlus.o"
+  }
+}

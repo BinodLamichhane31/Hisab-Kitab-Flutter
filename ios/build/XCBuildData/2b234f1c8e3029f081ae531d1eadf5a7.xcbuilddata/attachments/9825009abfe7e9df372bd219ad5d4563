@@ -1,0 +1,15 @@
+{
+  "" : {
+    "const-values" : "/Users/binodlamichhane/Documents/developer/HisabKitab/hisab_kitab/ios/build/Pods.build/Release-iphoneos/haptic_feedback.build/Objects-normal/arm64/haptic_feedback-master.swiftconstvalues",
+    "dependencies" : "/Users/binodlamichhane/Documents/developer/HisabKitab/hisab_kitab/ios/build/Pods.build/Release-iphoneos/haptic_feedback.build/Objects-normal/arm64/haptic_feedback-master.d",
+    "diagnostics" : "/Users/binodlamichhane/Documents/developer/HisabKitab/hisab_kitab/ios/build/Pods.build/Release-iphoneos/haptic_feedback.build/Objects-normal/arm64/haptic_feedback-master.dia",
+    "emit-module-dependencies" : "/Users/binodlamichhane/Documents/developer/HisabKitab/hisab_kitab/ios/build/Pods.build/Release-iphoneos/haptic_feedback.build/Objects-normal/arm64/haptic_feedback-master-emit-module.d",
+    "emit-module-diagnostics" : "/Users/binodlamichhane/Documents/developer/HisabKitab/hisab_kitab/ios/build/Pods.build/Release-iphoneos/haptic_feedback.build/Objects-normal/arm64/haptic_feedback-master-emit-module.dia",
+    "swift-dependencies" : "/Users/binodlamichhane/Documents/developer/HisabKitab/hisab_kitab/ios/build/Pods.build/Release-iphoneos/haptic_feedback.build/Objects-normal/arm64/haptic_feedback-master.swiftdeps"
+  },
+  "/Users/binodlamichhane/.pub-cache/hosted/pub.dev/haptic_feedback-0.5.1+1/ios/Classes/HapticFeedbackPlugin.swift" : {
+    "index-unit-output-path" : "/Pods.build/Release-iphoneos/haptic_feedback.build/Objects-normal/arm64/HapticFeedbackPlugin.o",
+    "llvm-bc" : "/Users/binodlamichhane/Documents/developer/HisabKitab/hisab_kitab/ios/build/Pods.build/Release-iphoneos/haptic_feedback.build/Objects-normal/arm64/HapticFeedbackPlugin.bc",
+    "object" : "/Users/binodlamichhane/Documents/developer/HisabKitab/hisab_kitab/ios/build/Pods.build/Release-iphoneos/haptic_feedback.build/Objects-normal/arm64/HapticFeedbackPlugin.o"
+  }
+}

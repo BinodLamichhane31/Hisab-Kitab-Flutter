@@ -4,6 +4,7 @@ class ApiEndpoints {
   static const connectionTimeout = Duration(seconds: 1000);
   static const receiveTimeout = Duration(seconds: 1000);
 
+  // static const String serverAddress = "http://192.168.16.105:6060";
   static const String serverAddress = "http://localhost:6060";
 
   static const String baseUrl = "$serverAddress/api";
